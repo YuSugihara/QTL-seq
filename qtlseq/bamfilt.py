@@ -79,7 +79,7 @@ class BamFilt(object):
         sbp.run(cmd8, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
 
     def clean_log(self):
-        cmd1 = 'cat {0}/log/samtools* > {0}/log/samtools.log'.format(self.out)
+        cmd1 = 'cat {0}/log/samtools.*.log >> {0}/log/samtools.log'.format(self.out)
         cmd2 = 'rm -f {}/log/samtools.*.log'.format(self.out)
         sbp.run(cmd1, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd2, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
