@@ -66,29 +66,35 @@ $ trimmomatic --help
 
 ## Usage
 ```
-$ qtlseq -h
+$ usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
+                -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
+                [-F <INT>] [-T] [-e <DATABASE>]
 
-usage: QTL-seq -r <FASTA> -c <BAM | FASTQ> -b <BAM | FASTQ>
-              -n <INT> -o <OUT_DIR> [-T] [-e <DATABASE>]
-
-QTL-seq version 2.0.3
+QTL-seq version 2.0.0
 
 optional arguments:
   -h, --help        show this help message and exit
   -r , --ref        Reference fasta.
-  -c , --cultivar   fastq or bam of cultivar. If you specify
+  -p , --parent     fastq or bam of parent. If you specify
                     fastq, please separate pairs by commma,
-                    e.g. -c fastq1,fastq2. You can use this
+                    e.g. -p fastq1,fastq2. You can use this
                     optiion multiple times
-  -b , --bulk       fastq or bam of mutnat bulk. If you specify
+  -b1 , --bulk1     fastq or bam of bulk 1. If you specify
                     fastq, please separate pairs by commma,
-                    e.g. -b fastq1,fastq2. You can use this
+                    e.g. -b1 fastq1,fastq2. You can use this
                     optiion multiple times
-  -n , --N-bulk     Number of individuals in mutant bulk.
+  -b2 , --bulk2     fastq or bam of bulk 2. If you specify
+                    fastq, please separate pairs by commma,
+                    e.g. -b2 fastq1,fastq2. You can use this
+                    optiion multiple times
+  -n1 , --N-bulk1   Number of individuals in bulk 1.
+  -n2 , --N-bulk2   Number of individuals in bulk 2.
   -o , --out        Output directory. Specified name must not
                     exist.
+  -F , --filial     Filial generation. This parameter must be
+                    more than 1. [2]
   -t , --threads    Number of threads. If you specify the number
-                    below one, then, QTL-seq will use the threads
+                    below one, then QTL-seq will use the threads
                     as many as possible. [2]
   -T, --trim        Trim fastq by trimmomatic.
   -e , --snpEff     Predicte causal variant by SnpEff. Please check
@@ -109,39 +115,51 @@ QTL-seq can run from FASTQ (without or with trimming) and BAM. If you want to ru
 ### Example 1 : run QTL-seq from FASTQ without trimming
 ```
 $ qtlseq -r reference.fasta \
-         -c cultivar.1.fastq,cultivar.2.fastq \
-         -b bulk.1.fastq,bulk.2.fastq \
-         -n 20 \
+         -p parent.1.fastq,parent.2.fastq \
+         -b1 bulk_1.1.fastq,bulk_1.2.fastq \
+         -b2 bulk_2.1.fastq,bulk_2.2.fastq \
+         -n1 20 \
+         -n2 20 \
          -o example_dir
 ```
 
 `-r` : reference fasta
 
-`-c` : FASTQs of cultivar. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+`-p` : FASTQs of parent. Please input pair-end reads separated by comma. FASTQs can be gzipped.
 
-`-b` : FASTQs of bulk. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+`-b1` : FASTQs of bulk 1. Please input pair-end reads separated by comma. FASTQs can be gzipped.
 
-`-n` : number of individuals in mutant bulk.
+`-b2` : FASTQs of bulk 1. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+
+`-n1` : number of individuals in mutant bulk 1.
+
+`-n2` : number of individuals in mutant bulk 2.
 
 `-o` : name of output directory. Specified name cannot exist.
 
 ### Example 2 : run QTL-seq from FASTQ with trimming
 ```
 $ qtlseq -r reference.fasta \
-         -c cultivar.1.fastq,cultivar.2.fastq \
-         -b bulk.1.fastq,bulk.2.fastq \
-         -n 20 \
+         -c parent.1.fastq,parent.2.fastq \
+         -b1 bulk_1.1.fastq,bulk_1.2.fastq \
+         -b2 bulk_2.1.fastq,bulk_2.2.fastq \
+         -n1 20 \
+         -n2 20 \
          -o example_dir \
          -T
 ```
 
 `-r` : reference fasta
 
-`-c` : FASTQs of cultivar. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+`-p` : FASTQs of parent. Please input pair-end reads separated by comma. FASTQs can be gzipped.
 
-`-b` : FASTQs of bulk. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+`-b1` : FASTQs of bulk 1. Please input pair-end reads separated by comma. FASTQs can be gzipped.
 
-`-n` : number of individuals in mutant bulk.
+`-b2` : FASTQs of bulk 1. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+
+`-n1` : number of individuals in mutant bulk 1.
+
+`-n2` : number of individuals in mutant bulk 2.
 
 `-o` : name of output directory. Specified name cannot exist.
 
@@ -150,51 +168,65 @@ $ qtlseq -r reference.fasta \
 ### Example 3 : run QTL-seq from BAM
 ```
 $ qtlseq -r reference.fasta \
-         -c cultivar.bam \
-         -b bulk.bam \
-         -n 20 \
+         -p parent.bam \
+         -b1 bulk_1.bam \
+         -b2 bulk_2.bam \
+         -n1 20 \
+         -n2 20 \
          -o example_dir
 ```
 
 `-r` : reference fasta
 
-`-c` : BAM of cultivar.
+`-p` : BAM of parent.
 
-`-b` : BAM of bulk.
+`-b1` : BAM of bulk 1.
 
-`-n` : number of individuals in mutant bulk.
+`-b2` : BAM of bulk 2.
+
+`-n1` : number of individuals in mutant bulk 1.
+
+`-n2` : number of individuals in mutant bulk 2.
 
 `-o` : name of output directory. Specified name cannot exist.
 
 ### Example 4 : run QTL-seq from multiple FASTQs and BAMs
 ```
 $ qtlseq -r reference.fasta \
-         -c cultivar_1.1.fastq,cultivar_1.2.fastq \
-         -c cultivar_2.bam \
-         -b bulk_1.1.fastq,bulk_1.2.fastq \
-         -b bulk_2.bam \
-         -b bulk_3.bam \
-         -n 20 \
+         -p parent_1.1.fastq,parent_1.2.fastq \
+         -p parent_1.bam \
+         -b1 bulk_11.1.fastq,bulk_11.2.fastq \
+         -b1 bulk_12.bam \
+         -b1 bulk_13.bam \
+         -b2 bulk_21.1.fastq,bulk_21.2.fastq \
+         -b2 bulk_22.bam \
+         -b2 bulk_23.bam \
+         -n1 20 \
+         -n2 20 \
          -o example_dir
 ```
 
-If you specify `-c` multiple times, please make sure that those files include only 1 individual. On the other hand, `-b` can include more than 1 individuals because those are bulked samples. QTL-seq can automatically classify FASTQs and BAMs from whether comma exits or not. Of course, you can merge FASTQs or BAMs using `cat` or `samtools merge` before input them to QTL-seq.
+QTL-seq can automatically merge multiple FASTQs and BAMs. Of course, you can merge FASTQs or BAMs using `cat` or `samtools merge` before input them to QTL-seq. If you specify `-p` multiple times, please make sure that those files include only 1 individual. On the other hand, `-b1` and `-b2` can include more than 1 individuals because those are bulked samples. QTL-seq can automatically classify FASTQs and BAMs from whether comma exits or not.
 
 ### Example 5 : run QTL-plot from VCF
 ```
 $ qtlplot -h
+usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
+               [-w <INT>] [-s <INT>] [-D <INT>] [-d <INT>]
+               [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
+               [--igv] [--indel]
 
-usage: QTL-plot -v <VCF> -o <OUT_DIR> -n <INT> [-w <INT>] [-s <INT>]
-               [-D <INT>] [-d <INT>] [-N <INT>] [-m <FLOAT>]
-               [-S <INT>] [-e <DATABASE>] [--igv] [--indel]
-
-QTL-plot version 0.0.3
+QTL-plot version 2.0.0
 
 optional arguments:
   -h, --help            show this help message and exit
-  -v , --vcf            VCF which contains cultivar and mutant bulk.
+  -v , --vcf            VCF which contains parent, bulk1 and bulk2
+                        in this order.
+  -n1 , --N-bulk1       Number of individuals in bulk 1.
+  -n2 , --N-bulk2       Number of individuals in bulk 2.
   -o , --out            Output directory. Specified name can exist.
-  -n , --N-bulk         Number of individuals in mutant bulk.
+  -F , --filial         Filial generation. This parameter must be
+                        more than 1. [2]
   -w , --window         Window size (kb). [2000]
   -s , --step           Step size (kb). [100]
   -D , --max-depth      Maximum depth of variants which will be used. [250]
@@ -202,7 +234,7 @@ optional arguments:
   -N , --N-rep          Number of replicates for simulation to make
                         null distribution. [10000]
   -m , --min-SNPindex   Cutoff of minimum SNP-index for clear results. [0.3]
-  -S , --strand-bias    Filter spurious homo genotypes in cultivar using
+  -S , --strand-bias    Filter spurious homo genotypes in parent using
                         strand bias. If ADF (or ADR) is higher than this
                         cutoff when ADR (or ADF) is 0, that SNP will be
                         filtered out. If you want to supress this filtering,
@@ -218,7 +250,8 @@ QTL-plot is included in QTL-seq. QTL-seq run QTL-plot after making VCF. Then, QT
 ```
 $ qtlplot -v OUT_DIR/30_vcf/QTL-seq.vcf.gz \
           -o ANOTHER_DIR_NAME \
-          -n 20 \
+          -n1 20 \
+          -n2 20 \
           -w 2000 \
           -s 100
 ```
@@ -226,7 +259,7 @@ $ qtlplot -v OUT_DIR/30_vcf/QTL-seq.vcf.gz \
 #### Use QTL-plot for VCF which was made by yourself
 In this case, please make sure that:
 1. Your VCF include AD format.
-2. Your VCF include two columns of cultivar and mutant bulk in this order.
+2. Your VCF include three columns of parent, bulk1 and bulk2 in this order.
 
 If you got a error, please try to run QTL-seq from FASTQ or BAM before asking in issues.
 
@@ -244,8 +277,8 @@ Inside of `OUT_DIR` is like below.
 |-- 20_bam
 |   |-- bulk.filt.bam
 |   |-- bulk.filt.bam.bai
-|   |-- cultivar.filt.bam
-|   `-- cultivar.filt.bam.bai
+|   |-- parent.filt.bam
+|   `-- parent.filt.bam.bai
 |-- 30_vcf
 |   |-- QTL-seq.vcf.gz
 |   `-- QTL-seq.vcf.gz.tbi
