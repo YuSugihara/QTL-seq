@@ -23,7 +23,7 @@ This pase is being prepared.
 
 Now QTL-seq is updated for easier installation and utilization using Python platform.
 
-**Citation: Abe, A. et al. (2012) Genome sequencing reveals agronomically important loci in rice using QTL-seq. Nature Biotechnol. 30:174-179.**
+**Citation: Takagi, H. et al. (2013) QTL-seq: rapid mapping of quantitative trait loci in rice by whole genome resequencing of DNA from two bulked populations. Plant journal 74:174-183.**
 
 ## Installation
 ### Dependencies
