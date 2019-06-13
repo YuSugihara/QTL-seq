@@ -129,11 +129,11 @@ $ qtlseq -r reference.fasta \
 
 `-b1` : FASTQs of bulk 1. Please input pair-end reads separated by comma. FASTQs can be gzipped.
 
-`-b2` : FASTQs of bulk 1. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+`-b2` : FASTQs of bulk 2. Please input pair-end reads separated by comma. FASTQs can be gzipped.
 
-`-n1` : number of individuals in mutant bulk 1.
+`-n1` : number of individuals in bulk 1.
 
-`-n2` : number of individuals in mutant bulk 2.
+`-n2` : number of individuals in bulk 2.
 
 `-o` : name of output directory. Specified name cannot exist.
 
@@ -157,9 +157,9 @@ $ qtlseq -r reference.fasta \
 
 `-b2` : FASTQs of bulk 1. Please input pair-end reads separated by comma. FASTQs can be gzipped.
 
-`-n1` : number of individuals in mutant bulk 1.
+`-n1` : number of individuals in bulk 1.
 
-`-n2` : number of individuals in mutant bulk 2.
+`-n2` : number of individuals in bulk 2.
 
 `-o` : name of output directory. Specified name cannot exist.
 
@@ -184,9 +184,9 @@ $ qtlseq -r reference.fasta \
 
 `-b2` : BAM of bulk 2.
 
-`-n1` : number of individuals in mutant bulk 1.
+`-n1` : number of individuals in bulk 1.
 
-`-n2` : number of individuals in mutant bulk 2.
+`-n2` : number of individuals in bulk 2.
 
 `-o` : name of output directory. Specified name cannot exist.
 
