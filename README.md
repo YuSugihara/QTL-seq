@@ -266,33 +266,32 @@ If you got a error, please try to run QTL-seq from FASTQ or BAM before asking in
 ## Outputs
 Inside of `OUT_DIR` is like below.
 ```
-|-- 10_ref
-|   |-- reference.fasta
-|   |-- reference.fasta.amb
-|   |-- reference.fasta.ann
-|   |-- reference.fasta.bwt
-|   |-- reference.fasta.fai
-|   |-- reference.fasta.pac
-|   `-- reference.fasta.sa
-|-- 20_bam
-|   |-- bulk.filt.bam
-|   |-- bulk.filt.bam.bai
-|   |-- parent.filt.bam
-|   `-- parent.filt.bam.bai
-|-- 30_vcf
-|   |-- QTL-seq.vcf.gz
-|   `-- QTL-seq.vcf.gz.tbi
-|-- 40_QTL-seq
-|   |-- snp_index.tsv
-|   |-- sliding_window.tsv
-|   `-- QTL-seq_plot.png
-`-- log
-    |-- bcftools.log
-    |-- bgzip.log
-    |-- bwa.log
-    |-- QTL-plot.log
-    |-- samtools.log
-    `-- tabix.log
+├── 10_ref
+│  ├── IRGSP-1.0_genome.fasta
+│  ├── IRGSP-1.0_genome.fasta.amb
+│  ├──  IRGSP-1.0_genome.fasta.ann
+│  ├──  IRGSP-1.0_genome.fasta.bwt
+│  ├──  IRGSP-1.0_genome.fasta.fai
+│  ├──  IRGSP-1.0_genome.fasta.pac
+│  └──  IRGSP-1.0_genome.fasta.sa
+├── 20_bam
+│  ├──  bulk1.filt.bam
+│  ├──  bulk1.filt.bam.bai
+│  ├──  bulk2.filt.bam
+│  ├──  bulk2.filt.bam.bai
+│  ├──  parent.filt.bam
+│  └──  parent.filt.bam.bai
+├── 30_vcf
+│  ├── qtlseq.vcf.gz
+│  └──  qtlseq.vcf.gz.tbi
+├── 40_qtlseq
+│  └──  snp_index.tsv
+└── log
+   ├── bcftools.log
+   ├── bgzip.log
+   ├── bwa.log
+   ├── samtools.log
+   └── tabix.log
 ```
 - If you run QTL-seq with trimming, you will get the directory of `00_fastq` which includes FASTQs after trimming.
 - You can check the results in `40_QTL-seq`.

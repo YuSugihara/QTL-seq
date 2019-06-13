@@ -171,11 +171,14 @@ class QTLseq(object):
                                           self.args.snpEff)
 
         cmd = clean_cmd(cmd)
-        sbp.run(cmd,
-                stdout=sbp.DEVNULL,
-                stderr=sbp.DEVNULL,
-                shell=True,
-                check=True)
+        p = sbp.run(cmd,
+                    stdout=sbp.PIPE,
+                    stderr=sbp.STDOUT,
+                    shell=True,
+                    check=True)
+
+        for line in iter(p.stdout.readline, b''):
+            print(line.rstrip().decode('utf8'))
 
     def run(self):
         self.mkindex()
