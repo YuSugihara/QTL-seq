@@ -139,7 +139,7 @@ $ qtlseq -r reference.fasta \
 ### Example 2 : run QTL-seq from FASTQ with trimming
 ```
 $ qtlseq -r reference.fasta \
-         -c parent.1.fastq,parent.2.fastq \
+         -p parent.1.fastq,parent.2.fastq \
          -b1 bulk_1.1.fastq,bulk_1.2.fastq \
          -b2 bulk_2.1.fastq,bulk_2.2.fastq \
          -n1 20 \
