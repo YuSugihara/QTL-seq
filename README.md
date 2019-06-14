@@ -1,6 +1,5 @@
 # QTL-seq User Guide
 #### version 2.0.0
-This pase is being prepared.
 
 ## Table of contents
 - [What is QTL-seq?](#What-is-QTL-seq)
@@ -269,23 +268,27 @@ Inside of `OUT_DIR` is like below.
 ├── 10_ref
 │  ├── IRGSP-1.0_genome.fasta
 │  ├── IRGSP-1.0_genome.fasta.amb
-│  ├──  IRGSP-1.0_genome.fasta.ann
-│  ├──  IRGSP-1.0_genome.fasta.bwt
-│  ├──  IRGSP-1.0_genome.fasta.fai
-│  ├──  IRGSP-1.0_genome.fasta.pac
-│  └──  IRGSP-1.0_genome.fasta.sa
+│  ├── IRGSP-1.0_genome.fasta.ann
+│  ├── IRGSP-1.0_genome.fasta.bwt
+│  ├── IRGSP-1.0_genome.fasta.fai
+│  ├── IRGSP-1.0_genome.fasta.pac
+│  └── IRGSP-1.0_genome.fasta.sa
 ├── 20_bam
-│  ├──  bulk1.filt.bam
-│  ├──  bulk1.filt.bam.bai
-│  ├──  bulk2.filt.bam
-│  ├──  bulk2.filt.bam.bai
-│  ├──  parent.filt.bam
-│  └──  parent.filt.bam.bai
+│  ├── bulk1.filt.bam
+│  ├── bulk1.filt.bam.bai
+│  ├── bulk2.filt.bam
+│  ├── bulk2.filt.bam.bai
+│  ├── parent.filt.bam
+│  └── parent.filt.bam.bai
 ├── 30_vcf
 │  ├── qtlseq.vcf.gz
-│  └──  qtlseq.vcf.gz.tbi
+│  └── qtlseq.vcf.gz.tbi
 ├── 40_qtlseq
-│  └──  snp_index.tsv
+│  ├── bulk1_SNPindex.png
+│  ├── bulk2_SNPindex.png
+│  ├── delta_SNPindex.png
+│  ├── sliding_window.tsv
+│  └── snp_index.tsv
 └── log
    ├── bcftools.log
    ├── bgzip.log
@@ -293,22 +296,27 @@ Inside of `OUT_DIR` is like below.
    ├── samtools.log
    └── tabix.log
 ```
-- If you run QTL-seq with trimming, you will get the directory of `00_fastq` which includes FASTQs after trimming.
+- If you run QTL-seq with trimming, you will get the directory of `00_fastq` which includes FASTQs after trimming.
 - You can check the results in `40_QTL-seq`.
   + `snp_index.tsv` : columns in this order.
     - **CHROM** : chromosome name
     - **POSI** : position in chromosome
     - **VARIANT** : SNP or INDEL
-    - **DEPTH** : depth of bulk
+    - **DEPTH 1** : depth of bulk 1
+    - **DEPTH 2** : depth of bulk 2
     - **p99** : 99% confidence interval of simulated SNP-index
     - **p95** : 95% confidence interval of simulated SNP-index
-    - **SNP-index** : real SNP-index
+    - **SNP-index 1** : real SNP-index of bulk 1
+    - **SNP-index 2** : real SNP-index of bulk 2
+    - **DELTA SNP-index** : real delta SNP-index (bulk2 - bulk1)
   + `sliding_window.tsv` : columns in this order.
     - **CHROM** : chromosome name
     - **POSI** : central position of window
     - **MEAN p99** : mean of p99
     - **MEAN p95** : mean of p95
-    - **MEAN SNP-index** : mean SNP-index
+    - **MEAN SNP-index 1** : mean SNP-index of bulk 1
+    - **MEAN SNP-index 2** : mean SNP-index of bulk 2
+    - **MEAN DELTA SNP-index** : mean delta SNP-index
   + `QTL-seq_plot.png` : resulting plot
     - **<span style="color: blue; ">BLUE dot</span>** : variant
     - **<span style="color: red; ">RED line</span>** : mean SNP-index
