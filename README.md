@@ -304,8 +304,8 @@ Inside of `OUT_DIR` is like below.
     - **VARIANT** : SNP or INDEL
     - **DEPTH 1** : depth of bulk 1
     - **DEPTH 2** : depth of bulk 2
-    - **p99** : 99% confidence interval of simulated SNP-index
-    - **p95** : 95% confidence interval of simulated SNP-index
+    - **p99** : 99% confidence interval of simulated delta SNP-index (absolute value)
+    - **p95** : 95% confidence interval of simulated delta SNP-index (absolute value)
     - **SNP-index 1** : real SNP-index of bulk 1
     - **SNP-index 2** : real SNP-index of bulk 2
     - **DELTA SNP-index** : real delta SNP-index (bulk2 - bulk1)
