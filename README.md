@@ -314,8 +314,8 @@ Inside of `OUT_DIR` is like below.
     - **POSI** : central position of window
     - **MEAN p99** : mean of p99
     - **MEAN p95** : mean of p95
-    - **MEAN SNP-index 1** : mean SNP-index of bulk 1
-    - **MEAN SNP-index 2** : mean SNP-index of bulk 2
+    - **MEAN SNP-index 1** : mean SNP-index of bulk 1 (absolute value)
+    - **MEAN SNP-index 2** : mean SNP-index of bulk 2 (absolute value)
     - **MEAN DELTA SNP-index** : mean delta SNP-index
   + `QTL-seq_plot.png` : resulting plot
     - **<span style="color: blue; ">BLUE dot</span>** : variant
