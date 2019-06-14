@@ -72,10 +72,10 @@ class SnpFilt(object):
         return record
 
     def filt_depth(self, record, parent_AD):
-        record['cultivar_depth'] = sum([int(AD) for AD in parent_AD.split(',')])
+        record['parent_depth'] = sum([int(AD) for AD in parent_AD.split(',')])
         record['bulk1_depth'] = record['bulk1_ref_AD'] + record['bulk1_alt_AD']
         record['bulk2_depth'] = record['bulk2_ref_AD'] + record['bulk2_alt_AD']
-        if record['cultivar_depth'] < self.minDP or record['cultivar_depth'] > self.maxDP:
+        if record['parent_depth'] < self.minDP or record['parent_depth'] > self.maxDP:
             record['type'] = 'discard'
         elif record['bulk1_depth'] < self.minDP or record['bulk1_depth'] > self.maxDP:
             record['type'] = 'discard'
