@@ -85,7 +85,7 @@ class Mpileup(object):
                               -O u | \
                 bcftools filter -i "INFO/MQ>={0}" \
                                 -O z \
-                                -o {5}/30_vcf/qtlseq.{3}.vcf.gz\
+                                -o {5}/30_vcf/qtlseq.{3}.vcf.gz \
                                 &>> {5}/log/bcftools.{3}.log'.format(self.args.min_MQ,
                                                                      self.args.min_BQ,
                                                                      self.args.adjust_MQ,
