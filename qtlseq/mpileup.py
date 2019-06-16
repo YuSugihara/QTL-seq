@@ -84,14 +84,14 @@ class Mpileup(object):
                               -f GQ,GP \
                               -O u | \
                 bcftools filter -i "INFO/MQ>={0}" \
-                              -O z \
-                              -o {5}/30_vcf/qtlseq.{3}.vcf.gz\
-                              &>> {5}/log/bcftools.{3}.log'.format(self.args.min_MQ,
-                                                                   self.args.min_BQ,
-                                                                   self.args.adjust_MQ,
-                                                                   chr_name,
-                                                                   self.args.ref,
-                                                                   self.out)
+                                -O z \
+                                -o {5}/30_vcf/qtlseq.{3}.vcf.gz\
+                                &>> {5}/log/bcftools.{3}.log'.format(self.args.min_MQ,
+                                                                     self.args.min_BQ,
+                                                                     self.args.adjust_MQ,
+                                                                     chr_name,
+                                                                     self.args.ref,
+                                                                     self.out)
 
         cmd2 = 'tabix -f \
                       -p vcf \
