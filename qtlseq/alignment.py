@@ -6,9 +6,8 @@ from qtlseq.utils import clean_cmd
 
 class Alignment(object):
 
-    def __init__(self, args, config):
+    def __init__(self, args):
         self.args = args
-        self.config = config
         self.out = args.out
 
     def run(self, fastq1, fastq2, index):

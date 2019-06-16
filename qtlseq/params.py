@@ -2,7 +2,6 @@
 import os
 import sys
 import argparse
-import configparser
 from multiprocessing import Pool
 import multiprocessing as multi
 from qtlseq.utils import time_stamp
@@ -24,8 +23,7 @@ class Params(object):
             args = parser.parse_args(['-h'])
         else:
             args = parser.parse_args()
-        config = self.read_config()
-        return args, config
+        return args
 
     def qtlseq_options(self):
         parser = argparse.ArgumentParser(description='QTL-seq version {}'.format(__version__),
@@ -126,12 +124,55 @@ class Params(object):
                             default=False,
                             help='Trim fastq by trimmomatic.')
 
+        parser.add_argument('--trim-params',
+                            action='store',
+                            default='33,TruSeq3-PE.fa:2:30:10,20,20,4:15,75',
+                            type=str,
+                            help=('Parameters for trimmomatic. Input parameters\n'
+                                  'must be separated by comma with following\n'
+                                  'order: phred,ILLUMINACLIP,LEADING,TRAILING,\n'
+                                  'SLIDINGWINDOW,MINLEN. [33,TruSeq3-PE.fa:2:30:10\n'
+                                  '20,20,4:15,75]'),
+                            metavar='')
+
         parser.add_argument('-e',
                             '--snpEff',
                             action='store',
                             type=str,
                             help=('Predict causal variant by SnpEff. Please check\n'
                                   'available databases in SnpEff.'),
+                            metavar='')
+
+        parser.add_argument('--mem',
+                            action='store',
+                            default='1G',
+                            type=str,
+                            help='Used memory size when bam sorted. [1G]',
+                            metavar='')
+
+        parser.add_argument('-q',
+                            '--min-MQ',
+                            action='store',
+                            default=40,
+                            type=int,
+                            help='Minimum mapping quality in mpileup. [40]',
+                            metavar='')
+
+        parser.add_argument('-Q',
+                            '--min-BQ',
+                            action='store',
+                            default=18,
+                            type=int,
+                            help='Minimum base quality in mpileup. [18]',
+                            metavar='')
+
+        parser.add_argument('-C',
+                            '--adjust-MQ',
+                            action='store',
+                            default=50,
+                            type=int,
+                            help=('"adjust-MQ" in mpileup. Default parameter\n'
+                                  'is suited for BWA. [50]'),
                             metavar='')
 
         # set version
@@ -272,19 +313,34 @@ class Params(object):
                             default=False,
                             help='Plot SNP-index with INDEL.')
 
+        parser.add_argument('--fig-width',
+                            action='store',
+                            default=7.5,
+                            type=float,
+                            help='Width allocated in chromosome figure. [7.5]',
+                            metavar='')
+
+        parser.add_argument('--fig-height',
+                            action='store',
+                            default=4.0,
+                            type=float,
+                            help='Height allocated in chromosome figure. [4.0]',
+                            metavar='')
+
+        parser.add_argument('--white-space',
+                            action='store',
+                            default=0.6,
+                            type=float,
+                            help=('White space between figures. (This option\n'
+                                  'only affect vertical direction.) [0.6]',
+                            metavar='')
+
         # set version
         parser.add_argument('--version',
                             action='version',
                             version='%(prog)s {}'.format(__version__))
 
         return parser
-
-    def read_config(self):
-        config = configparser.ConfigParser()
-        path_to_mutmap = os.path.realpath(__file__)
-        mutmap_dir = os.path.dirname(path_to_mutmap)
-        config.read('{}/../config/config.ini'.format(mutmap_dir))
-        return config
 
     def check_max_threads(self, args):
         max_cpu = multi.cpu_count()

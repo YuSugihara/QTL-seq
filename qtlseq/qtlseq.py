@@ -4,7 +4,7 @@ from qtlseq.params import Params
 
 
 pm = Params('qtlseq')
-args, config = pm.set_options()
+args = pm.set_options()
 
 
 import os
@@ -22,11 +22,10 @@ from qtlseq.vcf2index import Vcf2Index
 
 class QTLseq(object):
 
-    def __init__(self, args, config):
+    def __init__(self, args):
         args = pm.check_max_threads(args)
         self.N_fastq = pm.check_args(args)
         self.args = args
-        self.config = config
         self.out = args.out
         self.parent_fastq, self.parent_bam = self.get_files(args.parent)
         self.bulk1_fastq, self.bulk1_bam = self.get_files(args.bulk1)
@@ -100,7 +99,7 @@ class QTLseq(object):
               flush=True)
 
     def trimming(self):
-        tm = Trim(args, config)
+        tm = Trim(args)
         for i, fastq in enumerate(self.parent_fastq):
             fastq1 = fastq.split(',')[0]
             fastq2 = fastq.split(',')[1]
@@ -120,7 +119,7 @@ class QTLseq(object):
             tm.run(fastq1, fastq2, index)
 
     def alignment(self):
-        aln = Alignment(args, config)
+        aln = Alignment(args)
         for i, fastq in enumerate(self.parent_fastq):
             fastq1 = fastq.split(',')[0]
             fastq2 = fastq.split(',')[1]
@@ -140,12 +139,12 @@ class QTLseq(object):
             aln.run(fastq1, fastq2, index)
 
     def bamfilt(self):
-        bt = BamFilt(self.args, self.config)
+        bt = BamFilt(self.args)
         bt.run()
 
     def mpileup(self):
         os.mkdir('{}/30_vcf'.format(self.out))
-        mp = Mpileup(self.args, self.config)
+        mp = Mpileup(self.args)
         mp.run()
 
     def qtlplot(self):
@@ -191,7 +190,7 @@ class QTLseq(object):
 
 def main():
     print(time_stamp(), 'start to run QTL-seq.', flush=True)
-    QTLseq(args, config).run()
+    QTLseq(args).run()
     print(time_stamp(), 'QTL-seq successfully finished.', flush=True)
 
 if __name__ == '__main__':

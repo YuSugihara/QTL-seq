@@ -11,10 +11,9 @@ from qtlseq.vcf2index import Vcf2Index
 
 class Mpileup(object):
 
-    def __init__(self, args, config):
+    def __init__(self, args):
         self.out = args.out
         self.args = args
-        self.config = config
 
     def get_bams(self, label):
         bams = glob.glob('{}/20_bam/{}*.filt.bam'.format(self.out, label))
@@ -37,7 +36,7 @@ class Mpileup(object):
                                   -@ {1} \
                                   -o {2}/20_bam/{3}.filt.bam \
                                   {2}/20_bam/{3}.unsorted.filt.bam \
-                                  &>> {2}/log/samtools.log'.format(self.config['samtools']['sort_memory'],
+                                  &>> {2}/log/samtools.log'.format(self.args.mem,
                                                                    self.args.threads,
                                                                    self.out,
                                                                    label)
@@ -96,9 +95,9 @@ class Mpileup(object):
                               -f GQ,GP \
                               -O u | \
                 bcftools view -i "INFO/MQ>={0}" \
-                              -O v'.format(self.config['bcftools']['min_MQ'],
-                                           self.config['bcftools']['min_BQ'],
-                                           self.config['bcftools']['adjust_MQ'],
+                              -O v'.format(self.args.min_MQ,
+                                           self.args.min_BQ,
+                                           self.args.adjust_MQ,
                                            chr_name,
                                            self.args.ref,
                                            self.out)

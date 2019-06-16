@@ -9,10 +9,9 @@ from qtlseq.utils import time_stamp
 
 class BamFilt(object):
 
-    def __init__(self, args, config):
+    def __init__(self, args):
         self.out = args.out
         self.args = args
-        self.config = config
 
     def get_labels(self):
         samples = glob.glob('{}/20_bam/*.bam'.format(self.out))

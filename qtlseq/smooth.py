@@ -4,7 +4,7 @@ import pandas as pd
 
 class Smooth(object):
 
-    def __init__(self, args, config):
+    def __init__(self, args):
         self.out = args.out
         self.snpEff = args.snpEff
         self.window_size = args.window*1000
