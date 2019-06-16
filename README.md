@@ -96,7 +96,7 @@ optional arguments:
                     below one, then QTL-seq will use the threads
                     as many as possible. [2]
   -T, --trim        Trim fastq by trimmomatic.
-  -e , --snpEff     Predicte causal variant by SnpEff. Please check
+  -e , --snpEff     Predict causal variant by SnpEff. Please check
                     available databases in SnpEff.
   -v, --version     show program's version number and exit
 ```
@@ -238,7 +238,7 @@ optional arguments:
                         cutoff when ADR (or ADF) is 0, that SNP will be
                         filtered out. If you want to supress this filtering,
                         please set this cutoff to 0. [7]
-  -e , --snpEff         Predicte causal variant by SnpEff. Please check
+  -e , --snpEff         Predict causal variant by SnpEff. Please check
                         available databases in SnpEff.
   --igv                 Output IGV format file to check results on IGV.
   --indel               Plot SNP-index with INDEL.

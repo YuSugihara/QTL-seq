@@ -130,7 +130,7 @@ class Params(object):
                             '--snpEff',
                             action='store',
                             type=str,
-                            help=('Predicte causal variant by SnpEff. Please check\n'
+                            help=('Predict causal variant by SnpEff. Please check\n'
                                   'available databases in SnpEff.'),
                             metavar='')
 
@@ -258,7 +258,7 @@ class Params(object):
                             '--snpEff',
                             action='store',
                             type=str,
-                            help=('Predicte causal variant by SnpEff. Please check\n'
+                            help=('Predict causal variant by SnpEff. Please check\n'
                                   'available databases in SnpEff.'),
                             metavar='')
 
