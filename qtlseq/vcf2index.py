@@ -13,7 +13,7 @@ from qtlseq.utils import time_stamp
 
 class Vcf2Index(object):
 
-    def __init__(self, args, config):
+    def __init__(self, args):
         self.out = args.out
         self.vcf = args.vcf
         self.snpEff = args.snpEff
@@ -23,7 +23,6 @@ class Vcf2Index(object):
         self.min_SNPindex = args.min_SNPindex
         self.snp_index = '{}/snp_index.tsv'.format(self.out)
         self.args = args
-        self.config = config
         if self.snpEff is not None:
             self.ANN_re = re.compile(';ANN=(.*);*')
 
@@ -102,33 +101,33 @@ class Vcf2Index(object):
             bulk1_Fn_GT = np.ones(self.N_bulk1)
             bulk2_Fn_GT = np.ones(self.N_bulk2)
             for _ in range(self.args.filial - 1):
-                bulk1_random_gt = np.random.choice([0, 1, 1, 2], 
-                                                   bulk1_Fn_GT.shape, 
+                bulk1_random_gt = np.random.choice([0, 1, 1, 2],
+                                                   bulk1_Fn_GT.shape,
                                                    replace=True)
 
-                bulk2_random_gt = np.random.choice([0, 1, 1, 2], 
-                                                   bulk2_Fn_GT.shape, 
+                bulk2_random_gt = np.random.choice([0, 1, 1, 2],
+                                                   bulk2_Fn_GT.shape,
                                                    replace=True)
-    
-                bulk1_Fn_GT = np.where(bulk1_Fn_GT==1, 
-                                       bulk1_random_gt, 
+
+                bulk1_Fn_GT = np.where(bulk1_Fn_GT==1,
+                                       bulk1_random_gt,
                                        bulk1_Fn_GT)
 
-                bulk2_Fn_GT = np.where(bulk2_Fn_GT==1, 
-                                       bulk2_random_gt, 
+                bulk2_Fn_GT = np.where(bulk2_Fn_GT==1,
+                                       bulk2_random_gt,
                                        bulk2_Fn_GT)
 
             bulk1_freq = sum(bulk1_Fn_GT)/(2*self.N_bulk1)
             bulk2_freq = sum(bulk2_Fn_GT)/(2*self.N_bulk2)
-    
-            bulk1_AD = np.random.choice([0, 1], 
-                                        depth1, 
-                                        p=[1 - bulk1_freq, bulk1_freq], 
+
+            bulk1_AD = np.random.choice([0, 1],
+                                        depth1,
+                                        p=[1 - bulk1_freq, bulk1_freq],
                                         replace=True)
-    
-            bulk2_AD = np.random.choice([0, 1], 
-                                        depth2, 
-                                        p=[1 - bulk2_freq, bulk2_freq], 
+
+            bulk2_AD = np.random.choice([0, 1],
+                                        depth2,
+                                        p=[1 - bulk2_freq, bulk2_freq],
                                         replace=True)
 
             bulk1_SNPindex = bulk1_AD.sum()/depth1
@@ -182,7 +181,7 @@ class Vcf2Index(object):
                 record = sf.filt(parent_GT, parent_AD, bulk1_AD, bulk2_AD, ADFR)
                 if record['type'] == 'keep':
                     variant = self.check_variant_type(REF, ALT)
-                    depth1, depth2 = self.check_depth(record['bulk1_depth'], 
+                    depth1, depth2 = self.check_depth(record['bulk1_depth'],
                                                       record['bulk2_depth'])
                     p99, p95 = self.Fn_simulation(depth1, depth2)
                     if self.snpEff is None:
@@ -222,6 +221,6 @@ class Vcf2Index(object):
         print(time_stamp(), 'SNP-index successfully finished.', flush=True)
 
         print(time_stamp(), 'start to smooth SNP-index.', flush=True)
-        sm = Smooth(self.args, self.config)
+        sm = Smooth(self.args)
         sm.run()
         print(time_stamp(), 'smoothing process successfully finished.', flush=True)
