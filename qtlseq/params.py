@@ -332,7 +332,7 @@ class Params(object):
                             default=0.6,
                             type=float,
                             help=('White space between figures. (This option\n'
-                                  'only affect vertical direction.) [0.6]',
+                                  'only affect vertical direction.) [0.6]'),
                             metavar='')
 
         # set version

@@ -1,5 +1,5 @@
 # QTL-seq User Guide
-#### version 2.0.0
+#### version 2.0.1
 
 ## Table of contents
 - [What is QTL-seq?](#What-is-QTL-seq)

@@ -22,7 +22,7 @@ class Trim(object):
         trim_params['TRAILING'] = params_list[3]
         trim_params['SLIDINGWINDOW'] = params_list[4]
         trim_params['MINLEN'] = params_list[5]
-    return trim_params
+        return trim_params
 
     def run(self, fastq1, fastq2, index):
         print(time_stamp(),
