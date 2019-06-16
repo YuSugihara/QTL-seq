@@ -12,9 +12,9 @@ class Plot(object):
         self.args = args
         self.out = args.out
         self.snpEff = args.snpEff
-        self.fig_width = args.fig_width)
-        self.fig_height = args.fig_height)
-        self.white_space = args.white_space)
+        self.fig_width = args.fig_width
+        self.fig_height = args.fig_height
+        self.white_space = args.white_space
         self.plot_with_indel = args.indel
         self.snp_index, self.sliding_window = self.read_files()
         N_chr = len(self.sliding_window['CHROM'].unique())
