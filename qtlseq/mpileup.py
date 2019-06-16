@@ -68,17 +68,6 @@ class Mpileup(object):
                 chr_names.append(chr_name)
         return chr_names
 
-    def write2vcf(self, result, chr_name):
-        vcf_name = '{}/30_vcf/qtlseq.{}.vcf'.format(self.out, chr_name)
-        with open(vcf_name, 'w') as vcf:
-            output = result.stdout.decode('utf-8')
-            vcf.write(output)
-
-        log_name = '{}/log/bcftools.{}.log'.format(self.out, chr_name)
-        with open(log_name, 'w') as log:
-            output = result.stderr.decode('utf-8')
-            log.write(output)
-
     def mpileup(self, chr_name):
         cmd1 = 'bcftools mpileup -a AD,ADF,ADR \
                                  -B \
@@ -95,48 +84,40 @@ class Mpileup(object):
                               -f GQ,GP \
                               -O u | \
                 bcftools view -i "INFO/MQ>={0}" \
-                              -O v'.format(self.args.min_MQ,
-                                           self.args.min_BQ,
-                                           self.args.adjust_MQ,
-                                           chr_name,
-                                           self.args.ref,
-                                           self.out)
+                              -O z \
+                              -o {5}/30_vcf/qtlseq.{3}.vcf.gz\
+                              &>> {5}/log/bcftools.{3}.log'.format(self.args.min_MQ,
+                                                                   self.args.min_BQ,
+                                                                   self.args.adjust_MQ,
+                                                                   chr_name,
+                                                                   self.args.ref,
+                                                                   self.out)
 
-        cmd2 = 'bgzip -f \
-                      {0}/30_vcf/qtlseq.{1}.vcf \
-                      &>> {0}/log/bgzip.{1}.log'.format(self.out, chr_name)
-
-        cmd3 = 'tabix -f \
+        cmd2 = 'tabix -f \
                       -p vcf \
                       {0}/30_vcf/qtlseq.{1}.vcf.gz \
                       &>> {0}/log/tabix.{1}.log'.format(self.out, chr_name)
 
         cmd1 = clean_cmd(cmd1)
         cmd2 = clean_cmd(cmd2)
-        cmd3 = clean_cmd(cmd3)
 
-        result = sbp.run(cmd1, stdout=sbp.PIPE, stderr=sbp.PIPE, shell=True, check=True)
-        self.write2vcf(result, chr_name)
-
+        sbp.run(cmd1, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd2, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-        sbp.run(cmd3, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
 
     def concat(self):
         cmd1 = 'cat {0}/log/bcftools.*.log > {0}/log/bcftools.log'.format(self.out)
-        cmd2 = 'cat {0}/log/bgzip.*.log > {0}/log/bgzip.log'.format(self.out)
-        cmd3 = 'cat {0}/log/tabix.*.log > {0}/log/tabix.log'.format(self.out)
+        cmd2 = 'cat {0}/log/tabix.*.log > {0}/log/tabix.log'.format(self.out)
 
-        cmd4 = 'bcftools concat -a \
+        cmd3 = 'bcftools concat -a \
                                 -O z \
                                 -o {0}/30_vcf/qtlseq.vcf.gz \
                                 {0}/30_vcf/qtlseq.*.vcf.gz \
                                 &>> {0}/log/bcftools.log'.format(self.out)
 
-        cmd5 = 'rm -f {}/30_vcf/qtlseq.*.vcf.gz'.format(self.out)
-        cmd6 = 'rm -f {}/30_vcf/qtlseq.*.vcf.gz.tbi'.format(self.out)
-        cmd7 = 'rm -f {}/log/bcftools.*.log'.format(self.out)
-        cmd8 = 'rm -f {}/log/bgzip.*.log'.format(self.out)
-        cmd9 = 'rm -f {}/log/tabix.*.log'.format(self.out)
+        cmd4 = 'rm -f {}/30_vcf/qtlseq.*.vcf.gz'.format(self.out)
+        cmd5 = 'rm -f {}/30_vcf/qtlseq.*.vcf.gz.tbi'.format(self.out)
+        cmd6 = 'rm -f {}/log/bcftools.*.log'.format(self.out)
+        cmd7 = 'rm -f {}/log/tabix.*.log'.format(self.out)
 
         cmd1 = clean_cmd(cmd1)
         cmd2 = clean_cmd(cmd2)
@@ -145,8 +126,6 @@ class Mpileup(object):
         cmd5 = clean_cmd(cmd5)
         cmd6 = clean_cmd(cmd6)
         cmd7 = clean_cmd(cmd7)
-        cmd8 = clean_cmd(cmd8)
-        cmd9 = clean_cmd(cmd9)
 
         sbp.run(cmd1, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd2, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
@@ -155,8 +134,6 @@ class Mpileup(object):
         sbp.run(cmd5, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd6, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd7, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-        sbp.run(cmd8, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-        sbp.run(cmd9, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
 
     def mkindex(self):
         cmd = 'tabix -f \
