@@ -131,8 +131,8 @@ class Params(object):
                             help=('Parameters for trimmomatic. Input parameters\n'
                                   'must be separated by comma with following\n'
                                   'order: phred,ILLUMINACLIP,LEADING,TRAILING,\n'
-                                  'SLIDINGWINDOW,MINLEN. [33,TruSeq3-PE.fa:2:30:10\n'
-                                  '20,20,4:15,75]'),
+                                  'SLIDINGWINDOW,MINLEN.\n'
+                                  '[33,TruSeq3-PE.fa:2:30:10,20,20,4:15,75]'),
                             metavar='')
 
         parser.add_argument('-e',
