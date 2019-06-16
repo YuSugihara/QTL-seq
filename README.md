@@ -65,40 +65,52 @@ $ trimmomatic --help
 
 ## Usage
 ```
-$ usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
-                -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
-                [-F <INT>] [-T] [-e <DATABASE>]
+$  qtlseq -h
 
-QTL-seq version 2.0.0
+usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
+              -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
+              [-F <INT>] [-T] [-e <DATABASE>]
+
+QTL-seq version 2.0.1
 
 optional arguments:
-  -h, --help        show this help message and exit
-  -r , --ref        Reference fasta.
-  -p , --parent     fastq or bam of parent. If you specify
-                    fastq, please separate pairs by commma,
-                    e.g. -p fastq1,fastq2. You can use this
-                    optiion multiple times
-  -b1 , --bulk1     fastq or bam of bulk 1. If you specify
-                    fastq, please separate pairs by commma,
-                    e.g. -b1 fastq1,fastq2. You can use this
-                    optiion multiple times
-  -b2 , --bulk2     fastq or bam of bulk 2. If you specify
-                    fastq, please separate pairs by commma,
-                    e.g. -b2 fastq1,fastq2. You can use this
-                    optiion multiple times
-  -n1 , --N-bulk1   Number of individuals in bulk 1.
-  -n2 , --N-bulk2   Number of individuals in bulk 2.
-  -o , --out        Output directory. Specified name must not
-                    exist.
-  -F , --filial     Filial generation. This parameter must be
-                    more than 1. [2]
-  -t , --threads    Number of threads. If you specify the number
-                    below one, then QTL-seq will use the threads
-                    as many as possible. [2]
-  -T, --trim        Trim fastq by trimmomatic.
-  -e , --snpEff     Predict causal variant by SnpEff. Please check
-                    available databases in SnpEff.
-  -v, --version     show program's version number and exit
+  -h, --help         show this help message and exit
+  -r , --ref         Reference fasta.
+  -p , --parent      fastq or bam of parent. If you specify
+                     fastq, please separate pairs by commma,
+                     e.g. -p fastq1,fastq2. You can use this
+                     optiion multiple times
+  -b1 , --bulk1      fastq or bam of bulk 1. If you specify
+                     fastq, please separate pairs by commma,
+                     e.g. -b1 fastq1,fastq2. You can use this
+                     optiion multiple times
+  -b2 , --bulk2      fastq or bam of bulk 2. If you specify
+                     fastq, please separate pairs by commma,
+                     e.g. -b2 fastq1,fastq2. You can use this
+                     optiion multiple times
+  -n1 , --N-bulk1    Number of individuals in bulk 1.
+  -n2 , --N-bulk2    Number of individuals in bulk 2.
+  -o , --out         Output directory. Specified name must not
+                     exist.
+  -F , --filial      Filial generation. This parameter must be
+                     more than 1. [2]
+  -t , --threads     Number of threads. If you specify the number
+                     below one, then QTL-seq will use the threads
+                     as many as possible. [2]
+  -T, --trim         Trim fastq by trimmomatic.
+  --trim-params      Parameters for trimmomatic. Input parameters
+                     must be separated by comma with following
+                     order: phred,ILLUMINACLIP,LEADING,TRAILING,
+                     SLIDINGWINDOW,MINLEN.
+                     [33,TruSeq3-PE.fa:2:30:10,20,20,4:15,75]
+  -e , --snpEff      Predict causal variant by SnpEff. Please check
+                     available databases in SnpEff.
+  --mem              Memory size when bam sorted. [1G]
+  -q , --min-MQ      Minimum mapping quality in mpileup. [40]
+  -Q , --min-BQ      Minimum base quality in mpileup. [18]
+  -C , --adjust-MQ   "adjust-MQ" in mpileup. Default parameter
+                     is suited for BWA. [50]
+  -v, --version      show program's version number and exit
 ```
 
 QTL-seq can run from FASTQ (without or with trimming) and BAM. If you want to run QTL-seq from VCF, please use QTL-plot (example 5). Once you run QTL-seq, QTL-seq automatically complete the subprocesses.
@@ -215,34 +227,38 @@ usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
                [--igv] [--indel]
 
-QTL-plot version 2.0.0
+QTL-plot version 2.0.1
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -v , --vcf            VCF which contains parent, bulk1 and bulk2
-                        in this order.
-  -n1 , --N-bulk1       Number of individuals in bulk 1.
-  -n2 , --N-bulk2       Number of individuals in bulk 2.
-  -o , --out            Output directory. Specified name can exist.
-  -F , --filial         Filial generation. This parameter must be
-                        more than 1. [2]
-  -w , --window         Window size (kb). [2000]
-  -s , --step           Step size (kb). [100]
-  -D , --max-depth      Maximum depth of variants which will be used. [250]
-  -d , --min-depth      Minimum depth of variants which will be used. [8]
-  -N , --N-rep          Number of replicates for simulation to make
-                        null distribution. [10000]
-  -m , --min-SNPindex   Cutoff of minimum SNP-index for clear results. [0.3]
-  -S , --strand-bias    Filter spurious homo genotypes in parent using
-                        strand bias. If ADF (or ADR) is higher than this
-                        cutoff when ADR (or ADF) is 0, that SNP will be
-                        filtered out. If you want to supress this filtering,
-                        please set this cutoff to 0. [7]
-  -e , --snpEff         Predict causal variant by SnpEff. Please check
-                        available databases in SnpEff.
-  --igv                 Output IGV format file to check results on IGV.
-  --indel               Plot SNP-index with INDEL.
-  --version             show program's version number and exit
+ -h, --help            show this help message and exit
+ -v , --vcf            VCF which contains parent, bulk1 and bulk2
+                       in this order.
+ -n1 , --N-bulk1       Number of individuals in bulk 1.
+ -n2 , --N-bulk2       Number of individuals in bulk 2.
+ -o , --out            Output directory. Specified name can exist.
+ -F , --filial         Filial generation. This parameter must be
+                       more than 1. [2]
+ -w , --window         Window size (kb). [2000]
+ -s , --step           Step size (kb). [100]
+ -D , --max-depth      Maximum depth of variants which will be used. [250]
+ -d , --min-depth      Minimum depth of variants which will be used. [8]
+ -N , --N-rep          Number of replicates for simulation to make
+                       null distribution. [10000]
+ -m , --min-SNPindex   Cutoff of minimum SNP-index for clear results. [0.3]
+ -S , --strand-bias    Filter spurious homo genotypes in cultivar using
+                       strand bias. If ADF (or ADR) is higher than this
+                       cutoff when ADR (or ADF) is 0, that SNP will be
+                       filtered out. If you want to supress this filtering,
+                       please set this cutoff to 0. [7]
+ -e , --snpEff         Predict causal variant by SnpEff. Please check
+                       available databases in SnpEff.
+ --igv                 Output IGV format file to check results on IGV.
+ --indel               Plot SNP-index with INDEL.
+ --fig-width           Width allocated in chromosome figure. [7.5]
+ --fig-height          Height allocated in chromosome figure. [4.0]
+ --white-space         White space between figures. (This option
+                       only affect vertical direction.) [0.6]
+ --version             show program's version number and exit
 ```
 QTL-plot is included in QTL-seq. QTL-seq run QTL-plot after making VCF. Then, QTL-plot will work with default parameters. If you want to change some parameters, you can use VCF inside of `(OUT_DIR/30_vcf/QTL-seq.vcf.gz)` to retry plotting process like below.
 
