@@ -4,9 +4,8 @@ import os
 import glob
 import subprocess as sbp
 from multiprocessing import Pool
-from qtlseq.utils import time_stamp
-from qtlseq.utils import clean_cmd
 from qtlseq.vcf2index import Vcf2Index
+from qtlseq.utils import time_stamp, clean_cmd, call_log
 
 
 class Mpileup(object):
@@ -29,21 +28,23 @@ class Mpileup(object):
                                                                         label)
             else:
                 cmd1 = 'samtools merge -f {0}/20_bam/{1}.unsorted.filt.bam \
-                                          {0}/20_bam/{1}*.filt.bam'.format(self.out,
-                                                                           label)
+                                          {0}/20_bam/{1}*.filt.bam \
+                                          >> {0}/log/samtools.log \
+                                          2>&1'.format(self.out, label)
 
             cmd2 = 'samtools sort -m {0} \
                                   -@ {1} \
                                   -o {2}/20_bam/{3}.filt.bam \
                                   {2}/20_bam/{3}.unsorted.filt.bam \
-                                  &>> {2}/log/samtools.log'.format(self.args.mem,
-                                                                   self.args.threads,
-                                                                   self.out,
-                                                                   label)
+                                  >> {2}/log/samtools.log \
+                                  2>&1'.format(self.args.mem,
+                                               self.args.threads,
+                                               self.out,
+                                               label)
 
             cmd3 = 'samtools index {0}/20_bam/{1}.filt.bam \
-                                   &>> {0}/log/samtools.log'.format(self.out,
-                                                                    label)
+                                   >> {0}/log/samtools.log \
+                                   2>&1'.format(self.out, label)
 
             cmd4 = 'rm -f {}/20_bam/{}.*.filt.bam'.format(self.out, label)
 
@@ -52,10 +53,41 @@ class Mpileup(object):
             cmd3 = clean_cmd(cmd3)
             cmd4 = clean_cmd(cmd4)
 
-            sbp.run(cmd1, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-            sbp.run(cmd2, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-            sbp.run(cmd3, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-            sbp.run(cmd4, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
+            try:
+                sbp.run(cmd1, 
+                        stdout=sbp.DEVNULL, 
+                        stderr=sbp.DEVNULL, 
+                        shell=True, 
+                        check=True)
+            except sbp.CalledProcessError:
+                call_log(self.out, 'samtools', cmd1)
+                sys.exit()
+
+            try:
+                sbp.run(cmd2, 
+                        stdout=sbp.DEVNULL, 
+                        stderr=sbp.DEVNULL, 
+                        shell=True, 
+                        check=True)
+            except sbp.CalledProcessError:
+                call_log(self.out, 'samtools', cmd2)
+                sys.exit()
+
+            try:
+                sbp.run(cmd3, 
+                        stdout=sbp.DEVNULL, 
+                        stderr=sbp.DEVNULL, 
+                        shell=True, 
+                        check=True)
+            except sbp.CalledProcessError:
+                call_log(self.out, 'samtools', cmd3)
+                sys.exit()
+
+            sbp.run(cmd4, 
+                    stdout=sbp.DEVNULL, 
+                    stderr=sbp.DEVNULL, 
+                    shell=True, 
+                    check=True)
 
     def get_header(self):
         ref = open(self.args.ref, 'r')
@@ -86,23 +118,42 @@ class Mpileup(object):
                 bcftools filter -i "INFO/MQ>={0}" \
                                 -O z \
                                 -o {5}/30_vcf/qtlseq.{3}.vcf.gz \
-                                &>> {5}/log/bcftools.{3}.log'.format(self.args.min_MQ,
-                                                                     self.args.min_BQ,
-                                                                     self.args.adjust_MQ,
-                                                                     chr_name,
-                                                                     self.args.ref,
-                                                                     self.out)
+                                >> {5}/log/bcftools.{3}.log \
+                                2>&1'.format(self.args.min_MQ,
+                                             self.args.min_BQ,
+                                             self.args.adjust_MQ,
+                                             chr_name,
+                                             self.args.ref,
+                                             self.out)
 
         cmd2 = 'tabix -f \
                       -p vcf \
                       {0}/30_vcf/qtlseq.{1}.vcf.gz \
-                      &>> {0}/log/tabix.{1}.log'.format(self.out, chr_name)
+                      >> {0}/log/tabix.{1}.log \
+                      2>&1'.format(self.out, chr_name)
 
         cmd1 = clean_cmd(cmd1)
         cmd2 = clean_cmd(cmd2)
 
-        sbp.run(cmd1, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-        sbp.run(cmd2, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
+        try:
+            sbp.run(cmd1, 
+                    stdout=sbp.DEVNULL, 
+                    stderr=sbp.DEVNULL, 
+                    shell=True, 
+                    check=True)
+        except sbp.CalledProcessError:
+            call_log(self.out, 'bcftools', cmd1)
+            sys.exit()
+
+        try:
+            sbp.run(cmd2, 
+                    stdout=sbp.DEVNULL, 
+                    stderr=sbp.DEVNULL, 
+                    shell=True, 
+                    check=True)
+        except sbp.CalledProcessError:
+            call_log(self.out, 'tabix', cmd2)
+            sys.exit()
 
     def concat(self):
         cmd1 = 'cat {0}/log/bcftools.*.log > {0}/log/bcftools.log'.format(self.out)
@@ -112,7 +163,8 @@ class Mpileup(object):
                                 -O z \
                                 -o {0}/30_vcf/qtlseq.vcf.gz \
                                 {0}/30_vcf/qtlseq.*.vcf.gz \
-                                &>> {0}/log/bcftools.log'.format(self.out)
+                                >> {0}/log/bcftools.log \
+                                2>&1'.format(self.out)
 
         cmd4 = 'rm -f {}/30_vcf/qtlseq.*.vcf.gz'.format(self.out)
         cmd5 = 'rm -f {}/30_vcf/qtlseq.*.vcf.gz.tbi'.format(self.out)
@@ -129,7 +181,17 @@ class Mpileup(object):
 
         sbp.run(cmd1, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd2, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-        sbp.run(cmd3, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
+
+        try:
+            sbp.run(cmd3, 
+                    stdout=sbp.DEVNULL, 
+                    stderr=sbp.DEVNULL, 
+                    shell=True, 
+                    check=True)
+        except sbp.CalledProcessError:
+            call_log(self.out, 'bcftools', cmd3)
+            sys.exit()
+
         sbp.run(cmd4, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd5, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd6, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
@@ -139,10 +201,20 @@ class Mpileup(object):
         cmd = 'tabix -f \
                      -p vcf \
                      {0}/30_vcf/qtlseq.vcf.gz \
-                     &>> {0}/log/tabix.log'.format(self.out)
+                     >> {0}/log/tabix.log \
+                     2>&1'.format(self.out)
 
         cmd = clean_cmd(cmd)
-        sbp.run(cmd, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
+
+        try:
+            sbp.run(cmd, 
+                    stdout=sbp.DEVNULL, 
+                    stderr=sbp.DEVNULL, 
+                    shell=True, 
+                    check=True)
+        except sbp.CalledProcessError:
+            call_log(self.out, 'tabix', cmd)
+            sys.exit()
 
     def run(self):
         print(time_stamp(), 'start to merge BAMs.', flush=True)

@@ -1,7 +1,6 @@
 
 import subprocess as sbp
-from qtlseq.utils import time_stamp
-from qtlseq.utils import clean_cmd
+from qtlseq.utils import time_stamp, clean_cmd, call_log
 
 
 class Alignment(object):
@@ -16,22 +15,27 @@ class Alignment(object):
               flush=True)
 
         cmd = 'bwa mem -t {0} {1} {2} {3} | \
-                samtools view -b \
-                              -o {4}/20_bam/{5}.bam \
-                              &>> {4}/log/bwa.log'.format(self.args.threads,
-                                                          self.args.ref,
-                                                          fastq1,
-                                                          fastq2,
-                                                          self.out,
-                                                          index)
+               samtools view -b \
+                             -o {4}/20_bam/{5}.bam \
+                             >> {4}/log/bwa.log \
+                             2>&1'.format(self.args.threads,
+                                          self.args.ref,
+                                          fastq1,
+                                          fastq2,
+                                          self.out,
+                                          index)
 
         cmd = clean_cmd(cmd)
 
-        sbp.run(cmd,
-                stdout=sbp.DEVNULL,
-                stderr=sbp.DEVNULL,
-                shell=True,
-                check=True)
+        try:
+            sbp.run(cmd,
+                    stdout=sbp.DEVNULL,
+                    stderr=sbp.DEVNULL,
+                    shell=True,
+                    check=True)
+        except sbp.CalledProcessError:
+            call_log(self.out, 'bwa', cmd)
+            sys.exit()
 
         print(time_stamp(),
               'alignment {} successfully finished.'.format(index),

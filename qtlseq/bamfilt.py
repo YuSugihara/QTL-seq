@@ -3,8 +3,7 @@ import os
 import glob
 import subprocess as sbp
 from multiprocessing import Pool
-from qtlseq.utils import clean_cmd
-from qtlseq.utils import time_stamp
+from qtlseq.utils import time_stamp, clean_cmd, call_log
 
 
 class BamFilt(object):
@@ -32,11 +31,22 @@ class BamFilt(object):
                              -f {0} \
                              -o {1}/20_bam/{2}.f{0}.bam \
                              {1}/20_bam/{2}.bam \
-                             &>> {1}/log/samtools.{2}.f{0}.log'.format(flag,
-                                                                       self.out,
-                                                                       label)
+                             >> {1}/log/samtools.{2}.f{0}.log \
+                             2>&1'.format(flag,
+                                          self.out,
+                                          label)
+
         cmd = clean_cmd(cmd)
-        sbp.run(cmd, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
+
+        try:
+            sbp.run(cmd, 
+                    stdout=sbp.DEVNULL, 
+                    stderr=sbp.DEVNULL, 
+                    shell=True, 
+                    check=True)
+        except sbp.CalledProcessError:
+            call_log(self.out, 'samtools', cmd)
+            sys.exit()
 
     def merge(self, label):
         cmd1 = 'cat {0}/log/samtools.{1}.f83.log \
@@ -47,12 +57,14 @@ class BamFilt(object):
 
         cmd2 = 'rm -f {0}/20_bam/{1}.bam'.format(self.out, label)
         cmd3 = 'rm -f {0}/log/samtools.{1}.f*.log'.format(self.out, label)
+
         cmd4 = 'samtools merge -f {0}/20_bam/{1}.filt.bam \
                                   {0}/20_bam/{1}.f83.bam \
                                   {0}/20_bam/{1}.f99.bam \
                                   {0}/20_bam/{1}.f147.bam \
                                   {0}/20_bam/{1}.f163.bam \
-                                  &>> {0}/log/samtools.{1}.log'.format(self.out, label)
+                                  >> {0}/log/samtools.{1}.log \
+                                  2>&1'.format(self.out, label)
 
         cmd5 = 'rm -f {}/20_bam/{}.f83.bam'.format(self.out, label)
         cmd6 = 'rm -f {}/20_bam/{}.f99.bam'.format(self.out, label)
@@ -71,7 +83,17 @@ class BamFilt(object):
         sbp.run(cmd1, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd2, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd3, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-        sbp.run(cmd4, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
+
+        try:
+            sbp.run(cmd4, 
+                    stdout=sbp.DEVNULL, 
+                    stderr=sbp.DEVNULL, 
+                    shell=True, 
+                    check=True)
+        except sbp.CalledProcessError:
+            call_log(self.out, 'samtools', cmd4)
+            sys.exit()
+
         sbp.run(cmd5, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd6, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd7, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)

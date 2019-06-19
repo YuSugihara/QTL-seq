@@ -12,8 +12,7 @@ import pandas as pd
 import subprocess as sbp
 from qtlseq.vcf2index import Vcf2Index
 from qtlseq.plot import Plot
-from qtlseq.utils import time_stamp
-from qtlseq.utils import clean_cmd
+from qtlseq.utils import time_stamp, clean_cmd
 
 
 class QTLplot(object):

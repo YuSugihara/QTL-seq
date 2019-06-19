@@ -1,5 +1,5 @@
 # QTL-seq User Guide
-#### version 2.0.1
+#### version 2.0.2
 
 ## Table of contents
 - [What is QTL-seq?](#What-is-QTL-seq)
@@ -97,13 +97,13 @@ optional arguments:
   -t , --threads     Number of threads. If you specify the number
                      below one, then QTL-seq will use the threads
                      as many as possible. [2]
-  -T, --trim         Trim fastq by trimmomatic.
+  -T, --trim         Trim fastq using trimmomatic.
   --trim-params      Parameters for trimmomatic. Input parameters
                      must be separated by comma with following
                      order: phred,ILLUMINACLIP,LEADING,TRAILING,
                      SLIDINGWINDOW,MINLEN.
                      [33,TruSeq3-PE.fa:2:30:10,20,20,4:15,75]
-  -e , --snpEff      Predict causal variant by SnpEff. Please check
+  -e , --snpEff      Predict causal variant using SnpEff. Please check
                      available databases in SnpEff.
   --mem              Memory size when bam sorted. [1G]
   -q , --min-MQ      Minimum mapping quality in mpileup. [40]
@@ -174,7 +174,7 @@ $ qtlseq -r reference.fasta \
 
 `-o` : name of output directory. Specified name cannot exist.
 
-`-T` : trim your reads by triimomatic.
+`-T` : trim your reads using triimomatic.
 
 ### Example 3 : run QTL-seq from BAM
 ```
@@ -250,7 +250,7 @@ optional arguments:
                        cutoff when ADR (or ADF) is 0, that SNP will be
                        filtered out. If you want to supress this filtering,
                        please set this cutoff to 0. [7]
- -e , --snpEff         Predict causal variant by SnpEff. Please check
+ -e , --snpEff         Predict causal variant using SnpEff. Please check
                        available databases in SnpEff.
  --igv                 Output IGV format file to check results on IGV.
  --indel               Plot SNP-index with INDEL.

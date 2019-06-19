@@ -11,13 +11,13 @@ import os
 import sys
 import glob
 import subprocess as sbp
-from qtlseq.utils import time_stamp
-from qtlseq.utils import clean_cmd
+from qtlseq.refindex import RefIndex
 from qtlseq.trim import Trim
 from qtlseq.alignment import Alignment
 from qtlseq.bamfilt import BamFilt
 from qtlseq.mpileup import Mpileup
 from qtlseq.vcf2index import Vcf2Index
+from qtlseq.utils import time_stamp, clean_cmd, call_log
 
 
 class QTLseq(object):
@@ -69,34 +69,9 @@ class QTLseq(object):
             os.symlink(path_to_bam,
                        '{}/20_bam/{}.bam'.format(self.out, index))
 
-    def mkindex(self):
-        print(time_stamp(),
-              'start to index reference fasta.',
-              flush=True)
-
-        cmd1 = 'bwa index {} \
-                &>> {}/log/bwa.log'.format(self.args.ref,
-                                           self.out)
-
-        cmd2 = 'samtools faidx {} \
-                &>> {}/log/samtools.log'.format(self.args.ref,
-                                                self.out)
-
-        sbp.run(cmd1,
-                stdout=sbp.DEVNULL,
-                stderr=sbp.DEVNULL,
-                shell=True,
-                check=True)
-
-        sbp.run(cmd2,
-                stdout=sbp.DEVNULL,
-                stderr=sbp.DEVNULL,
-                shell=True,
-                check=True)
-
-        print(time_stamp(),
-              'indexing of reference successfully finished.',
-              flush=True)
+    def refindex(self):
+        ri = RefIndex(args)
+        ri.run()
 
     def trimming(self):
         tm = Trim(args)
@@ -179,7 +154,7 @@ class QTLseq(object):
             print(line.rstrip().decode('utf-8'), flush=True)
 
     def run(self):
-        self.mkindex()
+        self.refindex()
         if self.args.trim:
             self.trimming()
         else:
@@ -191,7 +166,7 @@ class QTLseq(object):
 def main():
     print(time_stamp(), 'start to run QTL-seq.', flush=True)
     QTLseq(args).run()
-    print(time_stamp(), 'QTL-seq successfully finished.', flush=True)
+    print(time_stamp(), 'QTL-seq successfully finished.\n', flush=True)
 
 if __name__ == '__main__':
     main()

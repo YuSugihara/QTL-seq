@@ -9,3 +9,14 @@ def time_stamp():
 
 def clean_cmd(cmd):
     return ' '.join(cmd.split())
+
+def call_log(out_dir, name, cmd):
+    print(time_stamp(), 
+          '!!ERROR!! {}\n'.format(cmd), 
+          flush=True)
+
+    print('please check below:\n')
+
+    with open('{}/log/{}.log'.format(out_dir, name)) as log:
+        for line in log:
+            print(line, end='')

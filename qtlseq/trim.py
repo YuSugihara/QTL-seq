@@ -1,9 +1,8 @@
 
 import os
 import subprocess as sbp
-from qtlseq.utils import time_stamp
-from qtlseq.utils import clean_cmd
 from qtlseq.alignment import Alignment
+from qtlseq.utils import time_stamp, clean_cmd, call_log
 
 
 class Trim(object):
@@ -29,38 +28,64 @@ class Trim(object):
         'start trimming for {} and {}.'.format(fastq1, fastq2),
         flush=True)
 
-        trim1 = '{}/00_fastq/{}.1.trim.fastq.gz'.format(self.out,
-                                                        index)
-        trim2 = '{}/00_fastq/{}.2.trim.fastq.gz'.format(self.out,
-                                                        index)
-        unpaired1 = '{}/00_fastq/{}.1.unpaired.fastq.gz'.format(self.out,
-                                                                index)
-        unpaired2 = '{}/00_fastq/{}.2.unpaired.fastq.gz'.format(self.out,
-                                                                index)
+        trim1 = '{}/00_fastq/{}.1.trim.fastq.gz'.format(self.out, index)
+        trim2 = '{}/00_fastq/{}.2.trim.fastq.gz'.format(self.out, index)
+        unpaired1 = '{}/00_fastq/{}.1.unpaired.fastq.gz'.format(self.out, index)
+        unpaired2 = '{}/00_fastq/{}.2.unpaired.fastq.gz'.format(self.out, index)
 
-        cmd = 'trimmomatic PE -threads {} \
-                              -phred{} {} {} {} {} {} {} \
-                              ILLUMINACLIP:{} \
-                              LEADING:{} \
-                              TRAILING:{} \
-                              SLIDINGWINDOW:{} \
-                              MINLEN:{} \
-                              &>> {}/log/trimmomatic.log'.format(self.args.threads,
-                                                                 self.trim_params['phred'],
-                                                                 fastq1,
-                                                                 fastq2,
-                                                                 trim1,
-                                                                 unpaired1,
-                                                                 trim2,
-                                                                 unpaired2,
-                                                                 self.trim_params['ILLUMINACLIP'],
-                                                                 self.trim_params['LEADING'],
-                                                                 self.trim_params['TRAILING'],
-                                                                 self.trim_params['SLIDINGWINDOW'],
-                                                                 self.trim_params['MINLEN'],
-                                                                 self.out)
+        if (len(self.trim_params['ILLUMINACLIP']) == 0) or \
+           ('<ADAPTER_FASTA>' in self.trim_params['ILLUMINACLIP']):
+            cmd = 'trimmomatic PE -threads {} \
+                                  -phred{} {} {} {} {} {} {} \
+                                  LEADING:{} \
+                                  TRAILING:{} \
+                                  SLIDINGWINDOW:{} \
+                                  MINLEN:{} \
+                                  >> {}/log/trimmomatic.log \
+                                  2>&1'.format(self.args.threads,
+                                               self.trim_params['phred'],
+                                               fastq1,
+                                               fastq2,
+                                               trim1,
+                                               unpaired1,
+                                               trim2,
+                                               unpaired2,
+                                               self.trim_params['LEADING'],
+                                               self.trim_params['TRAILING'],
+                                               self.trim_params['SLIDINGWINDOW'],
+                                               self.trim_params['MINLEN'],
+                                               self.out)
+        else:
+            cmd = 'trimmomatic PE -threads {} \
+                                  -phred{} {} {} {} {} {} {} \
+                                  ILLUMINACLIP:{} \
+                                  LEADING:{} \
+                                  TRAILING:{} \
+                                  SLIDINGWINDOW:{} \
+                                  MINLEN:{} \
+                                  >> {}/log/trimmomatic.log \
+                                  2>&1'.format(self.args.threads,
+                                               self.trim_params['phred'],
+                                               fastq1,
+                                               fastq2,
+                                               trim1,
+                                               unpaired1,
+                                               trim2,
+                                               unpaired2,
+                                               self.trim_params['ILLUMINACLIP'],
+                                               self.trim_params['LEADING'],
+                                               self.trim_params['TRAILING'],
+                                               self.trim_params['SLIDINGWINDOW'],
+                                               self.trim_params['MINLEN'],
+                                               self.out)
+
         cmd = clean_cmd(cmd)
-        sbp.run(cmd, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
+
+        try:
+            sbp.run(cmd, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
+        except sbp.CalledProcessError:
+            call_log(self.out, 'trimmomatic', cmd)
+            sys.exit()
 
         print(time_stamp(),
               'trimming for {} and {} successfully finished.'.format(fastq1, fastq2),

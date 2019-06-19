@@ -122,25 +122,36 @@ class Params(object):
                             '--trim',
                             action='store_true',
                             default=False,
-                            help='Trim fastq by trimmomatic.')
+                            help='Trim fastq using trimmomatic.')
+
+        parser.add_argument('-a',
+                            '--adapter',
+                            action='store',
+                            type=str,
+                            help=('FASTA of adapter sequences. This will be used\n'
+                                  'when you specify "-T" for trimming.'),
+                            metavar='')
 
         parser.add_argument('--trim-params',
                             action='store',
-                            default='33,TruSeq3-PE.fa:2:30:10,20,20,4:15,75',
                             type=str,
                             help=('Parameters for trimmomatic. Input parameters\n'
                                   'must be separated by comma with following\n'
-                                  'order: phred,ILLUMINACLIP,LEADING,TRAILING,\n'
-                                  'SLIDINGWINDOW,MINLEN.\n'
-                                  '[33,TruSeq3-PE.fa:2:30:10,20,20,4:15,75]'),
+                                  'order: phred, ILLUMINACLIP, LEADING, TRAILING,\n'
+                                  'SLIDINGWINDOW, MINLEN. If you want to remove\n'
+                                  'adapters of illumina, please specify FASTA of\n'
+                                  'the adapter sequences with "--adapter". Specified\n'
+                                  'name will be inserted into <ADAPTER_FASTA>. If you\n'
+                                  "don't specify it, adapter trimming will be skipped.\n"
+                                  '[33,<ADAPTER_FASTA>:2:30:10,20,20,4:15,75]'),
                             metavar='')
 
         parser.add_argument('-e',
                             '--snpEff',
                             action='store',
                             type=str,
-                            help=('Predict causal variant by SnpEff. Please check\n'
-                                  'available databases in SnpEff.'),
+                            help=('Predict causal variant using SnpEff. Please\n'
+                                  'check available databases in SnpEff.'),
                             metavar='')
 
         parser.add_argument('--mem',
@@ -299,8 +310,8 @@ class Params(object):
                             '--snpEff',
                             action='store',
                             type=str,
-                            help=('Predict causal variant by SnpEff. Please check\n'
-                                  'available databases in SnpEff.'),
+                            help=('Predict causal variant using SnpEff. Please\n'
+                                  'check available databases in SnpEff.'),
                             metavar='')
 
         parser.add_argument('--igv',
@@ -345,7 +356,7 @@ class Params(object):
     def check_max_threads(self, args):
         max_cpu = multi.cpu_count()
         print(time_stamp(),
-              'max number of threads which you can use is {}.'.format(max_cpu),
+              'maximum number of threads which you can use is up to {}.'.format(max_cpu),
               flush=True)
         if max_cpu <= args.threads:
             sys.stderr.write(('!!WARNING!! You can use up to {0} threads. '
@@ -366,6 +377,23 @@ class Params(object):
         if args.filial < 2:
             sys.stderr.write('  Finial generation must be more than 1.\n')
             sys.exit()
+
+        if args.adapter is not None:
+            if not args.trim:
+                sys.stderr.write(('!!WARNING!! You specified  "--adapter", but you　'
+                                  'did not spesify "--trim".\n'
+                                  '!!WARNING!! "--trim" was added.\n'))
+                sys.stderr.flush()
+
+        if args.trim:
+            if args.trim_params is None:
+                args.trim_params = '33,<ADAPTER_FASTA>:2:30:10,20,20,4:15,75'
+        else:
+            if args.trim_params is not None:
+                sys.stderr.write(('!!WARNING!! You specified  "--trim-params", but you '
+                                  'did not spesify "--trim".\n'
+                                  '!!WARNING!! "--trim" was added.\n'))
+                sys.stderr.flush()
 
         N_fastq = 0
 
