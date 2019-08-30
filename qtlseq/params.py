@@ -118,6 +118,47 @@ class Params(object):
                                   'as many as possible. [2]'),
                             metavar='')
 
+        parser.add_argument('-w',
+                            '--window',
+                            action='store',
+                            default=2000,
+                            type=int,
+                            help='Window size (kb). [2000]',
+                            metavar='')
+
+        parser.add_argument('-s',
+                            '--step',
+                            action='store',
+                            default=100,
+                            type=int,
+                            help='Step size (kb). [100]',
+                            metavar='')
+
+        parser.add_argument('-D',
+                            '--max-depth',
+                            action='store',
+                            default=250,
+                            type=int,
+                            help='Maximum depth of variants which will be used. [250]',
+                            metavar='')
+
+        parser.add_argument('-d',
+                            '--min-depth',
+                            action='store',
+                            default=8,
+                            type=int,
+                            help='Minimum depth of variants which will be used. [8]',
+                            metavar='')
+
+        parser.add_argument('-N',
+                            '--N-rep',
+                            action='store',
+                            default=5000,
+                            type=int,
+                            help=('Number of replicates for simulation to make \n'
+                                  'null distribution. [5000]'),
+                            metavar='')
+
         parser.add_argument('-T',
                             '--trim',
                             action='store_true',

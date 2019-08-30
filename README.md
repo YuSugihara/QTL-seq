@@ -71,7 +71,7 @@ usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
               [-F <INT>] [-T] [-e <DATABASE>]
 
-QTL-seq version 2.0.3
+QTL-seq version 2.0.4
 
 optional arguments:
   -h, --help         show this help message and exit
@@ -97,6 +97,12 @@ optional arguments:
   -t , --threads     Number of threads. If you specify the number
                      below one, then QTL-seq will use the threads
                      as many as possible. [2]
+  -w , --window      Window size (kb). [2000]
+  -s , --step        Step size (kb). [100]
+  -D , --max-depth   Maximum depth of variants which will be used. [250]
+  -d , --min-depth   Minimum depth of variants which will be used. [8]
+  -N , --N-rep       Number of replicates for simulation to make 
+                     null distribution. [5000]
   -T, --trim         Trim fastq using trimmomatic.
   -a , --adapter     FASTA of adapter sequences. This will be used
                      when you specify "-T" for trimming.
@@ -235,7 +241,7 @@ usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
                [--igv] [--indel]
 
-QTL-plot version 2.0.3
+QTL-plot version 2.0.4
 
 optional arguments:
   -h, --help            show this help message and exit

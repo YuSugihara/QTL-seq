@@ -129,23 +129,43 @@ class QTLseq(object):
                            -n1 {2} \
                            -n2 {3} \
                            -t {4} \
+                           -w {5} \
+                           -s {6} \
+                           -N {7} \
+                           -D {8} \
+                           -d {9} \
                            -o {0}/40_qtlseq'.format(self.out,
                                                     self.args.filial,
                                                     self.args.N_bulk1,
                                                     self.args.N_bulk2,
-                                                    self.args.threads)
+                                                    self.args.threads,
+                                                    self.args.window,
+                                                    self.args.step,
+                                                    self.args.N_rep,
+                                                    self.args.max_depth,
+                                                    self.args.min_depth)
         else:
             cmd = 'qtlplot -v {0}/30_vcf/qtlseq.vcf.gz \
                            -F {1} \
                            -n1 {2} \
                            -n2 {3} \
                            -t {4} \
+                           -w {5} \
+                           -s {6} \
+                           -N {7} \
+                           -D {8} \
+                           -d {9} \
                            -o {0}/40_qtlseq \
-                           -e {5}'.format(self.out,
+                           -e {10}'.format(self.out,
                                           self.args.filial,
                                           self.args.N_bulk1,
                                           self.args.N_bulk2,
                                           self.args.threads,
+                                          self.args.window,
+                                          self.args.step,
+                                          self.args.N_rep,
+                                          self.args.max_depth,
+                                          self.args.min_depth,
                                           self.args.snpEff)
 
         cmd = clean_cmd(cmd)
