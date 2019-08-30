@@ -158,7 +158,8 @@ class Params(object):
                             action='store',
                             default='1G',
                             type=str,
-                            help='Memory size when bam sorted. [1G]',
+                            help=('Maximum memory per thread when bam sorted;\n'
+                                  'suffix K/M/G recognized. [1G]'),
                             metavar='')
 
         parser.add_argument('-q',

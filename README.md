@@ -1,5 +1,5 @@
 # QTL-seq User Guide
-#### version 2.0.2
+#### version 2.0.3
 
 ## Table of contents
 - [What is QTL-seq?](#What-is-QTL-seq)
@@ -65,13 +65,13 @@ $ trimmomatic --help
 
 ## Usage
 ```
-$  qtlseq -h
+$ qtlseq -h
 
 usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
               [-F <INT>] [-T] [-e <DATABASE>]
 
-QTL-seq version 2.0.1
+QTL-seq version 2.0.3
 
 optional arguments:
   -h, --help         show this help message and exit
@@ -98,14 +98,21 @@ optional arguments:
                      below one, then QTL-seq will use the threads
                      as many as possible. [2]
   -T, --trim         Trim fastq using trimmomatic.
+  -a , --adapter     FASTA of adapter sequences. This will be used
+                     when you specify "-T" for trimming.
   --trim-params      Parameters for trimmomatic. Input parameters
                      must be separated by comma with following
-                     order: phred,ILLUMINACLIP,LEADING,TRAILING,
-                     SLIDINGWINDOW,MINLEN.
-                     [33,TruSeq3-PE.fa:2:30:10,20,20,4:15,75]
-  -e , --snpEff      Predict causal variant using SnpEff. Please check
-                     available databases in SnpEff.
-  --mem              Memory size when bam sorted. [1G]
+                     order: phred, ILLUMINACLIP, LEADING, TRAILING,
+                     SLIDINGWINDOW, MINLEN. If you want to remove
+                     adapters of illumina, please specify FASTA of
+                     the adapter sequences with "--adapter". Specified
+                     name will be inserted into <ADAPTER_FASTA>. If you
+                     don't specify it, adapter trimming will be skipped.
+                     [33,<ADAPTER_FASTA>:2:30:10,20,20,4:15,75]
+  -e , --snpEff      Predict causal variant using SnpEff. Please
+                     check available databases in SnpEff.
+  --mem              Maximum memory per thread when bam sorted;
+                     suffix K/M/G recognized. [1G]
   -q , --min-MQ      Minimum mapping quality in mpileup. [40]
   -Q , --min-BQ      Minimum base quality in mpileup. [18]
   -C , --adjust-MQ   "adjust-MQ" in mpileup. Default parameter
@@ -222,43 +229,47 @@ QTL-seq can automatically merge multiple FASTQs and BAMs. Of course, you can mer
 ### Example 5 : run QTL-plot from VCF
 ```
 $ qtlplot -h
+
 usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
-               [-w <INT>] [-s <INT>] [-D <INT>] [-d <INT>]
-               [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
+               [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]
+               [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
                [--igv] [--indel]
 
-QTL-plot version 2.0.1
+QTL-plot version 2.0.3
 
 optional arguments:
- -h, --help            show this help message and exit
- -v , --vcf            VCF which contains parent, bulk1 and bulk2
-                       in this order.
- -n1 , --N-bulk1       Number of individuals in bulk 1.
- -n2 , --N-bulk2       Number of individuals in bulk 2.
- -o , --out            Output directory. Specified name can exist.
- -F , --filial         Filial generation. This parameter must be
-                       more than 1. [2]
- -w , --window         Window size (kb). [2000]
- -s , --step           Step size (kb). [100]
- -D , --max-depth      Maximum depth of variants which will be used. [250]
- -d , --min-depth      Minimum depth of variants which will be used. [8]
- -N , --N-rep          Number of replicates for simulation to make
-                       null distribution. [10000]
- -m , --min-SNPindex   Cutoff of minimum SNP-index for clear results. [0.3]
- -S , --strand-bias    Filter spurious homo genotypes in cultivar using
-                       strand bias. If ADF (or ADR) is higher than this
-                       cutoff when ADR (or ADF) is 0, that SNP will be
-                       filtered out. If you want to supress this filtering,
-                       please set this cutoff to 0. [7]
- -e , --snpEff         Predict causal variant using SnpEff. Please check
-                       available databases in SnpEff.
- --igv                 Output IGV format file to check results on IGV.
- --indel               Plot SNP-index with INDEL.
- --fig-width           Width allocated in chromosome figure. [7.5]
- --fig-height          Height allocated in chromosome figure. [4.0]
- --white-space         White space between figures. (This option
-                       only affect vertical direction.) [0.6]
- --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -v , --vcf            VCF which contains parent, bulk1 and bulk2
+                        in this order.
+  -n1 , --N-bulk1       Number of individuals in bulk 1.
+  -n2 , --N-bulk2       Number of individuals in bulk 2.
+  -o , --out            Output directory. Specified name can exist.
+  -F , --filial         Filial generation. This parameter must be
+                        more than 1. [2]
+  -t , --threads        Number of threads. If you specify the number
+                        below one, then QTL-plot will use the threads
+                        as many as possible. [2]
+  -w , --window         Window size (kb). [2000]
+  -s , --step           Step size (kb). [100]
+  -D , --max-depth      Maximum depth of variants which will be used. [250]
+  -d , --min-depth      Minimum depth of variants which will be used. [8]
+  -N , --N-rep          Number of replicates for simulation to make 
+                        null distribution. [10000]
+  -m , --min-SNPindex   Cutoff of minimum SNP-index for clear results. [0.3]
+  -S , --strand-bias    Filter spurious homo genotypes in cultivar using
+                        strand bias. If ADF (or ADR) is higher than this
+                        cutoff when ADR (or ADF) is 0, that SNP will be
+                        filtered out. If you want to supress this filtering,
+                        please set this cutoff to 0. [7]
+  -e , --snpEff         Predict causal variant using SnpEff. Please
+                        check available databases in SnpEff.
+  --igv                 Output IGV format file to check results on IGV.
+  --indel               Plot SNP-index with INDEL.
+  --fig-width           Width allocated in chromosome figure. [7.5]
+  --fig-height          Height allocated in chromosome figure. [4.0]
+  --white-space         White space between figures. (This option
+                        only affect vertical direction.) [0.6]
+  --version             show program's version number and exit
 ```
 QTL-plot is included in QTL-seq. QTL-seq run QTL-plot after making VCF. Then, QTL-plot will work with default parameters. If you want to change some parameters, you can use VCF inside of `(OUT_DIR/30_vcf/QTL-seq.vcf.gz)` to retry plotting process like below.
 
