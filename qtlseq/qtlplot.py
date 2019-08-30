@@ -18,6 +18,7 @@ from qtlseq.utils import time_stamp, clean_cmd
 class QTLplot(object):
 
     def __init__(self, args):
+        args = pm.check_max_threads(args)
         self.out = args.out
         self.vcf = args.vcf
         self.snpEff = args.snpEff

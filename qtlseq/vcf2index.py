@@ -3,6 +3,11 @@ import os
 import re
 import sys
 import gzip
+import threading
+from multiprocessing import Pool
+from multiprocessing import Manager
+lock = threading.Lock()
+cache = Manager().dict()
 import numpy as np
 import pandas as pd
 from functools import lru_cache
@@ -92,7 +97,6 @@ class Vcf2Index(object):
             depth2 = bulk1_depth
         return depth1, depth2
 
-    @lru_cache(maxsize=1024)
     def Fn_simulation(self, depth1, depth2):
         GT = [0, 1]
         replicates = []
@@ -144,80 +148,127 @@ class Vcf2Index(object):
         p95 = replicates[int(0.95*self.N_replicates) - 1]
         return p99, p95
 
-    def calc_SNPindex(self, field_pos):
+    def calculate_SNPindex_sub(self, line):
+        if re.match(r'[^#]', line):
+            cols = line.split('\t')
+            CHR = cols[0]
+            POS = cols[1]
+            REF = cols[3]
+            ALT = cols[4]
+            annotation = cols[7]
+            GT_pos = self.field_pos[0]
+            AD_pos = self.field_pos[1]
+            ADF_pos = self.field_pos[2]
+            ADR_pos = self.field_pos[3]
+
+            parent_GT = cols[9].split(':')[GT_pos]
+            parent_AD = cols[9].split(':')[AD_pos]
+            bulk1_AD = cols[10].split(':')[AD_pos]
+            bulk2_AD = cols[11].split(':')[AD_pos]
+
+            if ADF_pos != None and ADR_pos != None:
+                parent_ADF = cols[9].split(':')[ADF_pos]
+                parent_ADR = cols[9].split(':')[ADR_pos]
+                ADFR = (parent_ADF, parent_ADR)
+            else:
+                ADFR = None
+
+            record = self.sf.filt(parent_GT, parent_AD, bulk1_AD, bulk2_AD, ADFR)
+            if record['type'] == 'keep':
+                variant = self.check_variant_type(REF, ALT)
+                depth1, depth2 = self.check_depth(record['bulk1_depth'],
+                                                    record['bulk2_depth'])
+
+                if (depth1, depth2) in cache:
+                    p99, p95 = cache[(depth1, depth2)]
+                else:
+                    p99, p95 = self.Fn_simulation(depth1, depth2)
+                    cache[(depth1, depth2)] = (p99, p95)
+
+                lock.acquire()
+                snp_index = open(self.snp_index + ".temp", 'a')
+                if self.snpEff is None:
+                    snp_index.write(('{}\t{}\t{}\t{}\t{}\t{:.4f}\t{:.4f}\t'
+                                     '{:.4f}\t{:.4f}\t{:.4f}\n').format(CHR,
+                                                                        POS,
+                                                                        variant,
+                                                                        record['bulk1_depth'],
+                                                                        record['bulk2_depth'],
+                                                                        p99,
+                                                                        p95,
+                                                                        record['bulk1_SNPindex'],
+                                                                        record['bulk2_SNPindex'],
+                                                                        record['delta_SNPindex']))
+                else:
+                    impact = self.get_variant_impact(annotation)
+                    snp_index.write(('{}\t{}\t{}\t{}\t{}\t{}\t{:.4f}\t{:.4f}\t'
+                                     '{:.4f}\t{:.4f}\t{:.4f}\n').format(CHR,
+                                                                        POS,
+                                                                        variant,
+                                                                        impact,
+                                                                        record['bulk1_depth'],
+                                                                        record['bulk2_depth'],
+                                                                        p99,
+                                                                        p95,
+                                                                        record['bulk1_SNPindex'],
+                                                                        record['bulk2_SNPindex'],
+                                                                        record['delta_SNPindex']))
+                snp_index.close()
+                lock.release()
+
+    def calculate_SNPindex(self):
         root, ext = os.path.splitext(self.vcf)
         if ext == '.gz':
             vcf = gzip.open(self.vcf, 'rt')
         else:
             vcf = open(self.vcf, 'r')
-        snp_index = open(self.snp_index, 'w')
 
-        sf = SnpFilt(self.args)
-        for line in vcf:
-            if re.match(r'[^#]', line):
-                cols = line.split('\t')
-                CHR = cols[0]
-                POS = cols[1]
-                REF = cols[3]
-                ALT = cols[4]
-                annotation = cols[7]
-                GT_pos = field_pos[0]
-                AD_pos = field_pos[1]
-                ADF_pos = field_pos[2]
-                ADR_pos = field_pos[3]
+        self.sf = SnpFilt(self.args)
 
-                parent_GT = cols[9].split(':')[GT_pos]
-                parent_AD = cols[9].split(':')[AD_pos]
-                bulk1_AD = cols[10].split(':')[AD_pos]
-                bulk2_AD = cols[11].split(':')[AD_pos]
+        p = Pool(self.args.threads)
+        p.map(self.calculate_SNPindex_sub, vcf)
+        p.close()
 
-                if ADF_pos != None and ADR_pos != None:
-                    parent_ADF = cols[9].split(':')[ADF_pos]
-                    parent_ADR = cols[9].split(':')[ADR_pos]
-                    ADFR = (parent_ADF, parent_ADR)
-                else:
-                    ADFR = None
-
-                record = sf.filt(parent_GT, parent_AD, bulk1_AD, bulk2_AD, ADFR)
-                if record['type'] == 'keep':
-                    variant = self.check_variant_type(REF, ALT)
-                    depth1, depth2 = self.check_depth(record['bulk1_depth'],
-                                                      record['bulk2_depth'])
-                    p99, p95 = self.Fn_simulation(depth1, depth2)
-                    if self.snpEff is None:
-                        snp_index.write(('{}\t{}\t{}\t{}\t{}\t{:.4f}\t{:.4f}\t'
-                                         '{:.4f}\t{:.4f}\t{:.4f}\n').format(CHR,
-                                                                            POS,
-                                                                            variant,
-                                                                            record['bulk1_depth'],
-                                                                            record['bulk2_depth'],
-                                                                            p99,
-                                                                            p95,
-                                                                            record['bulk1_SNPindex'],
-                                                                            record['bulk2_SNPindex'],
-                                                                            record['delta_SNPindex']))
-                    else:
-                        impact = self.get_variant_impact(annotation)
-                        snp_index.write(('{}\t{}\t{}\t{}\t{}\t{}\t{:.4f}\t{:.4f}\t'
-                                         '{:.4f}\t{:.4f}\t{:.4f}\n').format(CHR,
-                                                                            POS,
-                                                                            variant,
-                                                                            impact,
-                                                                            record['bulk1_depth'],
-                                                                            record['bulk2_depth'],
-                                                                            p99,
-                                                                            p95,
-                                                                            record['bulk1_SNPindex'],
-                                                                            record['bulk2_SNPindex'],
-                                                                            record['delta_SNPindex']))
-
-        snp_index.close()
         vcf.close()
+
+        if self.snpEff is None:
+            snp_index = pd.read_csv('{}/snp_index.tsv'.format(self.out),
+                                    sep='\t',
+                                    names=['CHROM',
+                                           'POSI',
+                                           'variant',
+                                           'bulk1_depth',
+                                           'bulk2_depth',
+                                           'p99',
+                                           'p95',
+                                           'bulk1_SNPindex',
+                                           'bulk2_SNPindex',
+                                           'delta_SNPindex'])
+        else:
+            snp_index = pd.read_csv('{}/snp_index.tsv'.format(self.out),
+                                    sep='\t',
+                                    names=['CHROM',
+                                           'POSI',
+                                           'variant',
+                                           'impact',
+                                           'bulk1_depth',
+                                           'bulk2_depth',
+                                           'p99',
+                                           'p95',
+                                           'bulk1_SNPindex',
+                                           'bulk2_SNPindex',
+                                           'delta_SNPindex'])
+
+        snp_index = snp_index.sort_values(by=['CHROM', 'POSI'])
+        snp_index.to_csv('{}/snp_index.tsv'.format(self.out), 
+                         sep='\t',
+                         index=False,
+                         header=False)
 
     def run(self):
         print(time_stamp(), 'start to calculate SNP-index.', flush=True)
-        field_pos = self.get_field()
-        self.calc_SNPindex(field_pos)
+        self.field_pos = self.get_field()
+        self.calculate_SNPindex()
         print(time_stamp(), 'SNP-index successfully finished.', flush=True)
 
         print(time_stamp(), 'start to smooth SNP-index.', flush=True)

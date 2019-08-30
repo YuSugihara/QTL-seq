@@ -128,20 +128,24 @@ class QTLseq(object):
                            -F {1} \
                            -n1 {2} \
                            -n2 {3} \
+                           -t {4} \
                            -o {0}/40_qtlseq'.format(self.out,
                                                     self.args.filial,
                                                     self.args.N_bulk1,
-                                                    self.args.N_bulk2)
+                                                    self.args.N_bulk2,
+                                                    self.args.threads)
         else:
             cmd = 'qtlplot -v {0}/30_vcf/qtlseq.vcf.gz \
                            -F {1} \
                            -n1 {2} \
                            -n2 {3} \
+                           -t {4} \
                            -o {0}/40_qtlseq \
-                           -e {4}'.format(self.out,
+                           -e {5}'.format(self.out,
                                           self.args.filial,
                                           self.args.N_bulk1,
                                           self.args.N_bulk2,
+                                          self.args.threads,
                                           self.args.snpEff)
 
         cmd = clean_cmd(cmd)

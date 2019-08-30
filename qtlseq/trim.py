@@ -26,7 +26,7 @@ class Trim(object):
             ILLUMINACLIP = trim_params['ILLUMINACLIP'].split(':')
             ILLUMINACLIP[0] = self.args.adapter
             trim_params['ILLUMINACLIP'] = ':'.join(ILLUMINACLIP)
-
+            
         return trim_params
 
     def run(self, fastq1, fastq2, index):

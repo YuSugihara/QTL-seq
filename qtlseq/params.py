@@ -198,8 +198,8 @@ class Params(object):
         parser = argparse.ArgumentParser(description='QTL-plot version {}'.format(__version__),
                                          formatter_class=argparse.RawTextHelpFormatter)
         parser.usage = ('qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>\n'
-                        '               [-w <INT>] [-s <INT>] [-D <INT>] [-d <INT>]\n'
-                        '               [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]\n'
+                        '               [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]\n'
+                        '               [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]\n'
                         '               [--igv] [--indel]')
 
         # set options
@@ -243,6 +243,16 @@ class Params(object):
                             type=int,
                             help=('Filial generation. This parameter must be\n'
                                   'more than 1. [2]'),
+                            metavar='')
+
+        parser.add_argument('-t',
+                            '--threads',
+                            action='store',
+                            default=2,
+                            type=int,
+                            help=('Number of threads. If you specify the number\n'
+                                  'below one, then QTL-plot will use the threads\n'
+                                  'as many as possible. [2]'),
                             metavar='')
 
         parser.add_argument('-w',
