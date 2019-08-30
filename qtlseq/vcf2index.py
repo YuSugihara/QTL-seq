@@ -27,6 +27,7 @@ class Vcf2Index(object):
         self.N_replicates = args.N_rep
         self.min_SNPindex = args.min_SNPindex
         self.snp_index = '{}/snp_index.tsv'.format(self.out)
+        self.sf = SnpFilt(args)
         self.args = args
         if self.snpEff is not None:
             self.ANN_re = re.compile(';ANN=(.*);*')
@@ -216,21 +217,7 @@ class Vcf2Index(object):
                 snp_index.close()
                 lock.release()
 
-    def calculate_SNPindex(self):
-        root, ext = os.path.splitext(self.vcf)
-        if ext == '.gz':
-            vcf = gzip.open(self.vcf, 'rt')
-        else:
-            vcf = open(self.vcf, 'r')
-
-        self.sf = SnpFilt(self.args)
-
-        p = Pool(self.args.threads)
-        p.map(self.calculate_SNPindex_sub, vcf)
-        p.close()
-
-        vcf.close()
-
+    def table_sort(self):
         if self.snpEff is None:
             snp_index = pd.read_csv('{}/snp_index.tsv'.format(self.out),
                                     sep='\t',
@@ -264,6 +251,26 @@ class Vcf2Index(object):
                          sep='\t',
                          index=False,
                          header=False)
+    
+        os.remove('{}/snp_index.tsv.temp'.format(self.out))
+
+    def calculate_SNPindex(self):
+        if os.path.exists('{}/snp_index.tsv.temp'.format(self.out)):
+            os.remove('{}/snp_index.tsv.temp'.format(self.out))
+    
+        root, ext = os.path.splitext(self.vcf)
+        if ext == '.gz':
+            vcf = gzip.open(self.vcf, 'rt')
+        else:
+            vcf = open(self.vcf, 'r')
+
+        p = Pool(self.args.threads)
+        p.map(self.calculate_SNPindex_sub, vcf)
+        p.close()
+
+        vcf.close()
+
+        self.table_sort()
 
     def run(self):
         print(time_stamp(), 'start to calculate SNP-index.', flush=True)
