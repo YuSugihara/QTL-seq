@@ -219,7 +219,7 @@ class Vcf2Index(object):
 
     def table_sort(self):
         if self.snpEff is None:
-            snp_index = pd.read_csv('{}/snp_index.tsv'.format(self.out),
+            snp_index = pd.read_csv('{}/snp_index.tsv.temp'.format(self.out),
                                     sep='\t',
                                     names=['CHROM',
                                            'POSI',
@@ -232,7 +232,7 @@ class Vcf2Index(object):
                                            'bulk2_SNPindex',
                                            'delta_SNPindex'])
         else:
-            snp_index = pd.read_csv('{}/snp_index.tsv'.format(self.out),
+            snp_index = pd.read_csv('{}/snp_index.tsv.temp'.format(self.out),
                                     sep='\t',
                                     names=['CHROM',
                                            'POSI',
@@ -247,17 +247,22 @@ class Vcf2Index(object):
                                            'delta_SNPindex'])
 
         snp_index = snp_index.sort_values(by=['CHROM', 'POSI'])
-        snp_index.to_csv('{}/snp_index.tsv'.format(self.out), 
+        snp_index.to_csv('{}/snp_index.tsv'.format(self.out),
                          sep='\t',
                          index=False,
                          header=False)
-    
+
         os.remove('{}/snp_index.tsv.temp'.format(self.out))
 
     def calculate_SNPindex(self):
         if os.path.exists('{}/snp_index.tsv.temp'.format(self.out)):
             os.remove('{}/snp_index.tsv.temp'.format(self.out))
-    
+
+
+
+
+
+
         root, ext = os.path.splitext(self.vcf)
         if ext == '.gz':
             vcf = gzip.open(self.vcf, 'rt')
