@@ -332,10 +332,10 @@ class Params(object):
         parser.add_argument('-N',
                             '--N-rep',
                             action='store',
-                            default=10000,
+                            default=5000,
                             type=int,
                             help=('Number of replicates for simulation to make \n'
-                                  'null distribution. [10000]'),
+                                  'null distribution. [5000]'),
                             metavar='')
 
         parser.add_argument('-m',
