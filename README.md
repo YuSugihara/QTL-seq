@@ -1,5 +1,5 @@
 # QTL-seq User Guide
-#### version 2.0.5
+#### version 2.0.6
 
 ## Table of contents
 - [What is QTL-seq?](#What-is-QTL-seq)
@@ -71,7 +71,7 @@ usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
               [-F <INT>] [-T] [-e <DATABASE>]
 
-QTL-seq version 2.0.5
+QTL-seq version 2.0.6
 
 optional arguments:
   -h, --help         show this help message and exit
@@ -101,7 +101,7 @@ optional arguments:
   -s , --step        Step size (kb). [100]
   -D , --max-depth   Maximum depth of variants which will be used. [250]
   -d , --min-depth   Minimum depth of variants which will be used. [8]
-  -N , --N-rep       Number of replicates for simulation to make 
+  -N , --N-rep       Number of replicates for simulation to make
                      null distribution. [5000]
   -T, --trim         Trim fastq using trimmomatic.
   -a , --adapter     FASTA of adapter sequences. This will be used
@@ -241,7 +241,7 @@ usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
                [--igv] [--indel]
 
-QTL-plot version 2.0.5
+QTL-plot version 2.0.6
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -259,7 +259,7 @@ optional arguments:
   -s , --step           Step size (kb). [100]
   -D , --max-depth      Maximum depth of variants which will be used. [250]
   -d , --min-depth      Minimum depth of variants which will be used. [8]
-  -N , --N-rep          Number of replicates for simulation to make 
+  -N , --N-rep          Number of replicates for simulation to make
                         null distribution. [5000]
   -m , --min-SNPindex   Cutoff of minimum SNP-index for clear results. [0.3]
   -S , --strand-bias    Filter spurious homo genotypes in cultivar using

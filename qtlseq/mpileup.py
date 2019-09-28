@@ -54,39 +54,39 @@ class Mpileup(object):
             cmd4 = clean_cmd(cmd4)
 
             try:
-                sbp.run(cmd1, 
-                        stdout=sbp.DEVNULL, 
-                        stderr=sbp.DEVNULL, 
-                        shell=True, 
+                sbp.run(cmd1,
+                        stdout=sbp.DEVNULL,
+                        stderr=sbp.DEVNULL,
+                        shell=True,
                         check=True)
             except sbp.CalledProcessError:
                 call_log(self.out, 'samtools', cmd1)
                 sys.exit()
 
             try:
-                sbp.run(cmd2, 
-                        stdout=sbp.DEVNULL, 
-                        stderr=sbp.DEVNULL, 
-                        shell=True, 
+                sbp.run(cmd2,
+                        stdout=sbp.DEVNULL,
+                        stderr=sbp.DEVNULL,
+                        shell=True,
                         check=True)
             except sbp.CalledProcessError:
                 call_log(self.out, 'samtools', cmd2)
                 sys.exit()
 
             try:
-                sbp.run(cmd3, 
-                        stdout=sbp.DEVNULL, 
-                        stderr=sbp.DEVNULL, 
-                        shell=True, 
+                sbp.run(cmd3,
+                        stdout=sbp.DEVNULL,
+                        stderr=sbp.DEVNULL,
+                        shell=True,
                         check=True)
             except sbp.CalledProcessError:
                 call_log(self.out, 'samtools', cmd3)
                 sys.exit()
 
-            sbp.run(cmd4, 
-                    stdout=sbp.DEVNULL, 
-                    stderr=sbp.DEVNULL, 
-                    shell=True, 
+            sbp.run(cmd4,
+                    stdout=sbp.DEVNULL,
+                    stderr=sbp.DEVNULL,
+                    shell=True,
                     check=True)
 
     def get_header(self):
@@ -109,6 +109,7 @@ class Mpileup(object):
                                  -O u \
                                  -r {3} \
                                  -f {4} \
+                                 --ignore-RG \
                                  {5}/20_bam/parent.filt.bam \
                                  {5}/20_bam/bulk1.filt.bam \
                                  {5}/20_bam/bulk2.filt.bam | \
@@ -136,20 +137,20 @@ class Mpileup(object):
         cmd2 = clean_cmd(cmd2)
 
         try:
-            sbp.run(cmd1, 
-                    stdout=sbp.DEVNULL, 
-                    stderr=sbp.DEVNULL, 
-                    shell=True, 
+            sbp.run(cmd1,
+                    stdout=sbp.DEVNULL,
+                    stderr=sbp.DEVNULL,
+                    shell=True,
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'bcftools', cmd1)
             sys.exit()
 
         try:
-            sbp.run(cmd2, 
-                    stdout=sbp.DEVNULL, 
-                    stderr=sbp.DEVNULL, 
-                    shell=True, 
+            sbp.run(cmd2,
+                    stdout=sbp.DEVNULL,
+                    stderr=sbp.DEVNULL,
+                    shell=True,
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'tabix', cmd2)
@@ -183,10 +184,10 @@ class Mpileup(object):
         sbp.run(cmd2, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
 
         try:
-            sbp.run(cmd3, 
-                    stdout=sbp.DEVNULL, 
-                    stderr=sbp.DEVNULL, 
-                    shell=True, 
+            sbp.run(cmd3,
+                    stdout=sbp.DEVNULL,
+                    stderr=sbp.DEVNULL,
+                    shell=True,
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'bcftools', cmd3)
@@ -207,10 +208,10 @@ class Mpileup(object):
         cmd = clean_cmd(cmd)
 
         try:
-            sbp.run(cmd, 
-                    stdout=sbp.DEVNULL, 
-                    stderr=sbp.DEVNULL, 
-                    shell=True, 
+            sbp.run(cmd,
+                    stdout=sbp.DEVNULL,
+                    stderr=sbp.DEVNULL,
+                    shell=True,
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'tabix', cmd)
