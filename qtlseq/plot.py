@@ -67,7 +67,9 @@ class Plot(object):
                                             'mean_bulk2_SNPindex',
                                             'mean_delta_SNPindex'])
 
+        snp_index['CHROM'] = snp_index['CHROM'].astype('str')
         snp_index['POSI'] = snp_index['POSI']/1000000
+        sliding_window['CHROM'] = sliding_window['CHROM'].astype('str')
         sliding_window['POSI'] = sliding_window['POSI']/1000000
         sliding_window = sliding_window.groupby('CHROM')
 

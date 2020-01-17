@@ -1,4 +1,3 @@
-
 import sys
 import subprocess as sbp
 from qtlseq.utils import time_stamp, clean_cmd, call_log

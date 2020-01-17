@@ -1,5 +1,5 @@
 # QTL-seq User Guide
-#### version 2.0.5
+#### version 2.0.7
 
 ## Table of contents
 - [What is QTL-seq?](#What-is-QTL-seq)
@@ -14,15 +14,15 @@
   + [Example 4 : run QTL-seq from multiple FASTQs and BAMs](#Example-4--run-QTL-seq-from-multiple-FASTQs-and-BAMs)
   + [Example 5 : run QTL-plot from VCF](#Example-5--run-QTL-plot-from-VCF)
 - [Outputs](#Outputs)
-- [Advanced usage](#Advanced-usage)
-  + [Detect causal variant using SnpEff](#Detect-causal-variant-using-SnpEff)
-  + [Change trimming parameters for Trimmomatic](#Change-trimming-parameters-for-Trimmomatic)
 
 ## What is QTL-seq?
+<img src="https://210a94ef-a-fc7f2be1-s-sites.googlegroups.com/a/ibrc.or.jp/genome-e/home/bioinformatics-team/mutmap/QTL-seq_LOGO.jpg?attachauth=ANoY7coJoWWEVItHoU2_q2dDtQkdBtsHOiv228_rPBP8ZvISV9vvS7z-YRmxG5_JLCMhwPrMg92SBMU-ULQd5F1X2Tioz5Vvv_gLecE3WSMlrBYu5y69PHEuhTWWDM8hRruMJWCrVIdjeQoDL26KWbZUFVEZOHHXX5zL-s2B0UqH3zKDxurCfpmrg_gbE7y_8D9gvaGEAYe73HOR1Jl7WjpdeYijWeqanQzUnLwWzMnITpKxLzXD7fD5ebjBLI5wNZo2j7UTfRIv&attredirects=0" width=200>
 
-Now QTL-seq is updated for easier installation and utilization using Python platform.
+Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is a powerful and efficient method to identify agronomically important loci in crop plants. QTL-seq was adapted from MutMap to identify quantitative trait loci. It utilizes sequences pooled from two segregating progeny populations with extreme opposite traits (e.g. resistant vs susceptible) and a single whole-genome resequencing of either of the parental cultivars. While the original QTL-seq algorithm did not assume a highly heterozygous genome, a “modified QTL-seq” has been developed to handle this situation using high resolution mapping ([Itoh et al., 2019](https://doi.org/10.1007/s00122-019-03396-z)).
 
-**Citation: Takagi, H. et al. (2013) QTL-seq: rapid mapping of quantitative trait loci in rice by whole genome resequencing of DNA from two bulked populations. Plant journal 74:174-183.**
+#### Citation
+- Hiroki Takagi, Akira Abe, Kentaro Yoshida, Shunichi Kosugi, Satoshi Natsume, Chikako Mitsuoka, Aiko Uemura, Hiroe Utsushi, Muluneh Tamiru, Shohei Takuno, Hideki Innan, Liliana M. Cano, Sophien Kamoun, Ryohei Terauchi (2013).  QTL-seq: rapid mapping of quantitative trait loci in rice by whole genome resequencing of DNA from two bulked populations. Plant journal 74:174-183. [[URL]](https://doi.org/10.1111/tpj.12105)
+- Yu Sugihara, Lester Young, Hiroki Yaegashi, Satoshi Natsume, Daniel J. Shea, Hiroki Takagi, Helen Booker, Ryohei Terauchi, Akira Abe (in preparation). High performance pipeline for MutMap and QTL-seq.
 
 ## Installation
 ### Dependencies
@@ -71,7 +71,7 @@ usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
               [-F <INT>] [-T] [-e <DATABASE>]
 
-QTL-seq version 2.0.5
+QTL-seq version 2.0.7
 
 optional arguments:
   -h, --help         show this help message and exit
@@ -101,7 +101,7 @@ optional arguments:
   -s , --step        Step size (kb). [100]
   -D , --max-depth   Maximum depth of variants which will be used. [250]
   -d , --min-depth   Minimum depth of variants which will be used. [8]
-  -N , --N-rep       Number of replicates for simulation to make 
+  -N , --N-rep       Number of replicates for simulation to make
                      null distribution. [5000]
   -T, --trim         Trim fastq using trimmomatic.
   -a , --adapter     FASTA of adapter sequences. This will be used
@@ -241,7 +241,7 @@ usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
                [--igv] [--indel]
 
-QTL-plot version 2.0.5
+QTL-plot version 2.0.7
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -259,7 +259,7 @@ optional arguments:
   -s , --step           Step size (kb). [100]
   -D , --max-depth      Maximum depth of variants which will be used. [250]
   -d , --min-depth      Minimum depth of variants which will be used. [8]
-  -N , --N-rep          Number of replicates for simulation to make 
+  -N , --N-rep          Number of replicates for simulation to make
                         null distribution. [5000]
   -m , --min-SNPindex   Cutoff of minimum SNP-index for clear results. [0.3]
   -S , --strand-bias    Filter spurious homo genotypes in cultivar using
@@ -350,14 +350,10 @@ Inside of `OUT_DIR` is like below.
     - **MEAN SNP-index 1** : mean SNP-index of bulk 1 (absolute value)
     - **MEAN SNP-index 2** : mean SNP-index of bulk 2 (absolute value)
     - **MEAN DELTA SNP-index** : mean delta SNP-index
-  + `QTL-seq_plot.png` : resulting plot
+  + `QTL-seq_plot.png` : resulting plot (like below)
     - **<span style="color: blue; ">BLUE dot</span>** : variant
     - **<span style="color: red; ">RED line</span>** : mean SNP-index
     - **<span style="color: orange; ">ORANGE line</span>** : mean p99
     - **<span style="color: green; ">GREEN line</span>** : mean p95
 
-## Advanced usage
-### Detect causal variant using SnpEff
-preparing now...
-### Change trimming parameters for Trimmomatic
-preparing now...
+<img src="https://user-images.githubusercontent.com/34593586/72580948-00e60500-3921-11ea-850f-dcf9a8d75e74.png" width=600>
