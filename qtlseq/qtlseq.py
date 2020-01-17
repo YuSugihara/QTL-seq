@@ -33,7 +33,7 @@ class QTLseq(object):
 
         self.mkdir()
         self.link_ref()
-        self.link_bam('parent', self.bulk1_bam)
+        self.link_bam('parent', self.parent_bam)
         self.link_bam('bulk1', self.bulk1_bam)
         self.link_bam('bulk2', self.bulk2_bam)
 
