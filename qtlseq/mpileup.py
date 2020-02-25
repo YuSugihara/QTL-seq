@@ -61,7 +61,7 @@ class Mpileup(object):
                         check=True)
             except sbp.CalledProcessError:
                 call_log(self.out, 'samtools', cmd1)
-                sys.exit()
+                sys.exit(1)
 
             try:
                 sbp.run(cmd2,
@@ -71,7 +71,7 @@ class Mpileup(object):
                         check=True)
             except sbp.CalledProcessError:
                 call_log(self.out, 'samtools', cmd2)
-                sys.exit()
+                sys.exit(1)
 
             try:
                 sbp.run(cmd3,
@@ -81,7 +81,7 @@ class Mpileup(object):
                         check=True)
             except sbp.CalledProcessError:
                 call_log(self.out, 'samtools', cmd3)
-                sys.exit()
+                sys.exit(1)
 
             sbp.run(cmd4,
                     stdout=sbp.DEVNULL,
@@ -144,7 +144,7 @@ class Mpileup(object):
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'bcftools', cmd1)
-            sys.exit()
+            sys.exit(1)
 
         try:
             sbp.run(cmd2,
@@ -154,7 +154,7 @@ class Mpileup(object):
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'tabix', cmd2)
-            sys.exit()
+            sys.exit(1)
 
     def concat(self):
         cmd1 = 'cat {0}/log/bcftools.*.log > {0}/log/bcftools.log'.format(self.out)
@@ -191,7 +191,7 @@ class Mpileup(object):
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'bcftools', cmd3)
-            sys.exit()
+            sys.exit(1)
 
         sbp.run(cmd4, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd5, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
@@ -215,7 +215,7 @@ class Mpileup(object):
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'tabix', cmd)
-            sys.exit()
+            sys.exit(1)
 
     def run(self):
         print(time_stamp(), 'start to merge BAMs.', flush=True)

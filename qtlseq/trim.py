@@ -91,7 +91,7 @@ class Trim(object):
             sbp.run(cmd, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'trimmomatic', cmd)
-            sys.exit()
+            sys.exit(1)
 
         print(time_stamp(),
               'trimming for {} and {} successfully finished.'.format(fastq1, fastq2),

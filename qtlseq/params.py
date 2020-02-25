@@ -46,7 +46,7 @@ class Params(object):
                             required=True,
                             type=str,
                             help=('fastq or bam of parent. If you specify\n'
-                                  'fastq, please separate pairs by commma,\n'
+                                  'fastq, please separate pairs by comma,\n'
                                   'e.g. -p fastq1,fastq2. You can use this\n'
                                   'optiion multiple times'),
                             metavar='')
@@ -57,7 +57,7 @@ class Params(object):
                             required=True,
                             type=str,
                             help=('fastq or bam of bulk 1. If you specify\n'
-                                  'fastq, please separate pairs by commma,\n'
+                                  'fastq, please separate pairs by comma,\n'
                                   'e.g. -b1 fastq1,fastq2. You can use this\n'
                                   'optiion multiple times'),
                             metavar='')
@@ -68,7 +68,7 @@ class Params(object):
                             required=True,
                             type=str,
                             help=('fastq or bam of bulk 2. If you specify\n'
-                                  'fastq, please separate pairs by commma,\n'
+                                  'fastq, please separate pairs by comma,\n'
                                   'e.g. -b2 fastq1,fastq2. You can use this\n'
                                   'optiion multiple times'),
                             metavar='')
@@ -241,7 +241,7 @@ class Params(object):
         parser.usage = ('qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>\n'
                         '               [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]\n'
                         '               [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]\n'
-                        '               [--igv] [--indel]')
+                        '               [--igv] [--corr] [--indel]')
 
         # set options
         parser.add_argument('-v',
@@ -370,6 +370,13 @@ class Params(object):
                             default=False,
                             help='Output IGV format file to check results on IGV.')
 
+        parser.add_argument('--corr',
+                            action='store_true',
+                            default=False,
+                            help=('Use corrected threshold in Huang et al. (2019).\n'
+                                  'If you specify this option, the options related to\n'
+                                  'the simulation ("-N" and "-F") will be ignored.'))
+
         parser.add_argument('--indel',
                             action='store_true',
                             default=False,
@@ -423,11 +430,11 @@ class Params(object):
             sys.stderr.write(('  Output directory already exist.\n'
                               '  Please rename output directory or '
                                 'remove existing directory\n\n'))
-            sys.exit()
+            sys.exit(1)
 
         if args.filial < 2:
             sys.stderr.write('  Finial generation must be more than 1.\n')
-            sys.exit()
+            sys.exit(1)
 
         if args.adapter is not None:
             if not args.trim:
@@ -458,7 +465,7 @@ class Params(object):
                                       '  If you wanted to specify fastq, please '
                                         'input them as paired-end reads which is separated '
                                         'by comma. e.g. -p fastq1,fastq2\n\n').format(input_name))
-                    sys.exit()
+                    sys.exit(1)
             elif n_comma == 1:
                 fastqs = input_name.split(',')
                 for fastq in fastqs:
@@ -469,13 +476,13 @@ class Params(object):
                                           '  If you wanted to specify bam, please '
                                             'input them separately. e.g. -p bam1 '
                                             '-p bam2\n\n').format(input_name))
-                        sys.exit()
+                        sys.exit(1)
                 N_fastq += 1
             else:
                 sys.stderr.write(('  Please check "{}".\n'
                                   '  You specified too much files, or '
                                     'your file name includes ",".\n\n').format(input_name))
-                sys.exit()
+                sys.exit(1)
 
         for input_name in  args.bulk1:
             n_comma = input_name.count(',')
@@ -487,7 +494,7 @@ class Params(object):
                                       '  If you wanted to specify fastq, please '
                                         'input them as paired-end reads which is separated '
                                         'by comma. e.g. -b1 fastq1,fastq2\n\n').format(input_name))
-                    sys.exit()
+                    sys.exit(1)
             elif n_comma == 1:
                 fastqs = input_name.split(',')
                 for fastq in fastqs:
@@ -498,13 +505,13 @@ class Params(object):
                                           '  If you wanted to specify bam, please '
                                             'input them separately. e.g. -b1 bam1 '
                                             '-b1 bam2\n\n').format(input_name))
-                        sys.exit()
+                        sys.exit(1)
                 N_fastq += 1
             else:
                 sys.stderr.write(('  Please check "{}".\n'
                                   '  You specified too much files, or '
                                     'your file name includes ",".\n\n').format(input_name))
-                sys.exit()
+                sys.exit(1)
 
         for input_name in  args.bulk2:
             n_comma = input_name.count(',')
@@ -516,7 +523,7 @@ class Params(object):
                                       '  If you wanted to specify fastq, please '
                                         'input them as paired-end reads which is separated '
                                         'by comma. e.g. -b2 fastq1,fastq2\n\n').format(input_name))
-                    sys.exit()
+                    sys.exit(1)
             elif n_comma == 1:
                 fastqs = input_name.split(',')
                 for fastq in fastqs:
@@ -527,17 +534,17 @@ class Params(object):
                                           '  If you wanted to specify bam, please '
                                             'input them separately. e.g. -b2 bam1 '
                                             '-b2 bam2\n\n').format(input_name))
-                        sys.exit()
+                        sys.exit(1)
                 N_fastq += 1
             else:
                 sys.stderr.write(('  Please check "{}".\n'
                                   '  You specified too much files, or '
                                     'your file name includes ",".\n\n').format(input_name))
-                sys.exit()
+                sys.exit(1)
 
         if N_fastq == 0 and args.trim:
             sys.stderr.write(('  You can specify "--trim" only when '
                                  'you input fastq.\n\n'))
-            sys.exit()
+            sys.exit(1)
 
         return N_fastq

@@ -46,7 +46,7 @@ class BamFilt(object):
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'samtools', cmd)
-            sys.exit()
+            sys.exit(1)
 
     def merge(self, label):
         cmd1 = 'cat {0}/log/samtools.{1}.f83.log \
@@ -92,7 +92,7 @@ class BamFilt(object):
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'samtools', cmd4)
-            sys.exit()
+            sys.exit(1)
 
         sbp.run(cmd5, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
         sbp.run(cmd6, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)

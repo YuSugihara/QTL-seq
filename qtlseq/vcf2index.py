@@ -22,6 +22,7 @@ class Vcf2Index(object):
         self.out = args.out
         self.vcf = args.vcf
         self.snpEff = args.snpEff
+        self.corr = args.corr
         self.N_bulk1 = args.N_bulk1
         self.N_bulk2 = args.N_bulk2
         self.N_replicates = args.N_rep
@@ -29,6 +30,7 @@ class Vcf2Index(object):
         self.snp_index = '{}/snp_index.tsv'.format(self.out)
         self.sf = SnpFilt(args)
         self.args = args
+
         if self.snpEff is not None:
             self.ANN_re = re.compile(';ANN=(.*);*')
 
@@ -46,13 +48,13 @@ class Vcf2Index(object):
                 except ValueError:
                     sys.stderr.write(('{} No GT field'
                                       ' in your VCF!!\n').format(time_stamp()))
-                    sys.exit()
+                    sys.exit(1)
                 try:
                     AD_pos = fields.index('AD')
                 except ValueError:
                     sys.stderr.write(('{} No AD field'
                                       ' in your VCF!!\n').format(time_stamp()))
-                    sys.exit()
+                    sys.exit(1)
 
                 if 'ADF' in fields and 'ADR' in fields:
                     ADF_pos = fields.index('ADF')
@@ -149,6 +151,14 @@ class Vcf2Index(object):
         p95 = replicates[int(0.95*self.N_replicates) - 1]
         return p99, p95
 
+    def calculate_corrected_threshold(self, depth1, depth2):
+        var_AFD = (2*self.N_bulk1 + depth1)/(8*self.N_bulk1*depth1) + \
+                  (2*self.N_bulk2 + depth2)/(8*self.N_bulk2*depth2)
+
+        p99 = 2.576*(var_AFD**(1/2))
+        p95 = 1.960*(var_AFD**(1/2))
+        return p99, p95
+
     def calculate_SNPindex_sub(self, line):
         if re.match(r'[^#]', line):
             cols = line.split('\t')
@@ -178,13 +188,16 @@ class Vcf2Index(object):
             if record['type'] == 'keep':
                 variant = self.check_variant_type(REF, ALT)
                 depth1, depth2 = self.check_depth(record['bulk1_depth'],
-                                                    record['bulk2_depth'])
+                                                  record['bulk2_depth'])
 
-                if (depth1, depth2) in cache:
-                    p99, p95 = cache[(depth1, depth2)]
+                if self.corr:
+                    p99, p95 = self.calculate_corrected_threshold(depth1, depth2)
                 else:
-                    p99, p95 = self.Fn_simulation(depth1, depth2)
-                    cache[(depth1, depth2)] = (p99, p95)
+                    if (depth1, depth2) in cache:
+                        p99, p95 = cache[(depth1, depth2)]
+                    else:
+                        p99, p95 = self.Fn_simulation(depth1, depth2)
+                        cache[(depth1, depth2)] = (p99, p95)
 
                 lock.acquire()
                 snp_index = open(self.snp_index + ".temp", 'a')
@@ -257,11 +270,6 @@ class Vcf2Index(object):
     def calculate_SNPindex(self):
         if os.path.exists('{}/snp_index.tsv.temp'.format(self.out)):
             os.remove('{}/snp_index.tsv.temp'.format(self.out))
-
-
-
-
-
 
         root, ext = os.path.splitext(self.vcf)
         if ext == '.gz':

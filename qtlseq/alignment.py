@@ -35,7 +35,7 @@ class Alignment(object):
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'bwa', cmd)
-            sys.exit()
+            sys.exit(1)
 
         print(time_stamp(),
               'alignment {} successfully finished.'.format(index),

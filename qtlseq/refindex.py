@@ -33,7 +33,7 @@ class RefIndex(object):
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'bwa', cmd1)
-            sys.exit()
+            sys.exit(1)
 
         try:
             sbp.run(cmd2,
@@ -43,7 +43,7 @@ class RefIndex(object):
                     check=True)
         except sbp.CalledProcessError:
             call_log(self.out, 'samtools', cmd1)
-            sys.exit()
+            sys.exit(1)
 
         print(time_stamp(),
               'indexing of reference successfully finished.',

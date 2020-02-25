@@ -1,5 +1,5 @@
 # QTL-seq User Guide
-#### version 2.0.7
+#### version 2.0.8
 
 ## Table of contents
 - [What is QTL-seq?](#What-is-QTL-seq)
@@ -33,7 +33,7 @@ Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is 
 - [SnpEff](http://snpeff.sourceforge.net/)
 - [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
 
-#### Python libraries
+#### Python (>=3.5) libraries
 - matplotlib
 - numpy
 - pandas
@@ -55,7 +55,7 @@ $ pip install -e .
 Then you have to install other dependencies by yourself. We highly recommend you to install SnpEff and Trimmomatic using bioconda.
 ```
 $ conda install -c bioconda snpeff
-$ conda install -c bioconda triimomatic
+$ conda install -c bioconda trimmomatic
 ```
 After installation, please check whether SnpEff and Trimmomatic work through the commands like below.
 ```
@@ -71,21 +71,21 @@ usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
               [-F <INT>] [-T] [-e <DATABASE>]
 
-QTL-seq version 2.0.7
+QTL-seq version 2.0.8
 
 optional arguments:
   -h, --help         show this help message and exit
   -r , --ref         Reference fasta.
   -p , --parent      fastq or bam of parent. If you specify
-                     fastq, please separate pairs by commma,
+                     fastq, please separate pairs by comma,
                      e.g. -p fastq1,fastq2. You can use this
                      optiion multiple times
   -b1 , --bulk1      fastq or bam of bulk 1. If you specify
-                     fastq, please separate pairs by commma,
+                     fastq, please separate pairs by comma,
                      e.g. -b1 fastq1,fastq2. You can use this
                      optiion multiple times
   -b2 , --bulk2      fastq or bam of bulk 2. If you specify
-                     fastq, please separate pairs by commma,
+                     fastq, please separate pairs by comma,
                      e.g. -b2 fastq1,fastq2. You can use this
                      optiion multiple times
   -n1 , --N-bulk1    Number of individuals in bulk 1.
@@ -187,7 +187,7 @@ $ qtlseq -r reference.fasta \
 
 `-o` : name of output directory. Specified name cannot exist.
 
-`-T` : trim your reads using triimomatic.
+`-T` : trim your reads using trimmomatic.
 
 ### Example 3 : run QTL-seq from BAM
 ```
@@ -239,9 +239,9 @@ $ qtlplot -h
 usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
-               [--igv] [--indel]
+               [--igv] [--corr] [--indel]
 
-QTL-plot version 2.0.7
+QTL-plot version 2.0.8
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -270,6 +270,9 @@ optional arguments:
   -e , --snpEff         Predict causal variant using SnpEff. Please
                         check available databases in SnpEff.
   --igv                 Output IGV format file to check results on IGV.
+  --corr                Use corrected threshold in Huang et al. (2019).
+                        If you specify this option, the options related to
+                        the simulation ("-N" and "-F") will be ignored.
   --indel               Plot SNP-index with INDEL.
   --fig-width           Width allocated in chromosome figure. [7.5]
   --fig-height          Height allocated in chromosome figure. [4.0]
@@ -299,13 +302,13 @@ If you got a error, please try to run QTL-seq from FASTQ or BAM before asking in
 Inside of `OUT_DIR` is like below.
 ```
 ├── 10_ref
-│  ├── IRGSP-1.0_genome.fasta
-│  ├── IRGSP-1.0_genome.fasta.amb
-│  ├── IRGSP-1.0_genome.fasta.ann
-│  ├── IRGSP-1.0_genome.fasta.bwt
-│  ├── IRGSP-1.0_genome.fasta.fai
-│  ├── IRGSP-1.0_genome.fasta.pac
-│  └── IRGSP-1.0_genome.fasta.sa
+│  ├── reference.fasta
+│  ├── reference.fasta.amb
+│  ├── reference.fasta.ann
+│  ├── reference.fasta.bwt
+│  ├── reference.fasta.fai
+│  ├── reference.fasta.pac
+│  └── reference.fasta.sa
 ├── 20_bam
 │  ├── bulk1.filt.bam
 │  ├── bulk1.filt.bam.bai
@@ -321,6 +324,8 @@ Inside of `OUT_DIR` is like below.
 │  ├── bulk2_SNPindex.png
 │  ├── delta_SNPindex.png
 │  ├── sliding_window.tsv
+│  ├── sliding_window.p95.tsv
+│  ├── sliding_window.p99.tsv
 │  └── snp_index.tsv
 └── log
    ├── bcftools.log
@@ -345,10 +350,10 @@ Inside of `OUT_DIR` is like below.
   + `sliding_window.tsv` : columns in this order.
     - **CHROM** : chromosome name
     - **POSI** : central position of window
-    - **MEAN p99** : mean of p99
-    - **MEAN p95** : mean of p95
-    - **MEAN SNP-index 1** : mean SNP-index of bulk 1 (absolute value)
-    - **MEAN SNP-index 2** : mean SNP-index of bulk 2 (absolute value)
+    - **MEAN p99** : mean of p99 (absolute value)
+    - **MEAN p95** : mean of p95 (absolute value)
+    - **MEAN SNP-index 1** : mean SNP-index of bulk 1
+    - **MEAN SNP-index 2** : mean SNP-index of bulk 2
     - **MEAN DELTA SNP-index** : mean delta SNP-index
   + `QTL-seq_plot.png` : resulting plot (like below)
     - **<span style="color: blue; ">BLUE dot</span>** : variant
