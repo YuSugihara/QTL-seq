@@ -241,7 +241,7 @@ class Params(object):
         parser.usage = ('qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>\n'
                         '               [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]\n'
                         '               [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]\n'
-                        '               [--igv] [--corr] [--indel]')
+                        '               [--igv] [--corr <FLOAT>] [--indel]')
 
         # set options
         parser.add_argument('-v',
@@ -371,11 +371,13 @@ class Params(object):
                             help='Output IGV format file to check results on IGV.')
 
         parser.add_argument('--corr',
-                            action='store_true',
-                            default=False,
-                            help=('Use corrected threshold in Huang et al. (2019).\n'
-                                  'If you specify this option, the options related to\n'
-                                  'the simulation ("-N" and "-F") will be ignored.'))
+                            action='store',
+                            type=float,
+                            help=('Use the corrected threshold in Huang et al. (2019).\n'
+                                  'Please spesify mu_alpha_2 in Huang et al. (2019).\n'
+                                  'When you specify this option, p99 and p95 has the\n'
+                                  'same value.'),
+                            metavar='')
 
         parser.add_argument('--indel',
                             action='store_true',

@@ -1,5 +1,5 @@
 # QTL-seq User Guide
-#### version 2.0.8
+#### version 2.0.9
 
 ## Table of contents
 - [What is QTL-seq?](#What-is-QTL-seq)
@@ -75,7 +75,7 @@ usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
               [-F <INT>] [-T] [-e <DATABASE>]
 
-QTL-seq version 2.0.8
+QTL-seq version 2.0.9
 
 optional arguments:
   -h, --help         show this help message and exit
@@ -243,9 +243,9 @@ $ qtlplot -h
 usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
-               [--igv] [--corr] [--indel]
+               [--igv] [--corr <FLOAT>] [--indel]
 
-QTL-plot version 2.0.8
+QTL-plot version 2.0.9
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -274,9 +274,10 @@ optional arguments:
   -e , --snpEff         Predict causal variant using SnpEff. Please
                         check available databases in SnpEff.
   --igv                 Output IGV format file to check results on IGV.
-  --corr                Use corrected threshold in Huang et al. (2019).
-                        If you specify this option, the options related to
-                        the simulation ("-N" and "-F") will be ignored.
+  --corr                Use the corrected threshold in Huang et al. (2019).
+                        Please spesify mu_alpha_2 in Huang et al. (2019).
+                        When you specify this option, p99 and p95 has the
+                        same value.
   --indel               Plot SNP-index with INDEL.
   --fig-width           Width allocated in chromosome figure. [7.5]
   --fig-height          Height allocated in chromosome figure. [4.0]
