@@ -1,5 +1,5 @@
 # QTL-seq User Guide
-#### version 2.0.9
+#### version 2.1.0
 
 ## Table of contents
 - [What is QTL-seq?](#What-is-QTL-seq)
@@ -75,7 +75,7 @@ usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
               [-F <INT>] [-T] [-e <DATABASE>]
 
-QTL-seq version 2.0.9
+QTL-seq version 2.1.0
 
 optional arguments:
   -h, --help         show this help message and exit
@@ -245,12 +245,12 @@ usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
                [--igv] [--corr <FLOAT>] [--indel]
 
-QTL-plot version 2.0.9
+QTL-plot version 2.1.0
 
 optional arguments:
   -h, --help            show this help message and exit
-  -v , --vcf            VCF which contains parent, bulk1 and bulk2
-                        in this order.
+  -v , --vcf            VCF file which contains parent, bulk1, and bulk2
+                        in this order. This VCF file must have AD field.
   -n1 , --N-bulk1       Number of individuals in bulk 1.
   -n2 , --N-bulk2       Number of individuals in bulk 2.
   -o , --out            Output directory. Specified name can exist.

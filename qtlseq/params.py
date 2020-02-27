@@ -249,8 +249,8 @@ class Params(object):
                             action='store',
                             required=True,
                             type=str,
-                            help=('VCF which contains parent, bulk1 and bulk2\n'
-                                  'in this order.'),
+                            help=('VCF file which contains parent, bulk1, and bulk2\n'
+                                  'in this order. This VCF file must have AD field.'),
                             metavar='')
 
         parser.add_argument('-n1',
