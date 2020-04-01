@@ -265,7 +265,6 @@ class Plot(object):
 
 
     def run(self):
-        print(time_stamp(), 'plotting now...', flush=True)
         self.plot_bulk1_SNPindex()
         self.plot_bulk2_SNPindex()
         self.plot_delta_SNPindex()

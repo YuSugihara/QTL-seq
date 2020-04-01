@@ -105,7 +105,7 @@ optional arguments:
   -s , --step        Step size (kb). [100]
   -D , --max-depth   Maximum depth of variants which will be used. [250]
   -d , --min-depth   Minimum depth of variants which will be used. [8]
-  -N , --N-rep       Number of replicates for simulation to make
+  -N , --N-rep       Number of replicates for simulation to make 
                      null distribution. [5000]
   -T, --trim         Trim fastq using trimmomatic.
   -a , --adapter     FASTA of adapter sequences. This will be used
@@ -245,7 +245,7 @@ usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
                [--igv] [--corr <FLOAT>] [--indel]
 
-QTL-plot version 2.1.0
+QTL-plot version 2.1.1
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -263,7 +263,7 @@ optional arguments:
   -s , --step           Step size (kb). [100]
   -D , --max-depth      Maximum depth of variants which will be used. [250]
   -d , --min-depth      Minimum depth of variants which will be used. [8]
-  -N , --N-rep          Number of replicates for simulation to make
+  -N , --N-rep          Number of replicates for simulation to make 
                         null distribution. [5000]
   -m , --min-SNPindex   Cutoff of minimum SNP-index for clear results. [0.3]
   -S , --strand-bias    Filter spurious homo genotypes in cultivar using
@@ -275,9 +275,9 @@ optional arguments:
                         check available databases in SnpEff.
   --igv                 Output IGV format file to check results on IGV.
   --corr                Use the corrected threshold in Huang et al. (2019).
-                        Please spesify mu_alpha_2 in Huang et al. (2019).
-                        When you specify this option, p99 and p95 has the
-                        same value.
+                        Please spesify u_alpha_2 in Huang et al. (2019).
+                        When you declare this option, p99 and p95 change to
+                        the single corrected threshold.
   --indel               Plot SNP-index with INDEL.
   --fig-width           Width allocated in chromosome figure. [7.5]
   --fig-height          Height allocated in chromosome figure. [4.0]
@@ -331,7 +331,9 @@ Inside of `OUT_DIR` is like below.
 │  ├── sliding_window.tsv
 │  ├── sliding_window.p95.tsv
 │  ├── sliding_window.p99.tsv
-│  └── snp_index.tsv
+│  ├── np_index.tsv
+│  ├── snp_index.p95.tsv
+│  └── snp_index.p99.tsv
 └── log
    ├── bcftools.log
    ├── bgzip.log

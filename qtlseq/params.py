@@ -374,9 +374,9 @@ class Params(object):
                             action='store',
                             type=float,
                             help=('Use the corrected threshold in Huang et al. (2019).\n'
-                                  'Please spesify mu_alpha_2 in Huang et al. (2019).\n'
-                                  'When you specify this option, p99 and p95 has the\n'
-                                  'same value.'),
+                                  'Please spesify u_alpha_2 in Huang et al. (2019).\n'
+                                  'When you declare this option, p99 and p95 change to\n'
+                                  'the single corrected threshold.'),
                             metavar='')
 
         parser.add_argument('--indel',
