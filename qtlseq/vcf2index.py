@@ -22,7 +22,8 @@ class Vcf2Index(object):
         self.out = args.out
         self.vcf = args.vcf
         self.snpEff = args.snpEff
-        self.corr = args.corr
+        self.filial = args.filial
+        self.species = args.species
         self.N_bulk1 = args.N_bulk1
         self.N_bulk2 = args.N_bulk2
         self.N_replicates = args.N_rep
@@ -34,10 +35,134 @@ class Vcf2Index(object):
         if self.snpEff is not None:
             self.ANN_re = re.compile(';ANN=(.*);*')
 
-        if self.corr is not None:
-            var_fix = 0.25*(self.N_bulk1 + self.N_bulk2) / \
-                           (2*self.N_bulk1*self.N_bulk2)
-            self.threshold = self.corr*(var_fix**(1/2))
+        if self.species is not None:
+            self.u99, self.u95 = self.correct_threshold()
+
+    def correct_threshold(self):
+        if self.species == 'Arabidopsis':
+            if self.filial == 2:
+                u99 = 3.82
+                u95 = 3.41
+            elif self.filial == 3:
+                u99 = 3.91
+                u95 = 3.50
+            elif self.filial == 4:
+                u99 = 3.94
+                u95 = 3.54
+            else:
+                u99 = 3.97
+                u95 = 3.57
+
+        elif self.species == 'Cucumber':
+            if self.filial == 2:
+                u99 = 4.02
+                u95 = 3.62
+            elif self.filial == 3:
+                u99 = 4.10
+                u95 = 3.72
+            elif self.filial == 4:
+                u99 = 4.14
+                u95 = 3.75
+            else:
+                u99 = 4.16
+                u95 = 3.78
+
+        elif self.species == 'Maize':
+            if self.filial == 2:
+                u99 = 4.11
+                u95 = 3.72
+            elif self.filial == 3:
+                u99 = 4.19
+                u95 = 3.81
+            elif self.filial == 4:
+                u99 = 4.23
+                u95 = 3.85
+            else:
+                u99 = 4.25
+                u95 = 3.87
+
+        elif self.species == 'Rapeseed':
+            if self.filial == 2:
+                u99 = 4.16
+                u95 = 3.78
+            elif self.filial == 3:
+                u99 = 4.24
+                u95 = 3.87
+            elif self.filial == 4:
+                u99 = 4.27
+                u95 = 3.90
+            else:
+                u99 = 4.30
+                u95 = 3.93
+
+        elif self.species == 'Rice':
+            if self.filial == 2:
+                u99 = 4.05
+                u95 = 3.65
+            elif self.filial == 3:
+                u99 = 4.13
+                u95 = 3.74
+            elif self.filial == 4:
+                u99 = 4.16
+                u95 = 3.78
+            else:
+                u99 = 4.19
+                u95 = 3.80
+
+        elif self.species == 'Tobacco':
+            if self.filial == 2:
+                u99 = 4.22
+                u95 = 3.84
+            elif self.filial == 3:
+                u99 = 4.30
+                u95 = 3.92
+            elif self.filial == 4:
+                u99 = 4.33
+                u95 = 3.96
+            else:
+                u99 = 4.35
+                u95 = 3.98
+
+        elif self.species == 'Tomato':
+            if self.filial == 2:
+                u99 = 4.04
+                u95 = 3.65
+            elif self.filial == 3:
+                u99 = 4.12
+                u95 = 3.73
+            elif self.filial == 4:
+                u99 = 4.15
+                u95 = 3.77
+            else:
+                u99 = 4.18
+                u95 = 3.80
+
+        elif self.species == 'Wheat':
+            if self.filial == 2:
+                u99 = 4.21
+                u95 = 3.83
+            elif self.filial == 3:
+                u99 = 4.29
+                u95 = 3.92
+            elif self.filial == 4:
+                u99 = 4.32
+                u95 = 3.95
+            else:
+                u99 = 4.35
+                u95 = 3.98
+
+        elif self.species == 'Yeast':
+            u99 = 4.31
+            u95 = 3.93
+            if self.filial >= 2:
+                print('!!WARNING!! Filial generation must be 2 in yeast.', file=sys.stderr)
+
+        else:
+            print('You specified not supported species.', file=sys.stderr)
+            sys.exit(1)
+
+        return u99, u95
+
 
     def get_field(self):
         root, ext = os.path.splitext(self.vcf)
@@ -144,6 +269,7 @@ class Vcf2Index(object):
 
             bulk1_SNPindex = bulk1_AD.sum()/depth1
             bulk2_SNPindex = bulk2_AD.sum()/depth2
+
             if bulk1_SNPindex < self.min_SNPindex and \
                bulk2_SNPindex < self.min_SNPindex:
                 continue
@@ -151,6 +277,7 @@ class Vcf2Index(object):
                 delta_SNPindex = bulk2_SNPindex - bulk1_SNPindex
                 replicates.append(abs(delta_SNPindex))
                 n += 1
+
         replicates.sort()
         p99 = replicates[int(0.99*self.N_replicates) - 1]
         p95 = replicates[int(0.95*self.N_replicates) - 1]
@@ -187,14 +314,18 @@ class Vcf2Index(object):
                 depth1, depth2 = self.check_depth(record['bulk1_depth'],
                                                   record['bulk2_depth'])
 
-                if self.corr is not None:
-                    p99, p95 = self.threshold, self.threshold
+                if (depth1, depth2) in cache:
+                    p99, p95 = cache[(depth1, depth2)]
                 else:
-                    if (depth1, depth2) in cache:
-                        p99, p95 = cache[(depth1, depth2)]
-                    else:
+                    if self.species is None:
                         p99, p95 = self.Fn_simulation(depth1, depth2)
-                        cache[(depth1, depth2)] = (p99, p95)
+                    else:
+                        var_fix = 0.25*(depth1 + depth2) / \
+                                       (depth1*depth2)
+                        p99 = self.u99*var_fix
+                        p95 = self.u95*var_fix
+
+                    cache[(depth1, depth2)] = (p99, p95)
 
                 lock.acquire()
                 snp_index = open(self.snp_index + ".temp", 'a')

@@ -73,7 +73,7 @@ $ qtlseq -h
 
 usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
-              [-F <INT>] [-T] [-e <DATABASE>]
+              [-F <INT>] [-T] [-e <DATABASE>] [--species <NAME>]
 
 QTL-seq version 2.1.1
 
@@ -127,7 +127,13 @@ optional arguments:
   -Q , --min-BQ      Minimum base quality in mpileup. [18]
   -C , --adjust-MQ   "adjust-MQ" in mpileup. Default parameter
                      is suited for BWA. [50]
+  --species          Consider multiple test correction derived by
+                     Huang et al. (2019). Please spesify a species name.
+                     With this option. QTL-seq produces a theoretical threshold.
+                     Currently, Arabidopsis, Cucumber, Maize, Rapeseed,
+                     Rice, Tobacco, Tomato, Wheat, and Yeast are supported.
   -v, --version      show program's version number and exit
+
 ```
 
 QTL-seq can run from FASTQ (without or with trimming) and BAM. If you want to run QTL-seq from VCF, please use QTL-plot (example 5). Once you run QTL-seq, QTL-seq automatically complete the subprocesses.
@@ -243,7 +249,7 @@ $ qtlplot -h
 usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
-               [--igv] [--corr <FLOAT>] [--indel]
+               [--igv] [--species <NAME>] [--indel]
 
 QTL-plot version 2.1.1
 
@@ -274,10 +280,11 @@ optional arguments:
   -e , --snpEff         Predict causal variant using SnpEff. Please
                         check available databases in SnpEff.
   --igv                 Output IGV format file to check results on IGV.
-  --corr                Use the corrected threshold in Huang et al. (2019).
-                        Please spesify u_alpha_2 in Huang et al. (2019).
-                        When you declare this option, p99 and p95 change to
-                        the single corrected threshold.
+  --species             Consider multiple test correction derived by
+                        Huang et al. (2019). Please spesify a species name.
+                        With this option. QTL-seq produces a theoretical threshold.
+                        Currently, Arabidopsis, Cucumber, Maize, Rapeseed,
+                        Rice, Tobacco, Tomato, Wheat, and Yeast are supported.
   --indel               Plot SNP-index with INDEL.
   --fig-width           Width allocated in chromosome figure. [7.5]
   --fig-height          Height allocated in chromosome figure. [4.0]

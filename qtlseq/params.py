@@ -227,6 +227,24 @@ class Params(object):
                                   'is suited for BWA. [50]'),
                             metavar='')
 
+        parser.add_argument('--species',
+                            action='store',
+                            choices=['Arabidopsis', 
+                                     'Cucumber', 
+                                     'Maize', 
+                                     'Rapeseed', 
+                                     'Rice', 
+                                     'Tobacco', 
+                                     'Tomato', 
+                                     'Wheat', 
+                                     'Yeast'],
+                            help=('Consider multiple test correction derived by\n'
+                                  'Huang et al. (2019). Please spesify a species name.\n'
+                                  'With this option. QTL-seq produces a theoretical threshold.\n'
+                                  'Currently, Arabidopsis, Cucumber, Maize, Rapeseed,\n'
+                                  'Rice, Tobacco, Tomato, Wheat, and Yeast are supported.'),
+                            metavar='')
+
         # set version
         parser.add_argument('-v',
                             '--version',
@@ -241,7 +259,7 @@ class Params(object):
         parser.usage = ('qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>\n'
                         '               [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]\n'
                         '               [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]\n'
-                        '               [--igv] [--corr <FLOAT>] [--indel]')
+                        '               [--igv] [--indel]')
 
         # set options
         parser.add_argument('-v',
@@ -370,13 +388,22 @@ class Params(object):
                             default=False,
                             help='Output IGV format file to check results on IGV.')
 
-        parser.add_argument('--corr',
+        parser.add_argument('--species',
                             action='store',
-                            type=float,
-                            help=('Use the corrected threshold in Huang et al. (2019).\n'
-                                  'Please spesify u_alpha_2 in Huang et al. (2019).\n'
-                                  'When you declare this option, p99 and p95 change to\n'
-                                  'the single corrected threshold.'),
+                            choices=['Arabidopsis', 
+                                     'Cucumber', 
+                                     'Maize', 
+                                     'Rapeseed', 
+                                     'Rice', 
+                                     'Tobacco', 
+                                     'Tomato', 
+                                     'Wheat', 
+                                     'Yeast'],
+                            help=('Consider multiple test correction derived by\n'
+                                  'Huang et al. (2019). Please spesify a species name.\n'
+                                  'With this option. QTL-seq produces a theoretical threshold.\n'
+                                  'Currently, Arabidopsis, Cucumber, Maize, Rapeseed,\n'
+                                  'Rice, Tobacco, Tomato, Wheat, and Yeast are supported.'),
                             metavar='')
 
         parser.add_argument('--indel',

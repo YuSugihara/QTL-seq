@@ -123,8 +123,7 @@ class QTLseq(object):
         mp.run()
 
     def qtlplot(self):
-        if args.snpEff is None:
-            cmd = 'qtlplot -v {0}/30_vcf/qtlseq.vcf.gz \
+        cmd = 'qtlplot -v {0}/30_vcf/qtlseq.vcf.gz \
                            -F {1} \
                            -n1 {2} \
                            -n2 {3} \
@@ -144,29 +143,11 @@ class QTLseq(object):
                                                     self.args.N_rep,
                                                     self.args.max_depth,
                                                     self.args.min_depth)
-        else:
-            cmd = 'qtlplot -v {0}/30_vcf/qtlseq.vcf.gz \
-                           -F {1} \
-                           -n1 {2} \
-                           -n2 {3} \
-                           -t {4} \
-                           -w {5} \
-                           -s {6} \
-                           -N {7} \
-                           -D {8} \
-                           -d {9} \
-                           -o {0}/40_qtlseq \
-                           -e {10}'.format(self.out,
-                                          self.args.filial,
-                                          self.args.N_bulk1,
-                                          self.args.N_bulk2,
-                                          self.args.threads,
-                                          self.args.window,
-                                          self.args.step,
-                                          self.args.N_rep,
-                                          self.args.max_depth,
-                                          self.args.min_depth,
-                                          self.args.snpEff)
+        if self.args.snpEff is not None:
+            cmd = cmd + ' -e {}'.format(self.args.snpEff)
+        
+        if self.args.species is not None:
+            cmd = cmd + ' --species {}'.format(self.args.species)
 
         cmd = clean_cmd(cmd)
         p = sbp.Popen(cmd,
