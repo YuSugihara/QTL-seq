@@ -35,125 +35,54 @@ class Vcf2Index(object):
         if self.snpEff is not None:
             self.ANN_re = re.compile(';ANN=(.*);*')
 
-        if self.species is not None:
-            self.u99, self.u95 = self.correct_threshold()
+        if self.species is None:
+            self.p99_index = int(0.99*self.N_replicates) - 1
+            self.p95_index = int(0.95*self.N_replicates) - 1
+        else:
+            k = self.correct_threshold()
+            corr_p99 = 0.01/k
+            corr_p95 = 0.05/k
+            self.p99_index = int((1 - corr_p99)*self.N_replicates) - 1
+            self.p95_index = int((1 - corr_p95)*self.N_replicates) - 1
+
+            if int(corr_p99*self.N_replicates) - 1 < 0:
+                print(('!!WARNING!! Number of replicates for simulation is not '
+                       'enough to consider multiple testing correction. '
+                       'Therefore, the highest SNP-index and the second highest '
+                       'SNP-index were selected for p99 and p95, respectively.'), 
+                       file=sys.stderr)
+
+                self.p99_index = self.N_replicates - 1
+                self.p95_index = self.N_replicates - 2
 
     def correct_threshold(self):
+        if self.filial == 2:
+            l = 8.4
+        elif self.filial == 3:
+            l = 5.8
+        elif self.filial == 4:
+            l = 5.0
+        else:
+            l = 4.5
+
         if self.species == 'Arabidopsis':
-            if self.filial == 2:
-                u99 = 3.82
-                u95 = 3.41
-            elif self.filial == 3:
-                u99 = 3.91
-                u95 = 3.50
-            elif self.filial == 4:
-                u99 = 3.94
-                u95 = 3.54
-            else:
-                u99 = 3.97
-                u95 = 3.57
-
+            k = 5 + 600/l
         elif self.species == 'Cucumber':
-            if self.filial == 2:
-                u99 = 4.02
-                u95 = 3.62
-            elif self.filial == 3:
-                u99 = 4.10
-                u95 = 3.72
-            elif self.filial == 4:
-                u99 = 4.14
-                u95 = 3.75
-            else:
-                u99 = 4.16
-                u95 = 3.78
-
+            k = 7 + 1390/l
         elif self.species == 'Maize':
-            if self.filial == 2:
-                u99 = 4.11
-                u95 = 3.72
-            elif self.filial == 3:
-                u99 = 4.19
-                u95 = 3.81
-            elif self.filial == 4:
-                u99 = 4.23
-                u95 = 3.85
-            else:
-                u99 = 4.25
-                u95 = 3.87
-
+            k = 10 + 2060/l
         elif self.species == 'Rapeseed':
-            if self.filial == 2:
-                u99 = 4.16
-                u95 = 3.78
-            elif self.filial == 3:
-                u99 = 4.24
-                u95 = 3.87
-            elif self.filial == 4:
-                u99 = 4.27
-                u95 = 3.90
-            else:
-                u99 = 4.30
-                u95 = 3.93
-
+            k = 18 + 2520/l
         elif self.species == 'Rice':
-            if self.filial == 2:
-                u99 = 4.05
-                u95 = 3.65
-            elif self.filial == 3:
-                u99 = 4.13
-                u95 = 3.74
-            elif self.filial == 4:
-                u99 = 4.16
-                u95 = 3.78
-            else:
-                u99 = 4.19
-                u95 = 3.80
-
+            k = 12 + 1530/l
         elif self.species == 'Tobacco':
-            if self.filial == 2:
-                u99 = 4.22
-                u95 = 3.84
-            elif self.filial == 3:
-                u99 = 4.30
-                u95 = 3.92
-            elif self.filial == 4:
-                u99 = 4.33
-                u95 = 3.96
-            else:
-                u99 = 4.35
-                u95 = 3.98
-
+            k = 12 + 3270/l
         elif self.species == 'Tomato':
-            if self.filial == 2:
-                u99 = 4.04
-                u95 = 3.65
-            elif self.filial == 3:
-                u99 = 4.12
-                u95 = 3.73
-            elif self.filial == 4:
-                u99 = 4.15
-                u95 = 3.77
-            else:
-                u99 = 4.18
-                u95 = 3.80
-
+            k = 12 + 1470/l
         elif self.species == 'Wheat':
-            if self.filial == 2:
-                u99 = 4.21
-                u95 = 3.83
-            elif self.filial == 3:
-                u99 = 4.29
-                u95 = 3.92
-            elif self.filial == 4:
-                u99 = 4.32
-                u95 = 3.95
-            else:
-                u99 = 4.35
-                u95 = 3.98
-
+            k = 21 + 3140/l
         elif self.species == 'Yeast':
-            u99 = 4.31
-            u95 = 3.93
+            k = 16 + 4900/l
             if self.filial >= 2:
                 print('!!WARNING!! Filial generation must be 2 in yeast.', file=sys.stderr)
 
@@ -161,7 +90,7 @@ class Vcf2Index(object):
             print('You specified not supported species.', file=sys.stderr)
             sys.exit(1)
 
-        return u99, u95
+        return k
 
 
     def get_field(self):
@@ -279,8 +208,8 @@ class Vcf2Index(object):
                 n += 1
 
         replicates.sort()
-        p99 = replicates[int(0.99*self.N_replicates) - 1]
-        p95 = replicates[int(0.95*self.N_replicates) - 1]
+        p99 = replicates[self.p99_index]
+        p95 = replicates[self.p95_index]
         return p99, p95
 
     def calculate_SNPindex_sub(self, line):
@@ -317,13 +246,7 @@ class Vcf2Index(object):
                 if (depth1, depth2) in cache:
                     p99, p95 = cache[(depth1, depth2)]
                 else:
-                    if self.species is None:
-                        p99, p95 = self.Fn_simulation(depth1, depth2)
-                    else:
-                        var_fix = 0.25*(depth1 + depth2) / \
-                                       (depth1*depth2)
-                        p99 = self.u99*var_fix
-                        p95 = self.u95*var_fix
+                    p99, p95 = self.Fn_simulation(depth1, depth2)
 
                     cache[(depth1, depth2)] = (p99, p95)
 
