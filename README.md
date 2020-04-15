@@ -44,7 +44,7 @@ You can install QTL-seq using [bioconda](https://bioconda.github.io/index.html).
 ```
 $ conda install -c bioconda qtlseq
 ```
-If you want to install with Python environment.
+Alternatively, if you want to create QTL-seq specific environment with Python3.
 ```
 $ conda create -n qtlseq python=3 qtlseq
 ```
