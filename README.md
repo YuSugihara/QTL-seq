@@ -68,6 +68,9 @@ $ trimmomatic --help
 ```
 
 ## Usage
+
+Current version can not plot too contiguous reference genome.
+
 ```
 $ qtlseq -h
 
