@@ -22,7 +22,8 @@ Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is 
 
 #### Citation
 - Hiroki Takagi, Akira Abe, Kentaro Yoshida, Shunichi Kosugi, Satoshi Natsume, Chikako Mitsuoka, Aiko Uemura, Hiroe Utsushi, Muluneh Tamiru, Shohei Takuno, Hideki Innan, Liliana M. Cano, Sophien Kamoun, Ryohei Terauchi (2013).  QTL-seq: rapid mapping of quantitative trait loci in rice by whole genome resequencing of DNA from two bulked populations. Plant journal 74:174-183. [[URL]](https://doi.org/10.1111/tpj.12105)
-- Yu Sugihara, Lester Young, Hiroki Yaegashi, Satoshi Natsume, Daniel J. Shea, Hiroki Takagi, Helen Booker, Ryohei Terauchi, Akira Abe (in preparation). High performance pipeline for MutMap and QTL-seq.
+- Yu Sugihara, Lester Young, Hiroki Yaegashi, Satoshi Natsume, Daniel J. Shea, Hiroki Takagi, Helen Booker, Hideki Innan, Ryohei Terauchi, Akira Abe (2020). High performance pipeline for MutMap and QTL-seq.[[URL]](https://www.biorxiv.org/content/10.1101/2020.06.28.176586v1.full.pdf)
+
 
 ## Installation
 ### Dependencies
@@ -70,6 +71,7 @@ $ trimmomatic --help
 ## Usage
 
 Current version can not plot too contiguous reference genome.
+**We highly recommend you to run QTL-seq without spcifying '--species' for multiple testing correction, initially.**
 
 ```
 $ qtlseq -h
