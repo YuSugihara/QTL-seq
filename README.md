@@ -1,5 +1,5 @@
 # QTL-seq User Guide
-#### version 2.1.2
+#### version 2.1.3
 
 ## Table of contents
 - [What is QTL-seq?](#What-is-QTL-seq)
@@ -80,7 +80,7 @@ usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
               [-F <INT>] [-T] [-e <DATABASE>] [--species <NAME>]
 
-QTL-seq version 2.1.2
+QTL-seq version 2.1.3
 
 optional arguments:
   -h, --help         show this help message and exit
@@ -254,9 +254,9 @@ $ qtlplot -h
 usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
-               [--igv] [--species <NAME>] [--indel]
+               [--igv] [--indel]
 
-QTL-plot version 2.1.2
+QTL-plot version 2.1.3
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -295,6 +295,8 @@ optional arguments:
   --fig-height          Height allocated in chromosome figure. [4.0]
   --white-space         White space between figures. (This option
                         only affect vertical direction.) [0.6]
+  -f , --format         Specifiy the format of an output image.
+                        eps/jpeg/jpg/pdf/pgf/png/rgba/svg/svgz/tif/tiff
   --version             show program's version number and exit
 ```
 QTL-plot is included in QTL-seq. QTL-seq run QTL-plot after making VCF. Then, QTL-plot will work with default parameters. If you want to change some parameters, you can use VCF inside of `(OUT_DIR/30_vcf/QTL-seq.vcf.gz)` to retry plotting process like below.

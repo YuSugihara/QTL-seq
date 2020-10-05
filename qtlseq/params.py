@@ -433,6 +433,15 @@ class Params(object):
                                   'only affect vertical direction.) [0.6]'),
                             metavar='')
 
+        parser.add_argument('-f',
+                            '--format',
+                            action='store',
+                            default='png',
+                            type=str,
+                            help=('Specifiy the format of an output image.\n'
+                                  'eps/jpeg/jpg/pdf/pgf/png/rgba/svg/svgz/tif/tiff'),
+                            metavar='')
+
         # set version
         parser.add_argument('--version',
                             action='version',
