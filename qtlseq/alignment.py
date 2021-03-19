@@ -25,7 +25,8 @@ class Alignment(object):
                                 - \
                                 - | \
                samtools view -b \
-                             -f 3 \
+                             -f 2 \
+                             -F 2048 \
                              -o {5}/20_bam/{6}.bam \
                              >> {5}/log/alignment.log \
                              2>&1'.format(self.args.threads,
