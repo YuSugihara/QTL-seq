@@ -14,7 +14,6 @@ import subprocess as sbp
 from qtlseq.refindex import RefIndex
 from qtlseq.trim import Trim
 from qtlseq.alignment import Alignment
-from qtlseq.bamfilt import BamFilt
 from qtlseq.mpileup import Mpileup
 from qtlseq.vcf2index import Vcf2Index
 from qtlseq.utils import time_stamp, clean_cmd, call_log
@@ -164,7 +163,6 @@ class QTLseq(object):
             self.trimming()
         else:
             self.alignment()
-        self.bamfilt()
         self.mpileup()
         self.qtlplot()
 

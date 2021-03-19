@@ -15,7 +15,7 @@ class Mpileup(object):
         self.args = args
 
     def get_bams(self, label):
-        bams = glob.glob('{}/20_bam/{}*.filt.bam'.format(self.out, label))
+        bams = glob.glob('{}/20_bam/{}*.bam'.format(self.out, label))
         return bams
 
     def merge(self):
@@ -23,30 +23,30 @@ class Mpileup(object):
             bams = self.get_bams(label)
             if len(bams) == 1:
                 path_to_bam = os.path.abspath(bams[0])
-                cmd1 = 'ln -s {} {}/20_bam/{}.unsorted.filt.bam'.format(path_to_bam,
-                                                                        self.out,
-                                                                        label)
+                cmd1 = 'ln -s {} {}/20_bam/{}.unsorted.bam'.format(path_to_bam,
+                                                                   self.out,
+                                                                   label)
             else:
-                cmd1 = 'samtools merge -f {0}/20_bam/{1}.unsorted.filt.bam \
-                                          {0}/20_bam/{1}*.filt.bam \
+                cmd1 = 'samtools merge -f {0}/20_bam/{1}.unsorted.bam \
+                                          {0}/20_bam/{1}*.bam \
                                           >> {0}/log/samtools.log \
                                           2>&1'.format(self.out, label)
 
             cmd2 = 'samtools sort -m {0} \
                                   -@ {1} \
-                                  -o {2}/20_bam/{3}.filt.bam \
-                                  {2}/20_bam/{3}.unsorted.filt.bam \
+                                  -o {2}/20_bam/{3}.bam \
+                                  {2}/20_bam/{3}.unsorted.bam \
                                   >> {2}/log/samtools.log \
                                   2>&1'.format(self.args.mem,
                                                self.args.threads,
                                                self.out,
                                                label)
 
-            cmd3 = 'samtools index {0}/20_bam/{1}.filt.bam \
+            cmd3 = 'samtools index {0}/20_bam/{1}.bam \
                                    >> {0}/log/samtools.log \
                                    2>&1'.format(self.out, label)
 
-            cmd4 = 'rm -f {}/20_bam/{}.*.filt.bam'.format(self.out, label)
+            cmd4 = 'rm -f {}/20_bam/{}.*.bam'.format(self.out, label)
 
             cmd1 = clean_cmd(cmd1)
             cmd2 = clean_cmd(cmd2)
@@ -110,9 +110,9 @@ class Mpileup(object):
                                  -r {3} \
                                  -f {4} \
                                  --ignore-RG \
-                                 {5}/20_bam/parent.filt.bam \
-                                 {5}/20_bam/bulk1.filt.bam \
-                                 {5}/20_bam/bulk2.filt.bam | \
+                                 {5}/20_bam/parent.bam \
+                                 {5}/20_bam/bulk1.bam \
+                                 {5}/20_bam/bulk2.bam | \
                 bcftools call -vm \
                               -f GQ,GP \
                               -O u | \
