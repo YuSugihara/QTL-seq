@@ -33,7 +33,8 @@ class QTLplot(object):
             os.mkdir(self.out)
 
     def run_snpEff(self):
-        cmd = 'snpEff ann -s {0}/snpEff_summary.html \
+        cmd = 'snpEff ann -Xmx8g \
+                          -s {0}/snpEff_summary.html \
                           {1} \
                           {2} \
                           1> {0}/qtlseq.snpEff.vcf \
