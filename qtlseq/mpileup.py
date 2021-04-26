@@ -160,8 +160,7 @@ class Mpileup(object):
         cmd1 = 'cat {0}/log/bcftools.*.log > {0}/log/bcftools.log'.format(self.out)
         cmd2 = 'cat {0}/log/tabix.*.log > {0}/log/tabix.log'.format(self.out)
 
-        cmd3 = 'bcftools concat -a \
-                                -O z \
+        cmd3 = 'bcftools concat -O z \
                                 -o {0}/30_vcf/qtlseq.vcf.gz \
                                 {0}/30_vcf/qtlseq.*.vcf.gz \
                                 >> {0}/log/bcftools.log \
