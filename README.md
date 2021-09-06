@@ -16,7 +16,7 @@
 - [Outputs](#Outputs)
 
 ## What is QTL-seq?
-<img src="https://210a94ef-a-fc7f2be1-s-sites.googlegroups.com/a/ibrc.or.jp/genome-e/home/bioinformatics-team/mutmap/QTL-seq_LOGO.jpg?attachauth=ANoY7coJoWWEVItHoU2_q2dDtQkdBtsHOiv228_rPBP8ZvISV9vvS7z-YRmxG5_JLCMhwPrMg92SBMU-ULQd5F1X2Tioz5Vvv_gLecE3WSMlrBYu5y69PHEuhTWWDM8hRruMJWCrVIdjeQoDL26KWbZUFVEZOHHXX5zL-s2B0UqH3zKDxurCfpmrg_gbE7y_8D9gvaGEAYe73HOR1Jl7WjpdeYijWeqanQzUnLwWzMnITpKxLzXD7fD5ebjBLI5wNZo2j7UTfRIv&attredirects=0" width=200>
+<img src="https://github.com/YuSugihara/QTL-seq/blob/master/images/1_logo.png" width=200>
 
 Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is a powerful and efficient method to identify agronomically important loci in crop plants. QTL-seq was adapted from MutMap to identify quantitative trait loci. It utilizes sequences pooled from two segregating progeny populations with extreme opposite traits (e.g. resistant vs susceptible) and a single whole-genome resequencing of either of the parental cultivars. While the original QTL-seq algorithm did not assume a highly heterozygous genome, a “modified QTL-seq” has been developed to handle this situation using high resolution mapping ([Itoh et al., 2019](https://doi.org/10.1007/s00122-019-03396-z)).
 
@@ -382,4 +382,4 @@ Inside of `OUT_DIR` is like below.
     - **<span style="color: orange; ">ORANGE line</span>** : mean p99
     - **<span style="color: green; ">GREEN line</span>** : mean p95
 
-<img src="https://user-images.githubusercontent.com/34593586/72580948-00e60500-3921-11ea-850f-dcf9a8d75e74.png" width=600>
+<img src="https://github.com/YuSugihara/QTL-seq/blob/master/images/2_result.png" width=600>
