@@ -45,29 +45,29 @@ Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is 
 ### Installation using bioconda
 You can install QTL-seq using [bioconda](https://bioconda.github.io/index.html).
 ```
-$ conda install -c bioconda qtlseq
+conda install -c bioconda qtlseq
 ```
 Alternatively, if you want to create QTL-seq specific environment with Python3.
 ```
-$ conda create -n qtlseq python=3 qtlseq
+conda create -n qtlseq python=3 qtlseq
 ```
 
 ### Mannual Installation
 If you got a error during installation, you can install QTL-seq, manually.
 ```
-$ git clone https://github.com/YuSugihara/QTL-seq.git
-$ cd QTL-seq
-$ pip install -e .
+git clone https://github.com/YuSugihara/QTL-seq.git
+cd QTL-seq
+pip install -e .
 ```
 Then you have to install other dependencies by yourself. We highly recommend you to install SnpEff and Trimmomatic using bioconda.
 ```
-$ conda install -c bioconda snpeff
-$ conda install -c bioconda trimmomatic
+conda install -c bioconda snpeff
+conda install -c bioconda trimmomatic
 ```
 After installation, please check whether SnpEff and Trimmomatic work through the commands like below.
 ```
-$ snpEff --help
-$ trimmomatic --help
+snpEff --help
+trimmomatic --help
 ```
 
 ## Usage
@@ -76,7 +76,7 @@ Current version can not plot too contiguous reference genome.
 **We highly recommend you to run QTL-seq without spcifying '--species' for multiple testing correction, initially.**
 
 ```
-$ qtlseq -h
+qtlseq -h
 
 usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
@@ -155,13 +155,13 @@ QTL-seq can run from FASTQ (without or with trimming) and BAM. If you want to ru
 
 ### Example 1 : run QTL-seq from FASTQ without trimming
 ```
-$ qtlseq -r reference.fasta \
-         -p parent.1.fastq,parent.2.fastq \
-         -b1 bulk_1.1.fastq,bulk_1.2.fastq \
-         -b2 bulk_2.1.fastq,bulk_2.2.fastq \
-         -n1 20 \
-         -n2 20 \
-         -o example_dir
+qtlseq -r reference.fasta \
+       -p parent.1.fastq,parent.2.fastq \
+       -b1 bulk_1.1.fastq,bulk_1.2.fastq \
+       -b2 bulk_2.1.fastq,bulk_2.2.fastq \
+       -n1 20 \
+       -n2 20 \
+       -o example_dir
 ```
 
 `-r` : reference fasta
@@ -180,14 +180,14 @@ $ qtlseq -r reference.fasta \
 
 ### Example 2 : run QTL-seq from FASTQ with trimming
 ```
-$ qtlseq -r reference.fasta \
-         -p parent.1.fastq,parent.2.fastq \
-         -b1 bulk_1.1.fastq,bulk_1.2.fastq \
-         -b2 bulk_2.1.fastq,bulk_2.2.fastq \
-         -n1 20 \
-         -n2 20 \
-         -o example_dir \
-         -T
+qtlseq -r reference.fasta \
+       -p parent.1.fastq,parent.2.fastq \
+       -b1 bulk_1.1.fastq,bulk_1.2.fastq \
+       -b2 bulk_2.1.fastq,bulk_2.2.fastq \
+       -n1 20 \
+       -n2 20 \
+       -o example_dir \
+       -T
 ```
 
 `-r` : reference fasta
@@ -208,13 +208,13 @@ $ qtlseq -r reference.fasta \
 
 ### Example 3 : run QTL-seq from BAM
 ```
-$ qtlseq -r reference.fasta \
-         -p parent.bam \
-         -b1 bulk_1.bam \
-         -b2 bulk_2.bam \
-         -n1 20 \
-         -n2 20 \
-         -o example_dir
+qtlseq -r reference.fasta \
+       -p parent.bam \
+       -b1 bulk_1.bam \
+       -b2 bulk_2.bam \
+       -n1 20 \
+       -n2 20 \
+       -o example_dir
 ```
 
 `-r` : reference fasta
@@ -233,30 +233,30 @@ $ qtlseq -r reference.fasta \
 
 ### Example 4 : run QTL-seq from multiple FASTQs and BAMs
 ```
-$ qtlseq -r reference.fasta \
-         -p parent_1.1.fastq,parent_1.2.fastq \
-         -p parent_1.bam \
-         -b1 bulk_11.1.fastq,bulk_11.2.fastq \
-         -b1 bulk_12.bam \
-         -b1 bulk_13.bam \
-         -b2 bulk_21.1.fastq,bulk_21.2.fastq \
-         -b2 bulk_22.bam \
-         -b2 bulk_23.bam \
-         -n1 20 \
-         -n2 20 \
-         -o example_dir
+qtlseq -r reference.fasta \
+       -p parent_1.1.fastq,parent_1.2.fastq \
+       -p parent_1.bam \
+       -b1 bulk_11.1.fastq,bulk_11.2.fastq \
+       -b1 bulk_12.bam \
+       -b1 bulk_13.bam \
+       -b2 bulk_21.1.fastq,bulk_21.2.fastq \
+       -b2 bulk_22.bam \
+       -b2 bulk_23.bam \
+       -n1 20 \
+       -n2 20 \
+       -o example_dir
 ```
 
 QTL-seq can automatically merge multiple FASTQs and BAMs. Of course, you can merge FASTQs or BAMs using `cat` or `samtools merge` before input them to QTL-seq. If you specify `-p` multiple times, please make sure that those files include only 1 individual. On the other hand, `-b1` and `-b2` can include more than 1 individuals because those are bulked samples. QTL-seq can automatically classify FASTQs and BAMs from whether comma exits or not.
 
 ### Example 5 : run QTL-plot from VCF
 ```
-$ qtlplot -h
+qtlplot -h
 
 usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
-               [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]
-               [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
-               [--igv] [--indel]
+              [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]
+              [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
+              [--igv] [--indel]
 
 QTL-plot version 2.2.2
 
@@ -304,12 +304,12 @@ optional arguments:
 QTL-plot is included in QTL-seq. QTL-seq run QTL-plot after making VCF. Then, QTL-plot will work with default parameters. If you want to change some parameters, you can use VCF inside of `(OUT_DIR/30_vcf/QTL-seq.vcf.gz)` to retry plotting process like below.
 
 ```
-$ qtlplot -v OUT_DIR/30_vcf/QTL-seq.vcf.gz \
-          -o ANOTHER_DIR_NAME \
-          -n1 20 \
-          -n2 20 \
-          -w 2000 \
-          -s 100
+qtlplot -v OUT_DIR/30_vcf/QTL-seq.vcf.gz \
+        -o ANOTHER_DIR_NAME \
+        -n1 20 \
+        -n2 20 \
+        -w 2000 \
+        -s 100
 ```
 
 #### Use QTL-plot for VCF which was made by yourself
