@@ -20,7 +20,7 @@
 ## What is QTL-seq?
 <img src="https://github.com/YuSugihara/QTL-seq/blob/master/images/1_logo.png" width=200>
 
-Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is a powerful and efficient method to identify agronomically important loci in crop plants. QTL-seq was adapted from MutMap to identify quantitative trait loci. It utilizes sequences pooled from two segregating progeny populations with extreme opposite traits (e.g. resistant vs susceptible) and a single whole-genome resequencing of either of the parental cultivars. While the original QTL-seq algorithm did not assume a highly heterozygous genome, a “modified QTL-seq” has been developed to handle this situation using high resolution mapping ([Itoh et al., 2019](https://doi.org/10.1007/s00122-019-03396-z)).
+Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is a powerful and efficient method to identify agronomically important loci in crop plants. QTL-seq was adapted from MutMap to identify quantitative trait loci. It utilizes sequences pooled from two segregating progeny populations with extreme opposite traits (e.g. resistant vs susceptible) and a single whole-genome resequencing of either of the parental cultivars.
 
 #### Citation
 - Hiroki Takagi, Akira Abe, Kentaro Yoshida, Shunichi Kosugi, Satoshi Natsume, Chikako Mitsuoka, Aiko Uemura, Hiroe Utsushi, Muluneh Tamiru, Shohei Takuno, Hideki Innan, Liliana M. Cano, Sophien Kamoun, Ryohei Terauchi (2013).  QTL-seq: rapid mapping of quantitative trait loci in rice by whole genome resequencing of DNA from two bulked populations. Plant journal 74:174-183. [[URL]](https://doi.org/10.1111/tpj.12105)
@@ -387,7 +387,25 @@ Inside of `OUT_DIR` is like below.
 <img src="https://github.com/YuSugihara/QTL-seq/blob/master/images/2_result.png" width=600>
 
 ## About multiple testing correction
-We implemented multiple testing correction from version 2. However, we highly recommend to run QTL-seq without multiple testing correction at first.
+We implemented multiple testing correction in QTL-seq v2. 
+You can use multiple testing correction with the option ```--species```. 
+```
+qtlseq -o test \
+       -n1 20 \
+       -n2 20 \
+       -w 100 \
+       -s 20 \
+       -r qtlseq_ref.fasta \
+       -p qtlseq_parent.1.fastq.gz,qtlseq_parent.2.fastq.gz \
+       -b1 qtlseq_bulk1.1.fastq.gz,qtlseq_bulk1.2.fastq.gz \
+       -b2 qtlseq_bulk2.1.fastq.gz,qtlseq_bulk2.2.fastq.gz \
+	     --species Rice
+```
+**However, since multiple testing correction changes the threshold from the original QTL-seq threshold, we highly recommend users, who expect original QTL-seq algorism identifying many QTLs in the prvious researches, to try QTL-seq v2 without multiple testing correction at first.**
+Currently, only nine species (Arabidopsis, Cucumber, Maize, Rapeseed, Rice, Tobacco, Tomato, Wheat, and Yeast) are supported, following the parameters defined in Huang et al. (2019).
+
+
+If you expect the threshold of the original QTL-seq, we highly recommend users to try QTL-seq without multiple testing correction for the first time.
 
 ## Built and use your own database for snpEff
 If you want to use your own database for snpEff, you need additional steps.
