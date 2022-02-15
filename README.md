@@ -391,15 +391,13 @@ We implemented multiple testing correction in QTL-seq v2.
 However, since multiple testing correction changes the threshold from the original QTL-seq threshold, we highly recommend users, who expect original QTL-seq algorism identifying a lot of causal mutations in many researches, to try QTL-seq v2 without multiple testing correction at first.
 You can use multiple testing correction with the option ```--species``` like below:
 ```
-qtlseq -o test \
+qtlseq -r reference.fasta \
+       -p parent.1.fastq,parent.2.fastq \
+       -b1 bulk_1.1.fastq,bulk_1.2.fastq \
+       -b2 bulk_2.1.fastq,bulk_2.2.fastq \
        -n1 20 \
        -n2 20 \
-       -w 100 \
-       -s 20 \
-       -r qtlseq_ref.fasta \
-       -p qtlseq_parent.1.fastq.gz,qtlseq_parent.2.fastq.gz \
-       -b1 qtlseq_bulk1.1.fastq.gz,qtlseq_bulk1.2.fastq.gz \
-       -b2 qtlseq_bulk2.1.fastq.gz,qtlseq_bulk2.2.fastq.gz \
+       -o example_dir \
 	     --species Rice
 ```
 Currently, only nine species (Arabidopsis, Cucumber, Maize, Rapeseed, Rice, Tobacco, Tomato, Wheat, and Yeast) are supported, following the parameters defined in Huang et al. (2019).
