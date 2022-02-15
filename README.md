@@ -388,7 +388,8 @@ Inside of `OUT_DIR` is like below.
 
 ## About multiple testing correction
 We implemented multiple testing correction in QTL-seq v2. 
-You can use multiple testing correction with the option ```--species```. 
+However, since multiple testing correction changes the threshold from the original QTL-seq threshold, we highly recommend users, who expect original QTL-seq algorism identifying QTLs in the many researches, to try QTL-seq v2 without multiple testing correction at first.
+You can use multiple testing correction with the option ```--species``` like below:
 ```
 qtlseq -o test \
        -n1 20 \
@@ -401,11 +402,7 @@ qtlseq -o test \
        -b2 qtlseq_bulk2.1.fastq.gz,qtlseq_bulk2.2.fastq.gz \
 	     --species Rice
 ```
-**However, since multiple testing correction changes the threshold from the original QTL-seq threshold, we highly recommend users, who expect original QTL-seq algorism identifying many QTLs in the prvious researches, to try QTL-seq v2 without multiple testing correction at first.**
 Currently, only nine species (Arabidopsis, Cucumber, Maize, Rapeseed, Rice, Tobacco, Tomato, Wheat, and Yeast) are supported, following the parameters defined in Huang et al. (2019).
-
-
-If you expect the threshold of the original QTL-seq, we highly recommend users to try QTL-seq without multiple testing correction for the first time.
 
 ## Built and use your own database for snpEff
 If you want to use your own database for snpEff, you need additional steps.
