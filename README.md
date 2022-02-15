@@ -388,7 +388,7 @@ Inside of `OUT_DIR` is like below.
 
 ## About multiple testing correction
 We implemented multiple testing correction in QTL-seq v2. 
-However, since multiple testing correction changes the threshold from the original QTL-seq threshold, we highly recommend users, who expect original QTL-seq algorism identifying QTLs in many researches, to try QTL-seq v2 without multiple testing correction at first.
+However, since multiple testing correction changes the threshold from the original QTL-seq threshold, we highly recommend users, who expect original QTL-seq algorism identifying a lot of causal mutations in many researches, to try QTL-seq v2 without multiple testing correction at first.
 You can use multiple testing correction with the option ```--species``` like below:
 ```
 qtlseq -o test \
