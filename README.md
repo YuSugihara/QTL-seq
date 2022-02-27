@@ -398,7 +398,7 @@ qtlseq -r reference.fasta \
        -n1 20 \
        -n2 20 \
        -o example_dir \
-	     --species Rice
+       --species Rice
 ```
 Currently, only nine species (Arabidopsis, Cucumber, Maize, Rapeseed, Rice, Tobacco, Tomato, Wheat, and Yeast) are supported, following the parameters defined in Huang et al. (2019).
 
