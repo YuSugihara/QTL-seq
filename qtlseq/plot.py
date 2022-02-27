@@ -1,11 +1,10 @@
-import os
+import sys
 import warnings
 warnings.filterwarnings("ignore")
 import pandas as pd
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from qtlseq.utils import time_stamp
 
 
 class Plot(object):
@@ -20,8 +19,17 @@ class Plot(object):
         self.plot_with_indel = args.indel
         self.snp_index, self.sliding_window = self.read_files()
         N_chr = len(self.sliding_window['CHROM'].unique())
+
+        if N_chr > 50:
+            N_chr, self.snp_index, self.sliding_window = self.get_significant_contigs(N_chr, 
+                                                                                      self.snp_index, 
+                                                                                      self.sliding_window)
+
+
         self.N_col, self.N_raw = self.set_plot_style(N_chr)
         self.xmax = self.snp_index['POSI'].max()
+        self.sliding_window = self.sliding_window.groupby('CHROM')
+
         try:
             import seaborn as sns
             sns.set_style('whitegrid')
@@ -71,9 +79,25 @@ class Plot(object):
         snp_index['POSI'] = snp_index['POSI']/1000000
         sliding_window['CHROM'] = sliding_window['CHROM'].astype('str')
         sliding_window['POSI'] = sliding_window['POSI']/1000000
-        sliding_window = sliding_window.groupby('CHROM')
 
         return snp_index, sliding_window
+
+    def get_significant_contigs(self, N_chr, snp_index, sliding_window):
+
+        print(('!!WARNING!! Your reference genome has too many contigs (>50). '
+               'Therefore, only significant contigs will be plotted.'), file=sys.stderr)
+        
+        significant_windows = sliding_window[abs(sliding_window['mean_p95']) <= \
+                                             abs(sliding_window['mean_delta_SNPindex'])]
+
+        significant_contigs = list(significant_windows['CHROM'].drop_duplicates())
+
+        N_chr = len(significant_contigs)
+        snp_index = snp_index[snp_index['CHROM'].isin(significant_contigs)]
+        sliding_window = sliding_window[sliding_window['CHROM'].isin(significant_contigs)]
+
+        return N_chr, snp_index, sliding_window
+
 
     def set_plot_style(self, N_chr):
         if N_chr == 1:
