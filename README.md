@@ -176,7 +176,7 @@ qtlseq -r reference.fasta \
 
 `-n2` : number of individuals in bulk 2.
 
-`-o` : name of output directory. Specified name cannot exist.
+`-o` : name of output directory. Specified name should not exist.
 
 ### Example 2 : run QTL-seq from FASTQ with trimming
 ```
@@ -202,7 +202,7 @@ qtlseq -r reference.fasta \
 
 `-n2` : number of individuals in bulk 2.
 
-`-o` : name of output directory. Specified name cannot exist.
+`-o` : name of output directory. Specified name should not exist.
 
 `-T` : trim your reads using trimmomatic.
 
@@ -229,7 +229,7 @@ qtlseq -r reference.fasta \
 
 `-n2` : number of individuals in bulk 2.
 
-`-o` : name of output directory. Specified name cannot exist.
+`-o` : name of output directory. Specified name should not exist.
 
 ### Example 4 : run QTL-seq from multiple FASTQs and BAMs
 ```
