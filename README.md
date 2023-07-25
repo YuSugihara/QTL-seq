@@ -12,7 +12,7 @@
   + [Example 2 : run QTL-seq from FASTQ with trimming](#example-2--run-qtl-seq-from-fastq-with-trimming)
   + [Example 3 : run QTL-seq from BAM](#example-3--run-qtl-seq-from-bam)
   + [Example 4 : run QTL-seq from multiple FASTQs and BAMs](#example-4--run-qtl-seq-from-multiple-fastqs-and-bams)
-  + [Example 5 : run QTL-plot from VCF](#example-5--run-QTL-plot-from-vcf)
+  + [Example 5 : run QTL-plot from VCF](#example-5--run-qtl-plot-from-vcf)
 - [Outputs](#outputs)
 - [About multiple testing correction](#about-multiple-testing-correction)
 - [Built and use your own database for snpEff](#built-and-use-your-own-database-for-snpeff)
@@ -149,7 +149,7 @@ QTL-seq can run from FASTQ (without or with trimming) and BAM. If you want to ru
 + [Example 2 : run QTL-seq from FASTQ with trimming](#example-2--run-qtl-seq-from-fastq-with-trimming)
 + [Example 3 : run QTL-seq from BAM](#example-3--run-qtl-seq-from-bam)
 + [Example 4 : run QTL-seq from multiple FASTQs and BAMs](#example-4--run-qtl-seq-from-multiple-fastqs-and-bams)
-+ [Example 5 : run QTL-plot from VCF](#example-5--run-QTL-plot-from-vcf)
++ [Example 5 : run QTL-plot from VCF](#example-5--run-qtl-plot-from-vcf)
 
 
 
