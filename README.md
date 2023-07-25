@@ -2,20 +2,20 @@
 #### version 2.2.3
 
 ## Table of contents
-- [What is QTL-seq?](#What-is-QTL-seq)
-- [Installation](#Installation)
-  + [Dependencies](#Dependencies)
-  + [Installation using bioconda](#Installation-using-bioconda)
-  + [Manual Installation](#Manual-Installation)
-- [Usage](#Usage)
-  + [Example 1 : run QTL-seq from FASTQ without trimming](#Example-1--run-QTL-seq-from-FASTQ-without-trimming)
-  + [Example 2 : run QTL-seq from FASTQ with trimming](#Example-2--run-QTL-seq-from-FASTQ-with-trimming)
-  + [Example 3 : run QTL-seq from BAM](#Example-3--run-QTL-seq-from-BAM)
-  + [Example 4 : run QTL-seq from multiple FASTQs and BAMs](#Example-4--run-QTL-seq-from-multiple-FASTQs-and-BAMs)
-  + [Example 5 : run QTL-plot from VCF](#Example-5--run-QTL-plot-from-VCF)
-- [Outputs](#Outputs)
-- [About multiple testing correction](#About-multiple-testing-correction)
-- [Built and use your own database for snpEff](#Built-and-use-your-own-database-for-snpEff)
+- [What is QTL-seq?](#what-is-qtl-seq)
+- [Installation](#installation)
+  + [Dependencies](#dependencies)
+  + [Installation using bioconda](#installation-using-bioconda)
+  + [Manual installation](#manual-installation)
+- [Usage](#usage)
+  + [Example 1 : run QTL-seq from FASTQ without trimming](#example-1--run-qtl-seq-from-fastq-without-trimming)
+  + [Example 2 : run QTL-seq from FASTQ with trimming](#example-2--run-qtl-seq-from-fastq-with-trimming)
+  + [Example 3 : run QTL-seq from BAM](#example-3--run-qtl-seq-from-bam)
+  + [Example 4 : run QTL-seq from multiple FASTQs and BAMs](#example-4--run-qtl-seq-from-multiple-fastqs-and-bams)
+  + [Example 5 : run QTL-plot from VCF](#example-5--run-QTL-plot-from-vcf)
+- [Outputs](#outputs)
+- [About multiple testing correction](#about-multiple-testing-correction)
+- [Built and use your own database for snpEff](#built-and-use-your-own-database-for-snpeff)
 
 ## What is QTL-seq?
 <img src="https://github.com/YuSugihara/QTL-seq/blob/master/images/1_logo.png" width=200>
@@ -53,7 +53,7 @@ Alternatively, if you want to create QTL-seq specific environment with Python3.
 conda create -n qtlseq python=3 qtlseq
 ```
 
-### Mannual Installation
+### Manual installation
 If you got a error during installation, you can install QTL-seq, manually.
 ```
 git clone https://github.com/YuSugihara/QTL-seq.git
@@ -145,11 +145,11 @@ optional arguments:
 
 QTL-seq can run from FASTQ (without or with trimming) and BAM. If you want to run QTL-seq from VCF, please use QTL-plot (example 5). Once you run QTL-seq, QTL-seq automatically complete the subprocesses.
 
-+ [Example 1 : run QTL-seq from FASTQ without trimming](#Example-1--run-QTL-seq-from-FASTQ-without-trimming)
-+ [Example 2 : run QTL-seq from FASTQ with trimming](#Example-2--run-QTL-seq-from-FASTQ-with-trimming)
-+ [Example 3 : run QTL-seq from BAM](#Example-3--run-QTL-seq-from-BAM)
-+ [Example 4 : run QTL-seq from multiple FASTQs and BAMs](#Example-4--run-QTL-seq-from-multiple-FASTQs-and-BAMs)
-+ [Example 5 : run QTL-plot from VCF](#Example-5--run-QTL-plot-from-VCF)
++ [Example 1 : run QTL-seq from FASTQ without trimming](#example-1--run-qtl-seq-from-fastq-without-trimming)
++ [Example 2 : run QTL-seq from FASTQ with trimming](#example-2--run-qtl-seq-from-fastq-with-trimming)
++ [Example 3 : run QTL-seq from BAM](#example-3--run-qtl-seq-from-bam)
++ [Example 4 : run QTL-seq from multiple FASTQs and BAMs](#example-4--run-qtl-seq-from-multiple-fastqs-and-bams)
++ [Example 5 : run QTL-plot from VCF](#example-5--run-QTL-plot-from-vcf)
 
 
 
