@@ -11,6 +11,8 @@ import os
 import sys
 import glob
 import subprocess as sbp
+from multiprocessing import set_start_method
+set_start_method('fork')
 from qtlseq.refindex import RefIndex
 from qtlseq.trim import Trim
 from qtlseq.alignment import Alignment

@@ -10,6 +10,8 @@ args = pm.set_options()
 import os
 import pandas as pd
 import subprocess as sbp
+from multiprocessing import set_start_method
+set_start_method('fork')
 from qtlseq.vcf2index import Vcf2Index
 from qtlseq.plot import Plot
 from qtlseq.utils import time_stamp, clean_cmd
