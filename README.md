@@ -312,12 +312,12 @@ qtlplot -v OUT_DIR/30_vcf/QTL-seq.vcf.gz \
         -s 100
 ```
 
-#### Use QTL-plot for VCF which was made by yourself
+#### Using QTL-plot for VCF which was made by yourself
 In this case, please make sure that:
 1. Your VCF include AD format.
 2. Your VCF include three columns of parent, bulk1 and bulk2 in this order.
 
-If you got a error, please try to run QTL-seq from FASTQ or BAM before asking in issues.
+If you got an error, please try to run QTL-seq from FASTQ or BAM before asking in issues.
 
 ## Outputs
 Inside of `OUT_DIR` is like below.
