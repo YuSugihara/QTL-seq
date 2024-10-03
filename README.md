@@ -187,7 +187,8 @@ qtlseq -r reference.fasta \
        -n1 20 \
        -n2 20 \
        -o example_dir \
-       -T
+       -T \
+       -a adapter.fasta
 ```
 
 `-r` : reference fasta
@@ -205,6 +206,8 @@ qtlseq -r reference.fasta \
 `-o` : name of output directory. Specified name should not exist.
 
 `-T` : trim your reads using trimmomatic.
+
+`-a` : FASTA of adapter sequences.
 
 ### Example 3 : run QTL-seq from BAM
 ```
