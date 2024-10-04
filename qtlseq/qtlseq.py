@@ -38,6 +38,15 @@ class QTLseq(object):
         self.link_bam('bulk1', self.bulk1_bam)
         self.link_bam('bulk2', self.bulk2_bam)
 
+        # These environment variables can avoid the potential errors
+        # in python and java
+        if os.environ.get('OMP_NUM_THREADS') == None:
+            os.environ['OMP_NUM_THREADS'] = str(self.args.threads)
+        if os.environ.get('USE_SIMPLE_THREADED_LEVEL3') == None:
+            os.environ['USE_SIMPLE_THREADED_LEVEL3'] = str(self.args.threads)
+        if os.environ.get('JAVA_TOOL_OPTIONS') == None:
+            os.environ['JAVA_TOOL_OPTIONS'] = '-Xmx4000m'
+
     def get_files(self, input_names):
         fastq = []
         bam = []
