@@ -155,9 +155,6 @@ class QTLseq(object):
                                                     self.args.min_depth)
         if self.args.snpEff is not None:
             cmd = cmd + ' -e {}'.format(self.args.snpEff)
-        
-        if self.args.species is not None:
-            cmd = cmd + ' --species {}'.format(self.args.species)
 
         cmd = clean_cmd(cmd)
         p = sbp.Popen(cmd,
