@@ -77,11 +77,11 @@ qtlseq -h
 
 usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
-              [-F <INT>] [-T] [-e <DATABASE>] [--species <NAME>]
+              [-F <INT>] [-T] [-e <DATABASE>]
 
 QTL-seq version 2.2.5
 
-optional arguments:
+options:
   -h, --help         show this help message and exit
   -r , --ref         Reference fasta.
   -p , --parent      fastq or bam of parent. If you specify
@@ -131,11 +131,6 @@ optional arguments:
   -Q , --min-BQ      Minimum base quality in mpileup. [18]
   -C , --adjust-MQ   "adjust-MQ" in mpileup. Default parameter
                      is suited for BWA. [50]
-  --species          Consider multiple test correction derived by
-                     Huang et al. (2019). Please spesify a species name.
-                     With this option. QTL-seq produces a theoretical threshold.
-                     Currently, Arabidopsis, Cucumber, Maize, Rapeseed,
-                     Rice, Tobacco, Tomato, Wheat, and Yeast are supported.
   -v, --version      show program's version number and exit
 
 ```
@@ -387,20 +382,9 @@ Inside of `OUT_DIR` is like below.
 <img src="https://github.com/YuSugihara/QTL-seq/blob/master/images/2_result.png" width=600>
 
 ## About multiple testing correction
-We implemented multiple testing correction in QTL-seq v2. 
-However, since multiple testing correction changes the threshold from the original QTL-seq threshold, we highly recommend users, who expect original QTL-seq algorism identifying a lot of causal mutations in many researches, to try QTL-seq v2 without multiple testing correction at first.
-You can use multiple testing correction with the option ```--species``` like below:
-```
-qtlseq -r reference.fasta \
-       -p parent.1.fastq,parent.2.fastq \
-       -b1 bulk_1.1.fastq,bulk_1.2.fastq \
-       -b2 bulk_2.1.fastq,bulk_2.2.fastq \
-       -n1 20 \
-       -n2 20 \
-       -o example_dir \
-       --species Rice
-```
-Currently, only nine species (Arabidopsis, Cucumber, Maize, Rapeseed, Rice, Tobacco, Tomato, Wheat, and Yeast) are supported, following the parameters defined in Huang et al. (2019).
+Now this function is deprecated since v2.2.5.
+We highly recommend running QTL-seq without this function.
+However, if you would like to use this function, you can use it with versions of QTL-seq older than v2.2.5.
 
 ## Built and use your own database for snpEff
 If you want to use your own database for snpEff, you need additional steps.
