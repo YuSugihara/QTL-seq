@@ -249,13 +249,13 @@ QTL-seq can automatically merge multiple FASTQs and BAMs. Of course, you can mer
 qtlplot -h
 
 usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
-              [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]
-              [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
-              [--igv] [--indel]
+               [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]
+               [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
+               [--igv] [--indel]
 
 QTL-plot version 2.2.5
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -v , --vcf            VCF file which contains parent, bulk1, and bulk2
                         in this order. This VCF file must have AD field.
@@ -282,11 +282,6 @@ optional arguments:
   -e , --snpEff         Predict causal variant using SnpEff. Please
                         check available databases in SnpEff.
   --igv                 Output IGV format file to check results on IGV.
-  --species             Consider multiple test correction derived by
-                        Huang et al. (2019). Please spesify a species name.
-                        With this option. QTL-seq produces a theoretical threshold.
-                        Currently, Arabidopsis, Cucumber, Maize, Rapeseed,
-                        Rice, Tobacco, Tomato, Wheat, and Yeast are supported.
   --indel               Plot SNP-index with INDEL.
   --fig-width           Width allocated in chromosome figure. [7.5]
   --fig-height          Height allocated in chromosome figure. [4.0]
