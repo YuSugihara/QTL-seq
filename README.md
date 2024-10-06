@@ -148,9 +148,9 @@ QTL-seq can run from FASTQ (without or with trimming) and BAM. If you want to ru
 ### Example 1 : run QTL-seq from FASTQ without trimming
 ```
 qtlseq -r reference.fasta \
-       -p parent.1.fastq,parent.2.fastq \
-       -b1 bulk_1.1.fastq,bulk_1.2.fastq \
-       -b2 bulk_2.1.fastq,bulk_2.2.fastq \
+       -p parent.1.fastq.gz,parent.2.fastq.gz \
+       -b1 bulk_1.1.fastq.gz,bulk_1.2.fastq.gz \
+       -b2 bulk_2.1.fastq.gz,bulk_2.2.fastq.gz \
        -n1 20 \
        -n2 20 \
        -o example_dir
@@ -173,9 +173,9 @@ qtlseq -r reference.fasta \
 ### Example 2 : run QTL-seq from FASTQ with trimming
 ```
 qtlseq -r reference.fasta \
-       -p parent.1.fastq,parent.2.fastq \
-       -b1 bulk_1.1.fastq,bulk_1.2.fastq \
-       -b2 bulk_2.1.fastq,bulk_2.2.fastq \
+       -p parent.1.fastq.gz,parent.2.fastq.gz \
+       -b1 bulk_1.1.fastq.gz,bulk_1.2.fastq.gz \
+       -b2 bulk_2.1.fastq.gz,bulk_2.2.fastq.gz \
        -n1 20 \
        -n2 20 \
        -o example_dir \
@@ -229,12 +229,12 @@ qtlseq -r reference.fasta \
 ### Example 4 : run QTL-seq from multiple FASTQs and BAMs
 ```
 qtlseq -r reference.fasta \
-       -p parent_1.1.fastq,parent_1.2.fastq \
+       -p parent_1.1.fastq.gz,parent_1.2.fastq.gz \
        -p parent_1.bam \
-       -b1 bulk_11.1.fastq,bulk_11.2.fastq \
+       -b1 bulk_11.1.fastq.gz,bulk_11.2.fastq.gz \
        -b1 bulk_12.bam \
        -b1 bulk_13.bam \
-       -b2 bulk_21.1.fastq,bulk_21.2.fastq \
+       -b2 bulk_21.1.fastq.gz,bulk_21.2.fastq.gz \
        -b2 bulk_22.bam \
        -b2 bulk_23.bam \
        -n1 20 \
