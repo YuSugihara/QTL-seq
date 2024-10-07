@@ -156,7 +156,7 @@ class Plot(object):
                            marker='x',
                            color='firebrick')
 
-            ax.hlines([0.5], 0, self.xmax, linestyles='dashed')
+            ax.hlines([0.5], 0, self.xmax, linestyles='dashed', color='black')
             ax.set_xlabel('position (Mb)', fontsize=15)
             ax.set_ylabel('SNP-index (1)', fontsize=15)
             ax.set_xlim(0, self.xmax)
@@ -208,7 +208,7 @@ class Plot(object):
                            marker='x',
                            color='firebrick')
 
-            ax.hlines([0.5], 0, self.xmax, linestyles='dashed')
+            ax.hlines([0.5], 0, self.xmax, linestyles='dashed', color='black')
             ax.set_xlabel('position (Mb)', fontsize=15)
             ax.set_ylabel('SNP-index (2)', fontsize=15)
             ax.set_xlim(0, self.xmax)
@@ -280,7 +280,7 @@ class Plot(object):
                            marker='x',
                            color='firebrick')
 
-            ax.hlines([0], 0, self.xmax, linestyles='dashed')
+            ax.hlines([0], 0, self.xmax, linestyles='dashed', color='black')
             ax.set_xlabel('position (Mb)', fontsize=15)
             ax.set_ylabel('$\Delta$SNP-index', fontsize=15)
             ax.set_xlim(0, self.xmax)
