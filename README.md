@@ -70,7 +70,7 @@ trimmomatic --help
 
 ## Usage
 
-If your reference genome contains more than 50 contigs, only the significant ones will be plotted.
+If your reference genome contains more than 50 contigs, only the 50 longest contigs will be plotted.
 
 ```
 qtlseq -h
