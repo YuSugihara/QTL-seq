@@ -37,7 +37,7 @@ class Params(object):
                             action='store',
                             required=True,
                             type=str,
-                            help='Reference fasta.',
+                            help='Reference FASTA file.',
                             metavar='')
 
         parser.add_argument('-p',
@@ -45,10 +45,10 @@ class Params(object):
                             action='append',
                             required=True,
                             type=str,
-                            help=('fastq or bam of parent. If you specify\n'
-                                  'fastq, please separate pairs by comma,\n'
-                                  'e.g. -p fastq1,fastq2. You can use this\n'
-                                  'option multiple times'),
+                            help=('FASTQ or BAM file of the parent. If specifying\n'
+                                  'FASTQ, separate paired-end files with a comma,\n'
+                                  'e.g., -p fastq1,fastq2. This option can be\n'
+                                  'sed multiple times.'),
                             metavar='')
 
         parser.add_argument('-b1',
@@ -56,10 +56,10 @@ class Params(object):
                             action='append',
                             required=True,
                             type=str,
-                            help=('fastq or bam of bulk 1. If you specify\n'
-                                  'fastq, please separate pairs by comma,\n'
-                                  'e.g. -b1 fastq1,fastq2. You can use this\n'
-                                  'option multiple times'),
+                            help=('FASTQ or BAM file of bulk 1. If specifying\n'
+                                  'FASTQ, separate paired-end files with a comma,\n'
+                                  'e.g., -b1 fastq1,fastq2. This option can be\n'
+                                  'sed multiple times.'),
                             metavar='')
 
         parser.add_argument('-b2',
@@ -67,10 +67,10 @@ class Params(object):
                             action='append',
                             required=True,
                             type=str,
-                            help=('fastq or bam of bulk 2. If you specify\n'
-                                  'fastq, please separate pairs by comma,\n'
-                                  'e.g. -b2 fastq1,fastq2. You can use this\n'
-                                  'option multiple times'),
+                            help=('FASTQ or BAM file of bulk 2. If specifying\n'
+                                  'FASTQ, separate paired-end files with a comma,\n'
+                                  'e.g., -b2 fastq1,fastq2. This option can be\n'
+                                  'used multiple times.'),
                             metavar='')
 
         parser.add_argument('-n1',
@@ -94,7 +94,8 @@ class Params(object):
                             action='store',
                             required=True,
                             type=str,
-                            help=('The specified directory must not already exist.'), 
+                            help=('Output directory. The specified directory must not\n'
+                                  'already exist.'), 
                             metavar='')
 
         parser.add_argument('-F',
@@ -102,8 +103,8 @@ class Params(object):
                             action='store',
                             default=2,
                             type=int,
-                            help=('Filial generation. This parameter must be\n'
-                                  'more than 1. [2]'),
+                            help=('Filial generation. This parameter must be greater\n'
+                                  'than 1. [2]'),
                             metavar='')
 
         parser.add_argument('-t',
@@ -111,9 +112,8 @@ class Params(object):
                             action='store',
                             default=2,
                             type=int,
-                            help=('Number of threads. If you specify the number\n'
-                                  'below one, then QTL-seq will use as many threads\n'
-                                  'as possible. [2]'),
+                            help=('Number of threads. If a value less than 1 is specified,\n'
+                                  'QTL-seq will use the maximum available threads. [2]'),
                             metavar='')
 
         parser.add_argument('-w',
@@ -121,7 +121,7 @@ class Params(object):
                             action='store',
                             default=2000,
                             type=int,
-                            help='Window size (kb). [2000]',
+                            help='Window size in kilobases (kb). [2000]',
                             metavar='')
 
         parser.add_argument('-s',
@@ -129,7 +129,7 @@ class Params(object):
                             action='store',
                             default=100,
                             type=int,
-                            help='Step size (kb). [100]',
+                            help='Step size in kilobases (kb). [100]',
                             metavar='')
 
         parser.add_argument('-D',
@@ -137,7 +137,7 @@ class Params(object):
                             action='store',
                             default=250,
                             type=int,
-                            help='Maximum depth of variants which will be used. [250]',
+                            help='Maximum depth of variants to be used. [250]',
                             metavar='')
 
         parser.add_argument('-d',
@@ -145,7 +145,7 @@ class Params(object):
                             action='store',
                             default=8,
                             type=int,
-                            help='Minimum depth of variants which will be used. [8]',
+                            help='Minimum depth of variants to be used. [8]',
                             metavar='')
 
         parser.add_argument('-N',
@@ -153,7 +153,7 @@ class Params(object):
                             action='store',
                             default=5000,
                             type=int,
-                            help=('Number of replicates for simulation to make \n'
+                            help=('Number of replicates for simulations to generate\n'
                                   'null distribution. [5000]'),
                             metavar='')
 
@@ -161,27 +161,25 @@ class Params(object):
                             '--trim',
                             action='store_true',
                             default=False,
-                            help='Trim fastq using trimmomatic.')
+                            help='Trim FASTQ files using Trimmomatic.')
 
         parser.add_argument('-a',
                             '--adapter',
                             action='store',
                             type=str,
-                            help=('FASTA of adapter sequences. This will be used\n'
-                                  'when you specify "-T" for trimming.'),
+                            help=('FASTA file containing adapter sequences. This option\n'
+                                  'is used when "-T" is specified for trimming.'),
                             metavar='')
 
         parser.add_argument('--trim-params',
                             action='store',
                             type=str,
-                            help=('Parameters for trimmomatic. Input parameters\n'
-                                  'must be separated by comma with following\n'
-                                  'order: phred, ILLUMINACLIP, LEADING, TRAILING,\n'
-                                  'SLIDINGWINDOW, MINLEN. If you want to remove\n'
-                                  'adapters of illumina, please specify FASTA of\n'
-                                  'the adapter sequences with "--adapter". Specified\n'
-                                  'name will be inserted into <ADAPTER_FASTA>. If you\n'
-                                  "don't specify it, adapter trimming will be skipped.\n"
+                            help=('Parameters for Trimmomatic. Input parameters\n'
+                                  'must be comma-separated in the following order:\n'
+                                  'Phred score, ILLUMINACLIP, LEADING, TRAILING,\n'
+                                  ' SLIDINGWINDOW, MINLEN. To remove Illumina adapters,\n'
+                                  'specify the adapter FASTA file with "--adapter".\n'
+                                  'If not specified, adapter trimming will be skipped.\n'
                                   '[33,<ADAPTER_FASTA>:2:30:10,20,20,4:15,75]'),
                             metavar='')
 
@@ -189,36 +187,34 @@ class Params(object):
                             '--snpEff',
                             action='store',
                             type=str,
-                            help=('Predict causal variants using SnpEff. Please\n'
-                                  'check available databases in SnpEff.'),
+                            help=('Predict causal variants using SnpEff. Check\n'
+                                  'available databases in SnpEff.'),
                             metavar='')
 
         parser.add_argument('--line-colors',
                             action='store',
                             default='red,lime,orange',
                             type=str,
-                            help=('Colors for threshold lines in plots.\n'
-                                  'Please specify as comma separated list\n'
-                                  'in the order of SNP-index, p95, and p99.\n'
-                                  '[red,lime,orange]'),
+                            help=('Colors for threshold lines in plots. Specify a\n'
+                                  'comma-separated list in the order of SNP-index,\n'
+                                  'p95, and p99. [red,lime,orange]'),
                             metavar='')
 
         parser.add_argument('--dot-colors',
                             action='store',
                             default='green,orange,navy',
                             type=str,
-                            help=('Colors for dots in plots.\n'
-                                  'Please specify as comma separated list\n'
-                                  'in the order of bulk1, bulk2, and delta.\n'
-                                  '[green,orange,navy]'),
+                            help=('Colors for dots in plots. Specify a\n'
+                                  'comma-separated list in the order of bulk1,\n'
+                                  'bulk2, and delta. [green,orange,navy]'),
                             metavar='')
 
         parser.add_argument('--mem',
                             action='store',
                             default='1G',
                             type=str,
-                            help=('Maximum memory per thread when bam sorted;\n'
-                                  'suffix K/M/G recognized. [1G]'),
+                            help=('Maximum memory per thread when sorting BAM files;\n'
+                                  'suffixes K/M/G are recognized. [1G]'),
                             metavar='')
 
         parser.add_argument('-q',
@@ -226,7 +222,7 @@ class Params(object):
                             action='store',
                             default=40,
                             type=int,
-                            help='Minimum mapping quality in mpileup. [40]',
+                            help='Minimum mapping quality for mpileup. [40]',
                             metavar='')
 
         parser.add_argument('-Q',
@@ -234,7 +230,7 @@ class Params(object):
                             action='store',
                             default=18,
                             type=int,
-                            help='Minimum base quality in mpileup. [18]',
+                            help='Minimum base quality for mpileup. [18]',
                             metavar='')
 
         parser.add_argument('-C',
@@ -242,8 +238,8 @@ class Params(object):
                             action='store',
                             default=50,
                             type=int,
-                            help=('"adjust-MQ" in mpileup. Default parameter\n'
-                                  'is suited for BWA. [50]'),
+                            help=('Adjust the mapping quality for mpileup. The default\n'
+                                  'setting is optimized for BWA. [50]'),
                             metavar='')
 
         # set version
@@ -293,7 +289,8 @@ class Params(object):
                             action='store',
                             required=True,
                             type=str,
-                            help='Output directory. Specified name can exist.',
+                            help=('Output directory. The specified directory can already\n'
+                                  'exist.'),
                             metavar='')
 
         parser.add_argument('-F',
@@ -310,9 +307,8 @@ class Params(object):
                             action='store',
                             default=2,
                             type=int,
-                            help=('Number of threads. If you specify the number\n'
-                                  'below one, then QTL-seq will use as many threads\n'
-                                  'as possible. [2]'),
+                            help=('Number of threads. If a value less than 1 is specified,\n'
+                                  'QTL-seq will use the maximum available threads. [2]'),
                             metavar='')
 
         parser.add_argument('-w',
@@ -336,7 +332,7 @@ class Params(object):
                             action='store',
                             default=250,
                             type=int,
-                            help='Maximum depth of variants which will be used. [250]',
+                            help='Maximum depth of variants to be used. [250]',
                             metavar='')
 
         parser.add_argument('-d',
@@ -344,7 +340,7 @@ class Params(object):
                             action='store',
                             default=8,
                             type=int,
-                            help='Minimum depth of variants which will be used. [8]',
+                            help='Minimum depth of variants to be used. [8]',
                             metavar='')
 
         parser.add_argument('-N',
@@ -352,7 +348,7 @@ class Params(object):
                             action='store',
                             default=5000,
                             type=int,
-                            help=('Number of replicates for simulation to make \n'
+                            help=('Number of replicates for simulations to generate\n'
                                   'null distribution. [5000]'),
                             metavar='')
 
@@ -369,19 +365,19 @@ class Params(object):
                             action='store',
                             default=7,
                             type=int,
-                            help=('Filter spurious homo genotypes in cultivar using\n'
-                                  'strand bias. If ADF (or ADR) is higher than this\n'
-                                  'cutoff when ADR (or ADF) is 0, that SNP will be\n'
-                                  'filtered out. If you want to supress this filtering,\n'
-                                  'please set this cutoff to 0. [7]\n'),
+                            help=('Filter out spurious homozygous genotypes in the cultivar\n'
+                                  'based on strand bias. If ADF (or ADR) is higher than\n'
+                                  'this cutoff when ADR (or ADF) is 0, that SNP will be\n'
+                                  'filtered out. If you want to disable this filtering,\n'
+                                  'set this cutoff to 0. [7]\n'),
                             metavar='')
 
         parser.add_argument('-e',
                             '--snpEff',
                             action='store',
                             type=str,
-                            help=('Predict causal variants using SnpEff. Please\n'
-                                  'check available databases in SnpEff.'),
+                            help=('Predict causal variants using SnpEff. Check\n'
+                                  'available databases in SnpEff.'),
                             metavar='')
 
         parser.add_argument('--igv',
@@ -398,20 +394,18 @@ class Params(object):
                             action='store',
                             default='red,lime,orange',
                             type=str,
-                            help=('Colors for threshold lines in plots.\n'
-                                  'Please specify as comma separated list\n'
-                                  'in the order of SNP-index, p95, and p99.\n'
-                                  '[red,lime,orange]'),
+                            help=('Colors for threshold lines in plots. Specify a\n'
+                                  'comma-separated list in the order of SNP-index,\n'
+                                  'p95, and p99. [red,lime,orange]'),
                             metavar='')
 
         parser.add_argument('--dot-colors',
                             action='store',
-                            default='rgreen,orange,navy',
+                            default='green,orange,navy',
                             type=str,
-                            help=('Colors for dots in plots.\n'
-                                  'Please specify as comma separated list\n'
-                                  'in the order of bulk1, bulk2, and delta.\n'
-                                  '[green,orange,navy]'),
+                            help=('Colors for dots in plots. Specify a\n'
+                                  'comma-separated list in the order of bulk1,\n'
+                                  'bulk2, and delta. [green,orange,navy]'),
                             metavar='')
 
         parser.add_argument('--fig-width',
@@ -433,7 +427,7 @@ class Params(object):
                             default=0.6,
                             type=float,
                             help=('White space between figures. (This option\n'
-                                  'only affect vertical direction.) [0.6]'),
+                                  'only affects vertical direction.) [0.6]'),
                             metavar='')
 
         parser.add_argument('-f',
@@ -441,7 +435,7 @@ class Params(object):
                             action='store',
                             default='png',
                             type=str,
-                            help=('Specifiy the format of an output image.\n'
+                            help=('Specify the format of an output image.\n'
                                   'eps/jpeg/jpg/pdf/pgf/png/rgba/svg/svgz/tif/tiff'),
                             metavar='')
 
@@ -454,9 +448,6 @@ class Params(object):
 
     def check_max_threads(self, args):
         max_cpu = multi.cpu_count()
-        # print(time_stamp(),
-        #       'maximum number of threads which you can use is up to {}.'.format(max_cpu),
-        #       flush=True)
         if max_cpu <= args.threads:
             sys.stderr.write(('!!WARNING!! You can use up to {0} threads. '
                               'This program will use {0} threads.\n').format(max_cpu))
@@ -479,7 +470,7 @@ class Params(object):
 
         if args.adapter is not None:
             if not args.trim:
-                sys.stderr.write(('!!WARNING!! You specified  "--adapter", but you　'
+                sys.stderr.write(('!!WARNING!! You specified  "--adapter", but you '
                                   'did not spesify "--trim".\n'
                                   '!!WARNING!! "--trim" was added.\n'))
                 sys.stderr.flush()

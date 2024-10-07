@@ -146,17 +146,17 @@ class QTLseq(object):
                        --dot-colors {10} \
                        --line-colors {11} \
                        -o {0}/40_qtlseq'.format(self.out,
-                                               self.args.filial,
-                                               self.args.N_bulk1,
-                                               self.args.N_bulk2,
-                                               self.args.threads,
-                                               self.args.window,
-                                               self.args.step,
-                                               self.args.N_rep,
-                                               self.args.max_depth,
-                                               self.args.min_depth,
-                                               self.args.dot_colors,
-                                               self.args.line_colors)
+                                                self.args.filial,
+                                                self.args.N_bulk1,
+                                                self.args.N_bulk2,
+                                                self.args.threads,
+                                                self.args.window,
+                                                self.args.step,
+                                                self.args.N_rep,
+                                                self.args.max_depth,
+                                                self.args.min_depth,
+                                                self.args.dot_colors,
+                                                self.args.line_colors)
         if self.args.snpEff is not None:
             cmd = cmd + ' -e {}'.format(self.args.snpEff)
 

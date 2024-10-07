@@ -73,11 +73,11 @@ class SnpFilt(object):
         record['parent_depth'] = sum([int(AD) for AD in parent_AD.split(',')])
         record['bulk1_depth'] = record['bulk1_ref_AD'] + record['bulk1_alt_AD']
         record['bulk2_depth'] = record['bulk2_ref_AD'] + record['bulk2_alt_AD']
-        if record['parent_depth'] < self.minDP or record['parent_depth'] > self.maxDP:
+        if record['parent_depth'] < self.minDP or  self.maxDP < record['parent_depth']:
             record['type'] = 'discard'
-        elif record['bulk1_depth'] < self.minDP or record['bulk1_depth'] > self.maxDP:
+        elif record['bulk1_depth'] < self.minDP or self.maxDP < record['bulk1_depth']:
             record['type'] = 'discard'
-        elif record['bulk2_depth'] < self.minDP or record['bulk2_depth'] > self.maxDP:
+        elif record['bulk2_depth'] < self.minDP or self.maxDP < record['bulk2_depth']:
             record['type'] = 'discard'
         return record
 
