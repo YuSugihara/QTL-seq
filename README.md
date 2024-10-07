@@ -87,24 +87,23 @@ options:
   -p , --parent      fastq or bam of parent. If you specify
                      fastq, please separate pairs by comma,
                      e.g. -p fastq1,fastq2. You can use this
-                     optiion multiple times
+                     option multiple times
   -b1 , --bulk1      fastq or bam of bulk 1. If you specify
                      fastq, please separate pairs by comma,
                      e.g. -b1 fastq1,fastq2. You can use this
-                     optiion multiple times
+                     option multiple times
   -b2 , --bulk2      fastq or bam of bulk 2. If you specify
                      fastq, please separate pairs by comma,
                      e.g. -b2 fastq1,fastq2. You can use this
-                     optiion multiple times
+                     option multiple times
   -n1 , --N-bulk1    Number of individuals in bulk 1.
   -n2 , --N-bulk2    Number of individuals in bulk 2.
-  -o , --out         Output directory. Specified name must not
-                     exist.
+  -o , --out         The specified directory must not already exist.
   -F , --filial      Filial generation. This parameter must be
                      more than 1. [2]
   -t , --threads     Number of threads. If you specify the number
-                     below one, then QTL-seq will use the threads
-                     as many as possible. [2]
+                     below one, then QTL-seq will use as many threads
+                     as possible. [2]
   -w , --window      Window size (kb). [2000]
   -s , --step        Step size (kb). [100]
   -D , --max-depth   Maximum depth of variants which will be used. [250]
@@ -123,8 +122,16 @@ options:
                      name will be inserted into <ADAPTER_FASTA>. If you
                      don't specify it, adapter trimming will be skipped.
                      [33,<ADAPTER_FASTA>:2:30:10,20,20,4:15,75]
-  -e , --snpEff      Predict causal variant using SnpEff. Please
+  -e , --snpEff      Predict causal variants using SnpEff. Please
                      check available databases in SnpEff.
+  --line-colors      Colors for threshold lines in plots.
+                     Please specify as comma separated list
+                     in the order of SNP-index, p95, and p99.
+                     [red,lime,orange]
+  --dot-colors       Colors for dots in plots.
+                     Please specify as comma separated list
+                     in the order of bulk1, bulk2, and delta.
+                     [green,orange,navy]
   --mem              Maximum memory per thread when bam sorted;
                      suffix K/M/G recognized. [1G]
   -q , --min-MQ      Minimum mapping quality in mpileup. [40]
@@ -265,8 +272,8 @@ options:
   -F , --filial         Filial generation. This parameter must be
                         more than 1. [2]
   -t , --threads        Number of threads. If you specify the number
-                        below one, then QTL-plot will use the threads
-                        as many as possible. [2]
+                        below one, then QTL-seq will use as many threads
+                        as possible. [2]
   -w , --window         Window size (kb). [2000]
   -s , --step           Step size (kb). [100]
   -D , --max-depth      Maximum depth of variants which will be used. [250]
@@ -279,10 +286,18 @@ options:
                         cutoff when ADR (or ADF) is 0, that SNP will be
                         filtered out. If you want to supress this filtering,
                         please set this cutoff to 0. [7]
-  -e , --snpEff         Predict causal variant using SnpEff. Please
+  -e , --snpEff         Predict causal variants using SnpEff. Please
                         check available databases in SnpEff.
   --igv                 Output IGV format file to check results on IGV.
   --indel               Plot SNP-index with INDEL.
+  --line-colors         Colors for threshold lines in plots.
+                        Please specify as comma separated list
+                        in the order of SNP-index, p95, and p99.
+                        [red,lime,orange]
+  --dot-colors          Colors for dots in plots.
+                        Please specify as comma separated list
+                        in the order of bulk1, bulk2, and delta.
+                        [green,orange,navy]
   --fig-width           Width allocated in chromosome figure. [7.5]
   --fig-height          Height allocated in chromosome figure. [4.0]
   --white-space         White space between figures. (This option

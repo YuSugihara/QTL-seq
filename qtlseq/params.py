@@ -48,7 +48,7 @@ class Params(object):
                             help=('fastq or bam of parent. If you specify\n'
                                   'fastq, please separate pairs by comma,\n'
                                   'e.g. -p fastq1,fastq2. You can use this\n'
-                                  'optiion multiple times'),
+                                  'option multiple times'),
                             metavar='')
 
         parser.add_argument('-b1',
@@ -59,7 +59,7 @@ class Params(object):
                             help=('fastq or bam of bulk 1. If you specify\n'
                                   'fastq, please separate pairs by comma,\n'
                                   'e.g. -b1 fastq1,fastq2. You can use this\n'
-                                  'optiion multiple times'),
+                                  'option multiple times'),
                             metavar='')
 
         parser.add_argument('-b2',
@@ -70,7 +70,7 @@ class Params(object):
                             help=('fastq or bam of bulk 2. If you specify\n'
                                   'fastq, please separate pairs by comma,\n'
                                   'e.g. -b2 fastq1,fastq2. You can use this\n'
-                                  'optiion multiple times'),
+                                  'option multiple times'),
                             metavar='')
 
         parser.add_argument('-n1',
@@ -94,8 +94,7 @@ class Params(object):
                             action='store',
                             required=True,
                             type=str,
-                            help=('Output directory. Specified name must not\n'
-                                  'exist.'),
+                            help=('The specified directory must not already exist.'), 
                             metavar='')
 
         parser.add_argument('-F',
@@ -113,8 +112,8 @@ class Params(object):
                             default=2,
                             type=int,
                             help=('Number of threads. If you specify the number\n'
-                                  'below one, then QTL-seq will use the threads\n'
-                                  'as many as possible. [2]'),
+                                  'below one, then QTL-seq will use as many threads\n'
+                                  'as possible. [2]'),
                             metavar='')
 
         parser.add_argument('-w',
@@ -190,8 +189,28 @@ class Params(object):
                             '--snpEff',
                             action='store',
                             type=str,
-                            help=('Predict causal variant using SnpEff. Please\n'
+                            help=('Predict causal variants using SnpEff. Please\n'
                                   'check available databases in SnpEff.'),
+                            metavar='')
+
+        parser.add_argument('--line-colors',
+                            action='store',
+                            default='red,lime,orange',
+                            type=str,
+                            help=('Colors for threshold lines in plots.\n'
+                                  'Please specify as comma separated list\n'
+                                  'in the order of SNP-index, p95, and p99.\n'
+                                  '[red,lime,orange]'),
+                            metavar='')
+
+        parser.add_argument('--dot-colors',
+                            action='store',
+                            default='red,lime,orange',
+                            type=str,
+                            help=('Colors for dots in plots.\n'
+                                  'Please specify as comma separated list\n'
+                                  'in the order of bulk1, bulk2, and delta.\n'
+                                  '[green,orange,navy]'),
                             metavar='')
 
         parser.add_argument('--mem',
@@ -292,8 +311,8 @@ class Params(object):
                             default=2,
                             type=int,
                             help=('Number of threads. If you specify the number\n'
-                                  'below one, then QTL-plot will use the threads\n'
-                                  'as many as possible. [2]'),
+                                  'below one, then QTL-seq will use as many threads\n'
+                                  'as possible. [2]'),
                             metavar='')
 
         parser.add_argument('-w',
@@ -361,7 +380,7 @@ class Params(object):
                             '--snpEff',
                             action='store',
                             type=str,
-                            help=('Predict causal variant using SnpEff. Please\n'
+                            help=('Predict causal variants using SnpEff. Please\n'
                                   'check available databases in SnpEff.'),
                             metavar='')
 
@@ -370,28 +389,30 @@ class Params(object):
                             default=False,
                             help='Output IGV format file to check results on IGV.')
 
-        # parser.add_argument('--species',
-        #                     action='store',
-        #                     choices=['Arabidopsis', 
-        #                              'Cucumber', 
-        #                              'Maize', 
-        #                              'Rapeseed', 
-        #                              'Rice', 
-        #                              'Tobacco', 
-        #                              'Tomato', 
-        #                              'Wheat', 
-        #                              'Yeast'],
-        #                     help=('Consider multiple test correction derived by\n'
-        #                           'Huang et al. (2019). Please spesify a species name.\n'
-        #                           'With this option. QTL-seq produces a theoretical threshold.\n'
-        #                           'Currently, Arabidopsis, Cucumber, Maize, Rapeseed,\n'
-        #                           'Rice, Tobacco, Tomato, Wheat, and Yeast are supported.'),
-        #                     metavar='')
-
         parser.add_argument('--indel',
                             action='store_true',
                             default=False,
                             help='Plot SNP-index with INDEL.')
+
+        parser.add_argument('--line-colors',
+                            action='store',
+                            default='red,lime,orange',
+                            type=str,
+                            help=('Colors for threshold lines in plots.\n'
+                                  'Please specify as comma separated list\n'
+                                  'in the order of SNP-index, p95, and p99.\n'
+                                  '[red,lime,orange]'),
+                            metavar='')
+
+        parser.add_argument('--dot-colors',
+                            action='store',
+                            default='red,lime,orange',
+                            type=str,
+                            help=('Colors for dots in plots.\n'
+                                  'Please specify as comma separated list\n'
+                                  'in the order of bulk1, bulk2, and delta.\n'
+                                  '[green,orange,navy]'),
+                            metavar='')
 
         parser.add_argument('--fig-width',
                             action='store',
@@ -433,9 +454,9 @@ class Params(object):
 
     def check_max_threads(self, args):
         max_cpu = multi.cpu_count()
-        print(time_stamp(),
-              'maximum number of threads which you can use is up to {}.'.format(max_cpu),
-              flush=True)
+        # print(time_stamp(),
+        #       'maximum number of threads which you can use is up to {}.'.format(max_cpu),
+        #       flush=True)
         if max_cpu <= args.threads:
             sys.stderr.write(('!!WARNING!! You can use up to {0} threads. '
                               'This program will use {0} threads.\n').format(max_cpu))
