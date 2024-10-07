@@ -83,63 +83,58 @@ QTL-seq version 2.2.6
 
 options:
   -h, --help         show this help message and exit
-  -r , --ref         Reference fasta.
-  -p , --parent      fastq or bam of parent. If you specify
-                     fastq, please separate pairs by comma,
-                     e.g. -p fastq1,fastq2. You can use this
-                     option multiple times
-  -b1 , --bulk1      fastq or bam of bulk 1. If you specify
-                     fastq, please separate pairs by comma,
-                     e.g. -b1 fastq1,fastq2. You can use this
-                     option multiple times
-  -b2 , --bulk2      fastq or bam of bulk 2. If you specify
-                     fastq, please separate pairs by comma,
-                     e.g. -b2 fastq1,fastq2. You can use this
-                     option multiple times
+  -r , --ref         Reference FASTA file.
+  -p , --parent      FASTQ or BAM file of the parent. If specifying
+                     FASTQ, separate paired-end files with a comma,
+                     e.g., -p fastq1,fastq2. This option can be
+                     sed multiple times.
+  -b1 , --bulk1      FASTQ or BAM file of bulk 1. If specifying
+                     FASTQ, separate paired-end files with a comma,
+                     e.g., -b1 fastq1,fastq2. This option can be
+                     sed multiple times.
+  -b2 , --bulk2      FASTQ or BAM file of bulk 2. If specifying
+                     FASTQ, separate paired-end files with a comma,
+                     e.g., -b2 fastq1,fastq2. This option can be
+                     used multiple times.
   -n1 , --N-bulk1    Number of individuals in bulk 1.
   -n2 , --N-bulk2    Number of individuals in bulk 2.
-  -o , --out         The specified directory must not already exist.
-  -F , --filial      Filial generation. This parameter must be
-                     more than 1. [2]
-  -t , --threads     Number of threads. If you specify the number
-                     below one, then QTL-seq will use as many threads
-                     as possible. [2]
-  -w , --window      Window size (kb). [2000]
-  -s , --step        Step size (kb). [100]
-  -D , --max-depth   Maximum depth of variants which will be used. [250]
-  -d , --min-depth   Minimum depth of variants which will be used. [8]
-  -N , --N-rep       Number of replicates for simulation to make 
+  -o , --out         Output directory. The specified directory must not
+                     already exist.
+  -F , --filial      Filial generation. This parameter must be greater
+                     than 1. [2]
+  -t , --threads     Number of threads. If a value less than 1 is specified,
+                     QTL-seq will use the maximum available threads. [2]
+  -w , --window      Window size in kilobases (kb). [2000]
+  -s , --step        Step size in kilobases (kb). [100]
+  -D , --max-depth   Maximum depth of variants to be used. [250]
+  -d , --min-depth   Minimum depth of variants to be used. [8]
+  -N , --N-rep       Number of replicates for simulations to generate
                      null distribution. [5000]
-  -T, --trim         Trim fastq using trimmomatic.
-  -a , --adapter     FASTA of adapter sequences. This will be used
-                     when you specify "-T" for trimming.
-  --trim-params      Parameters for trimmomatic. Input parameters
-                     must be separated by comma with following
-                     order: phred, ILLUMINACLIP, LEADING, TRAILING,
-                     SLIDINGWINDOW, MINLEN. If you want to remove
-                     adapters of illumina, please specify FASTA of
-                     the adapter sequences with "--adapter". Specified
-                     name will be inserted into <ADAPTER_FASTA>. If you
-                     don't specify it, adapter trimming will be skipped.
+  -T, --trim         Trim FASTQ files using Trimmomatic.
+  -a , --adapter     FASTA file containing adapter sequences. This option
+                     is used when "-T" is specified for trimming.
+  --trim-params      Parameters for Trimmomatic. Input parameters
+                     must be comma-separated in the following order:
+                     Phred score, ILLUMINACLIP, LEADING, TRAILING,
+                      SLIDINGWINDOW, MINLEN. To remove Illumina adapters,
+                     specify the adapter FASTA file with "--adapter".
+                     If not specified, adapter trimming will be skipped.
                      [33,<ADAPTER_FASTA>:2:30:10,20,20,4:15,75]
-  -e , --snpEff      Predict causal variants using SnpEff. Please
-                     check available databases in SnpEff.
-  --line-colors      Colors for threshold lines in plots.
-                     Please specify as comma separated list
-                     in the order of SNP-index, p95, and p99.
-                     [red,lime,orange]
-  --dot-colors       Colors for dots in plots.
-                     Please specify as comma separated list
-                     in the order of bulk1, bulk2, and delta.
-                     [green,orange,navy]
-  --mem              Maximum memory per thread when bam sorted;
-                     suffix K/M/G recognized. [1G]
-  -q , --min-MQ      Minimum mapping quality in mpileup. [40]
-  -Q , --min-BQ      Minimum base quality in mpileup. [18]
-  -C , --adjust-MQ   "adjust-MQ" in mpileup. Default parameter
-                     is suited for BWA. [50]
+  -e , --snpEff      Predict causal variants using SnpEff. Check
+                     available databases in SnpEff.
+  --line-colors      Colors for threshold lines in plots. Specify a
+                     comma-separated list in the order of SNP-index,
+                     p95, and p99. [red,lime,orange]
+  --dot-colors       Colors for dots in plots. Specify a
+                     comma-separated list in the order of bulk1,
+                     bulk2, and delta. [green,orange,navy]
+  --mem              Maximum memory per thread when sorting BAM files;
+                     suffixes K/M/G are recognized. [1G]
+  -q , --min-MQ      Minimum mapping quality for mpileup. [40]
+  -Q , --min-BQ      Minimum base quality for mpileup. [18]
+  -C , --adjust-MQ   Adjust the mapping quality for mpileup. The default
+                     setting is optimized for BWA. [50]
   -v, --version      show program's version number and exit
-
 ```
 
 QTL-seq can run from FASTQ (without or with trimming) and BAM. If you want to run QTL-seq from VCF, please use QTL-plot (example 5). Once you run QTL-seq, QTL-seq automatically complete the subprocesses.
@@ -268,41 +263,39 @@ options:
                         in this order. This VCF file must have AD field.
   -n1 , --N-bulk1       Number of individuals in bulk 1.
   -n2 , --N-bulk2       Number of individuals in bulk 2.
-  -o , --out            Output directory. Specified name can exist.
+  -o , --out            Output directory. The specified directory can already
+                        exist.
   -F , --filial         Filial generation. This parameter must be
                         more than 1. [2]
-  -t , --threads        Number of threads. If you specify the number
-                        below one, then QTL-seq will use as many threads
-                        as possible. [2]
+  -t , --threads        Number of threads. If a value less than 1 is specified,
+                        QTL-seq will use the maximum available threads. [2]
   -w , --window         Window size (kb). [2000]
   -s , --step           Step size (kb). [100]
-  -D , --max-depth      Maximum depth of variants which will be used. [250]
-  -d , --min-depth      Minimum depth of variants which will be used. [8]
-  -N , --N-rep          Number of replicates for simulation to make 
+  -D , --max-depth      Maximum depth of variants to be used. [250]
+  -d , --min-depth      Minimum depth of variants to be used. [8]
+  -N , --N-rep          Number of replicates for simulations to generate
                         null distribution. [5000]
   -m , --min-SNPindex   Cutoff of minimum SNP-index for clear results. [0.3]
-  -S , --strand-bias    Filter spurious homo genotypes in cultivar using
-                        strand bias. If ADF (or ADR) is higher than this
-                        cutoff when ADR (or ADF) is 0, that SNP will be
-                        filtered out. If you want to supress this filtering,
-                        please set this cutoff to 0. [7]
-  -e , --snpEff         Predict causal variants using SnpEff. Please
-                        check available databases in SnpEff.
+  -S , --strand-bias    Filter out spurious homozygous genotypes in the cultivar
+                        based on strand bias. If ADF (or ADR) is higher than
+                        this cutoff when ADR (or ADF) is 0, that SNP will be
+                        filtered out. If you want to disable this filtering,
+                        set this cutoff to 0. [7]
+  -e , --snpEff         Predict causal variants using SnpEff. Check
+                        available databases in SnpEff.
   --igv                 Output IGV format file to check results on IGV.
   --indel               Plot SNP-index with INDEL.
-  --line-colors         Colors for threshold lines in plots.
-                        Please specify as comma separated list
-                        in the order of SNP-index, p95, and p99.
-                        [red,lime,orange]
-  --dot-colors          Colors for dots in plots.
-                        Please specify as comma separated list
-                        in the order of bulk1, bulk2, and delta.
-                        [green,orange,navy]
+  --line-colors         Colors for threshold lines in plots. Specify a
+                        comma-separated list in the order of SNP-index,
+                        p95, and p99. [red,lime,orange]
+  --dot-colors          Colors for dots in plots. Specify a
+                        comma-separated list in the order of bulk1,
+                        bulk2, and delta. [green,orange,navy]
   --fig-width           Width allocated in chromosome figure. [7.5]
   --fig-height          Height allocated in chromosome figure. [4.0]
   --white-space         White space between figures. (This option
-                        only affect vertical direction.) [0.6]
-  -f , --format         Specifiy the format of an output image.
+                        only affects vertical direction.) [0.6]
+  -f , --format         Specify the format of an output image.
                         eps/jpeg/jpg/pdf/pgf/png/rgba/svg/svgz/tif/tiff
   --version             show program's version number and exit
 ```
