@@ -48,7 +48,7 @@ class Params(object):
                             help=('FASTQ or BAM file of the parent. If specifying\n'
                                   'FASTQ, separate paired-end files with a comma,\n'
                                   'e.g., -p fastq1,fastq2. This option can be\n'
-                                  'sed multiple times.'),
+                                  'used multiple times.'),
                             metavar='')
 
         parser.add_argument('-b1',
@@ -59,7 +59,7 @@ class Params(object):
                             help=('FASTQ or BAM file of bulk 1. If specifying\n'
                                   'FASTQ, separate paired-end files with a comma,\n'
                                   'e.g., -b1 fastq1,fastq2. This option can be\n'
-                                  'sed multiple times.'),
+                                  'used multiple times.'),
                             metavar='')
 
         parser.add_argument('-b2',

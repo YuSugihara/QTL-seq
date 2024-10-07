@@ -5,7 +5,7 @@
 - [What is QTL-seq?](#what-is-qtl-seq)
 - [Installation](#installation)
   + [Dependencies](#dependencies)
-  + [Installation using bioconda](#installation-using-bioconda)
+  + [Installation via bioconda](#installation-via-bioconda)
   + [Manual installation](#manual-installation)
 - [Usage](#usage)
   + [Example 1 : run QTL-seq from FASTQ without trimming](#example-1--run-qtl-seq-from-fastq-without-trimming)
@@ -15,12 +15,12 @@
   + [Example 5 : run QTL-plot from VCF](#example-5--run-qtl-plot-from-vcf)
 - [Outputs](#outputs)
 - [About multiple testing correction](#about-multiple-testing-correction)
-- [Built and use your own database for snpEff](#built-and-use-your-own-database-for-snpeff)
+- [Build and use your own database for snpEff](#build-and-use-your-own-database-for-snpeff)
 
 ## What is QTL-seq?
 <img src="https://github.com/YuSugihara/QTL-seq/blob/master/images/1_logo.png" width=200>
 
-Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is a powerful and efficient method to identify agronomically important loci in crop plants. QTL-seq was adapted from MutMap to identify quantitative trait loci. It utilizes sequences pooled from two segregating progeny populations with extreme opposite traits (e.g. resistant vs susceptible) and a single whole-genome resequencing of either of the parental cultivars.
+Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is a powerful and efficient method for identifying agronomically important loci in crop plants. QTL-seq has been adapted from MutMap to identify quantitative trait loci. It utilizes sequences pooled from two segregating progeny populations with extreme opposite traits (e.g. resistant vs susceptible) and a single whole-genome resequencing of either of the parental cultivars.
 
 #### Citation
 - Yu Sugihara, Lester Young, Hiroki Yaegashi, Satoshi Natsume, Daniel J. Shea, Hiroki Takagi, Helen Booker, Hideki Innan, Ryohei Terauchi, Akira Abe (2022). [High performance pipeline for MutMap and QTL-seq](https://doi.org/10.7717/peerj.13170). PeerJ, 10:e13170.
@@ -30,7 +30,7 @@ Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is 
 
 ## Installation
 ### Dependencies
-#### Softwares
+#### Software
 - [BWA](http://bio-bwa.sourceforge.net/)
 - [SAMtools](http://samtools.sourceforge.net/)
 - [BCFtools](http://samtools.github.io/bcftools/)
@@ -43,26 +43,26 @@ Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is 
 - pandas
 - seaborn (optional)
 
-### Installation using bioconda
-You can install QTL-seq using [bioconda](https://bioconda.github.io/index.html).
+### Installation via bioconda
+You can install QTL-seq via [bioconda](https://bioconda.github.io/index.html).
 ```
 conda create -c bioconda -n qtlseq qtlseq
 conda activate qtlseq
 ```
 
 ### Manual installation
-If you got a error during installation, you can install QTL-seq, manually.
+If you encounter an error during installation, you can install QTL-seq manually.
 ```
 git clone https://github.com/YuSugihara/QTL-seq.git
 cd QTL-seq
 pip install -e .
 ```
-Then you have to install other dependencies by yourself. We highly recommend you to install SnpEff and Trimmomatic using bioconda.
+Then you need to install other dependencies yourself. We highly recommend installing SnpEff and Trimmomatic via bioconda.
 ```
 conda install -c bioconda snpeff
 conda install -c bioconda trimmomatic
 ```
-After installation, please check whether SnpEff and Trimmomatic work through the commands like below.
+After installation, please check whether SnpEff and Trimmomatic are working using the commands below.
 ```
 snpEff --help
 trimmomatic --help
@@ -70,7 +70,7 @@ trimmomatic --help
 
 ## Usage
 
-If your reference genome has more than 50 contigs (or chromosomes), only significant contigs will be plotted.
+If your reference genome contains more than 50 contigs, only the significant ones will be plotted.
 
 ```
 qtlseq -h
@@ -87,11 +87,11 @@ options:
   -p , --parent      FASTQ or BAM file of the parent. If specifying
                      FASTQ, separate paired-end files with a comma,
                      e.g., -p fastq1,fastq2. This option can be
-                     sed multiple times.
+                     used multiple times.
   -b1 , --bulk1      FASTQ or BAM file of bulk 1. If specifying
                      FASTQ, separate paired-end files with a comma,
                      e.g., -b1 fastq1,fastq2. This option can be
-                     sed multiple times.
+                     used multiple times.
   -b2 , --bulk2      FASTQ or BAM file of bulk 2. If specifying
                      FASTQ, separate paired-end files with a comma,
                      e.g., -b2 fastq1,fastq2. This option can be
@@ -137,7 +137,7 @@ options:
   -v, --version      show program's version number and exit
 ```
 
-QTL-seq can run from FASTQ (without or with trimming) and BAM. If you want to run QTL-seq from VCF, please use QTL-plot (example 5). Once you run QTL-seq, QTL-seq automatically complete the subprocesses.
+QTL-seq can be run from FASTQ (without or with trimming) and BAM. If you want to run QTL-seq from VCF, please use QTL-plot (example 5). Once you run QTL-seq, QTL-seq automatically completes the subprocesses.
 
 + [Example 1 : run QTL-seq from FASTQ without trimming](#example-1--run-qtl-seq-from-fastq-without-trimming)
 + [Example 2 : run QTL-seq from FASTQ with trimming](#example-2--run-qtl-seq-from-fastq-with-trimming)
@@ -160,17 +160,17 @@ qtlseq -r reference.fasta \
 
 `-r` : reference fasta
 
-`-p` : FASTQs of parent. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+`-p` : FASTQs of parent. Please input paired-end reads separated by a comma. FASTQ files can be gzipped.
 
-`-b1` : FASTQs of bulk 1. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+`-b1` : FASTQs of bulk 1. Please input paired-end reads separated by a comma. FASTQ files can be gzipped.
 
-`-b2` : FASTQs of bulk 2. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+`-b2` : FASTQs of bulk 2. Please input paired-end reads separated by a comma. FASTQ files can be gzipped.
 
 `-n1` : number of individuals in bulk 1.
 
 `-n2` : number of individuals in bulk 2.
 
-`-o` : name of output directory. Specified name should not exist.
+`-o` : name of output directory. The specified directory should not already exist.
 
 ### Example 2 : run QTL-seq from FASTQ with trimming
 ```
@@ -187,17 +187,17 @@ qtlseq -r reference.fasta \
 
 `-r` : reference fasta
 
-`-p` : FASTQs of parent. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+`-p` : FASTQs of parent. Please input paired-end reads separated by a comma. FASTQ files can be gzipped.
 
-`-b1` : FASTQs of bulk 1. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+`-b1` : FASTQs of bulk 1. Please input paired-end reads separated by a comma. FASTQ files can be gzipped.
 
-`-b2` : FASTQs of bulk 1. Please input pair-end reads separated by comma. FASTQs can be gzipped.
+`-b2` : FASTQs of bulk 1. Please input paired-end reads separated by a comma. FASTQ files can be gzipped.
 
 `-n1` : number of individuals in bulk 1.
 
 `-n2` : number of individuals in bulk 2.
 
-`-o` : name of output directory. Specified name should not exist.
+`-o` : name of output directory. The specified directory should not already exist.
 
 `-T` : trim your reads using trimmomatic.
 
@@ -226,7 +226,7 @@ qtlseq -r reference.fasta \
 
 `-n2` : number of individuals in bulk 2.
 
-`-o` : name of output directory. Specified name should not exist.
+`-o` : name of output directory. The specified directory should not already exist.
 
 ### Example 4 : run QTL-seq from multiple FASTQs and BAMs
 ```
@@ -244,7 +244,7 @@ qtlseq -r reference.fasta \
        -o example_dir
 ```
 
-QTL-seq can automatically merge multiple FASTQs and BAMs. Of course, you can merge FASTQs or BAMs using `cat` or `samtools merge` before input them to QTL-seq. If you specify `-p` multiple times, please make sure that those files include only 1 individual. On the other hand, `-b1` and `-b2` can include more than 1 individuals because those are bulked samples. QTL-seq can automatically classify FASTQs and BAMs from whether comma exits or not.
+QTL-seq automatically merges multiple FASTQ and BAM files. Of course, you can merge FASTQ or BAM files using `cat` or `samtools merge` before inputting them into QTL-seq. If you specify `-p` multiple times, please make sure that those files include only one individual. On the other hand, `-b1` and `-b2` can include more than one individuals because those are bulked samples. QTL-seq automatically classifies FASTQ and BAM files based on whether comma exits or not.
 
 ### Example 5 : run QTL-plot from VCF
 ```
@@ -310,10 +310,10 @@ qtlplot -v OUT_DIR/30_vcf/QTL-seq.vcf.gz \
         -s 100
 ```
 
-#### Using QTL-plot for VCF which was made by yourself
-In this case, please make sure that:
-1. Your VCF include AD format.
-2. Your VCF include three columns of parent, bulk1 and bulk2 in this order.
+#### Using QTL-plot for a VCF which was made by yourself
+In this case:
+1. Ensure that your VCF includes the AD format.
+2. Ensure that your VCF includes columns for the parent, bulk1, and bulk2 in this order
 
 If you got an error, please try to run QTL-seq from FASTQ or BAM before asking in issues.
 
@@ -385,11 +385,11 @@ Inside of `OUT_DIR` is like below.
 <img src="https://github.com/YuSugihara/QTL-seq/blob/master/images/2_result.png" width=600>
 
 ## About multiple testing correction
-Now this function is deprecated since v2.2.5.
+This function has been deprecated since v2.2.5.
 We highly recommend running QTL-seq without this function.
 However, if you would like to use this function, you can use it with versions of QTL-seq older than v2.2.5.
 
-## Built and use your own database for snpEff
+## Build and use your own database for snpEff
 If you want to use your own database for snpEff, you need additional steps.
 Here we assume that you installed QTL-seq via anaconda distribution, creating new environment with `conda create`.
 
