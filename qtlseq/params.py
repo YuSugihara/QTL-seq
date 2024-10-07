@@ -205,7 +205,7 @@ class Params(object):
 
         parser.add_argument('--dot-colors',
                             action='store',
-                            default='red,lime,orange',
+                            default='green,orange,navy',
                             type=str,
                             help=('Colors for dots in plots.\n'
                                   'Please specify as comma separated list\n'
@@ -406,7 +406,7 @@ class Params(object):
 
         parser.add_argument('--dot-colors',
                             action='store',
-                            default='red,lime,orange',
+                            default='rgreen,orange,navy',
                             type=str,
                             help=('Colors for dots in plots.\n'
                                   'Please specify as comma separated list\n'
