@@ -201,7 +201,9 @@ qtlseq -r reference.fasta \
 
 `-T` : trim your reads using trimmomatic.
 
-`-a` : FASTA of adapter sequences.
+`-a` : FASTA of adapter sequences for trimmomatic.
+
+If you are using TrueSeq3, you can find the adapter sequences in the [Trimmomatic Github](https://github.com/usadellab/Trimmomatic/blob/main/adapters/TruSeq3-PE-2.fa). [This thread](https://github.com/usadellab/Trimmomatic/issues/20) is also helpful to preprare the adapter file.
 
 ### Example 3 : run QTL-seq from BAM
 ```
