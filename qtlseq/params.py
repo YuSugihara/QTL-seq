@@ -580,3 +580,4 @@ class Params(object):
             sys.exit(1)
 
         return N_fastq
+

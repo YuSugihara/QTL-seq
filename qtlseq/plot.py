@@ -305,3 +305,4 @@ class Plot(object):
         self.plot_bulk1_SNPindex()
         self.plot_bulk2_SNPindex()
         self.plot_delta_SNPindex()
+
