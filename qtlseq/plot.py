@@ -159,13 +159,13 @@ class Plot(object):
 
                 ax.scatter(chr_snp_index[chr_snp_index['impact']=='MODERATE']['POSI'],
                            chr_snp_index[chr_snp_index['impact']=='MODERATE']['bulk1_SNPindex'],
-                           marker='.',
+                           marker='+',
                            color=self.dot_colors[0])
 
                 ax.scatter(chr_snp_index[chr_snp_index['impact']=='HIGH']['POSI'],
                            chr_snp_index[chr_snp_index['impact']=='HIGH']['bulk1_SNPindex'],
                            marker='x',
-                           color='firebrick')
+                           color='#772D8B')
 
             ax.hlines([0.5], 0, self.xmax, linestyles='dashed', color='black')
             ax.set_xlabel('Position (Mbp)')
@@ -211,13 +211,13 @@ class Plot(object):
 
                 ax.scatter(chr_snp_index[chr_snp_index['impact']=='MODERATE']['POSI'],
                            chr_snp_index[chr_snp_index['impact']=='MODERATE']['bulk2_SNPindex'],
-                           marker='.',
+                           marker='+',
                            color=self.dot_colors[1])
 
                 ax.scatter(chr_snp_index[chr_snp_index['impact']=='HIGH']['POSI'],
                            chr_snp_index[chr_snp_index['impact']=='HIGH']['bulk2_SNPindex'],
                            marker='x',
-                           color='firebrick')
+                           color='#772D8B')
 
             ax.hlines([0.5], 0, self.xmax, linestyles='dashed', color='black')
             ax.set_xlabel('Position (Mbp)')
@@ -283,13 +283,13 @@ class Plot(object):
 
                 ax.scatter(chr_snp_index[chr_snp_index['impact']=='MODERATE']['POSI'],
                            chr_snp_index[chr_snp_index['impact']=='MODERATE']['delta_SNPindex'],
-                           marker='.',
+                           marker='+',
                            color=self.dot_colors[2])
 
                 ax.scatter(chr_snp_index[chr_snp_index['impact']=='HIGH']['POSI'],
                            chr_snp_index[chr_snp_index['impact']=='HIGH']['delta_SNPindex'],
                            marker='x',
-                           color='firebrick')
+                           color='#772D8B')
 
             ax.hlines([0], 0, self.xmax, linestyles='dashed', color='black')
             ax.set_xlabel('Position (Mbp)')
@@ -305,4 +305,3 @@ class Plot(object):
         self.plot_bulk1_SNPindex()
         self.plot_bulk2_SNPindex()
         self.plot_delta_SNPindex()
-
