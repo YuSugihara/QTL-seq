@@ -76,6 +76,10 @@ class Vcf2Index(object):
     def get_variant_impact(self, annotation):
         ANN = self.ANN_re.findall(annotation)[0]
         genes = ANN.split(',')
+        # The impact of the variant is determined by the most severe impact
+        # of the genes that the variant is located in.
+        # The impact order is HIGH > MODERATE > LOW > MODIFIER
+        # The impacts of variants are oredered by severity in the ANN field.
         impacts = [gene.split('|')[2] for gene in genes]
         if 'HIGH' in impacts:
             impact = 'HIGH'
