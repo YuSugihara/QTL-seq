@@ -8,6 +8,7 @@ import pandas as pd
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+plt.rcParams["font.size"] = 13
 
 
 class Plot(object):
@@ -167,8 +168,8 @@ class Plot(object):
                            color='firebrick')
 
             ax.hlines([0.5], 0, self.xmax, linestyles='dashed', color='black')
-            ax.set_xlabel('position (Mb)', fontsize=15)
-            ax.set_ylabel('SNP-index (1)', fontsize=15)
+            ax.set_xlabel('Position (Mbp)')
+            ax.set_ylabel('SNP-index 1')
             ax.set_xlim(0, self.xmax)
             ax.set_ylim(0, 1.05)
             ax.set_title(chr_name, fontsize=17)
@@ -219,8 +220,8 @@ class Plot(object):
                            color='firebrick')
 
             ax.hlines([0.5], 0, self.xmax, linestyles='dashed', color='black')
-            ax.set_xlabel('position (Mb)', fontsize=15)
-            ax.set_ylabel('SNP-index (2)', fontsize=15)
+            ax.set_xlabel('Position (Mbp)')
+            ax.set_ylabel('SNP-index 2')
             ax.set_xlim(0, self.xmax)
             ax.set_ylim(0, 1.05)
             ax.set_title(chr_name, fontsize=17)
@@ -291,8 +292,8 @@ class Plot(object):
                            color='firebrick')
 
             ax.hlines([0], 0, self.xmax, linestyles='dashed', color='black')
-            ax.set_xlabel('position (Mb)', fontsize=15)
-            ax.set_ylabel('$\Delta$SNP-index', fontsize=15)
+            ax.set_xlabel('Position (Mbp)')
+            ax.set_ylabel('$\Delta$SNP-index')
             ax.set_xlim(0, self.xmax)
             ax.set_ylim(-1.05, 1.05)
             ax.set_title(chr_name, fontsize=17)
@@ -304,5 +305,3 @@ class Plot(object):
         self.plot_bulk1_SNPindex()
         self.plot_bulk2_SNPindex()
         self.plot_delta_SNPindex()
-
-        
