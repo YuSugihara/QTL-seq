@@ -257,7 +257,7 @@ usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
                [--igv] [--indel]
 
-QTL-plot version 2.2.6
+QTL-plot version 2.2.7
 
 options:
   -h, --help            show this help message and exit
