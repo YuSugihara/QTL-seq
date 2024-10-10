@@ -1,5 +1,5 @@
 # QTL-seq User Guide
-#### version 2.2.6
+#### version 2.2.7
 
 ## Table of contents
 - [What is QTL-seq?](#what-is-qtl-seq)
@@ -79,7 +79,7 @@ usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
               [-F <INT>] [-T] [-e <DATABASE>]
 
-QTL-seq version 2.2.6
+QTL-seq version 2.2.7
 
 options:
   -h, --help         show this help message and exit
@@ -124,10 +124,10 @@ options:
                      available databases in SnpEff.
   --line-colors      Colors for threshold lines in plots. Specify a
                      comma-separated list in the order of SNP-index,
-                     p95, and p99. [red,lime,orange]
+                     p95, and p99. ["#FE5F55,#6FD08C,#E3B505"]
   --dot-colors       Colors for dots in plots. Specify a
                      comma-separated list in the order of bulk1,
-                     bulk2, and delta. [green,orange,navy]
+                     bulk2, and delta. ["#74D3AE,#FFBE0B,#40476D"]
   --mem              Maximum memory per thread when sorting BAM files;
                      suffixes K/M/G are recognized. [1G]
   -q , --min-MQ      Minimum mapping quality for mpileup. [40]
@@ -289,10 +289,10 @@ options:
   --indel               Plot SNP-index with INDEL.
   --line-colors         Colors for threshold lines in plots. Specify a
                         comma-separated list in the order of SNP-index,
-                        p95, and p99. [red,lime,orange]
+                        p95, and p99. ["#FE5F55,#6FD08C,#E3B505"]
   --dot-colors          Colors for dots in plots. Specify a
                         comma-separated list in the order of bulk1,
-                        bulk2, and delta. [green,orange,navy]
+                        bulk2, and delta. ["#74D3AE,#FFBE0B,#40476D"]
   --fig-width           Width allocated in chromosome figure. [7.5]
   --fig-height          Height allocated in chromosome figure. [4.0]
   --white-space         White space between figures. (This option
