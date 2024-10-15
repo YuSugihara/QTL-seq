@@ -1,6 +1,6 @@
 # QTL-seq Commands Breakdown
 
-This document provides a comprehensive overview of the commands used in the QTL-seq pipeline. By understanding each step's purpose, usage, and the default parameters employed in QTL-seq, users may be able to run the bash commands independently to troubleshoot and resolve issues more effectively. The goal is to help users better understand the internal workings of QTL-seq and ensure efficient execution.
+This document provides a comprehensive overview of the commands used in the QTL-seq pipeline. By understanding each step's purpose, usage, and the default parameters employed in QTL-seq, users can independently run the bash commands to troubleshoot and resolve issues more effectively. The goal is to help users better understand the internal workings of QTL-seq and ensure efficient execution.
 
 ## Table of Contents
 
@@ -11,18 +11,14 @@ This document provides a comprehensive overview of the commands used in the QTL-
 5. [Step 4: Read Alignment and BAM Processing](#step-4-read-alignment-and-bam-processing)
 6. [Step 5: BAM Sorting and Indexing](#step-5-bam-sorting-and-indexing)
 7. [Step 6: Variant Calling with mpileup](#step-6-variant-calling-with-mpileup)
-8. [Step 7: SNP Filtering, SNP Index Calculation, and Visualization with QTL-plot](#step-7-snp-filtering-snp-index-calculation-and-visualization-with-qtl-plot)
+8. [Step 7: SNP Filtering, SNP Index Calculation, and Visualization with QTLplot](#step-7-snp-filtering-snp-index-calculation-and-visualization-with-qtlplot)
+9. [Using SnpEff for Variant Annotation](#using-snpeff-for-variant-annotation)
 
 ---
 
 ## Using the Test Dataset
 
-To get started with QTL-seq and verify the pipeline's functionality, you can use the test dataset available in the QTL-seq GitHub repository. The test dataset is located [here](https://github.com/YuSugihara/QTL-seq/tree/master/test), and it includes all the necessary files to run the pipeline:
-
-- **adapter.fasta**: Adapter sequences for trimming.
-- **bulk1_SNPindex.png**, **bulk2_SNPindex.png**, **delta_SNPindex.png**: Output images from QTL-plot.
-- **qtlseq.sh**: Shell script to run the QTL-seq pipeline.
-- **FASTQ files**: Paired-end reads for parent, bulk1, and bulk2.
+To get started with QTL-seq and verify the pipeline's functionality, you can use the test dataset available in the QTL-seq GitHub repository. The test dataset is located [here](https://github.com/YuSugihara/QTL-seq/tree/master/test), and it includes all the necessary files to run the pipeline.
 
 By using this test dataset, you can execute the commands in this document step by step to ensure that the pipeline runs smoothly and correctly.
 
@@ -49,7 +45,7 @@ mkdir -p output_directory/30_vcf
 ## Step 2: Quality Control and Trimming
 
 **Description**:  
-Trimming is the process of removing low-quality sequences and adapters from raw sequencing data. This step is essential to ensure that the data used for alignment is clean and of high quality. In QTL-seq, trimming is performed using **Trimmomatic** on the **parent**, **bulk1**, and **bulk2** in the same manner.
+Trimming is the process of removing low-quality sequences and adapters from raw sequencing data. This step is essential to ensure that the data used for alignment is clean and of high quality. In QTL-seq, trimming is performed using **Trimmomatic** on the **parent** and **bulk1** and **bulk2** in the same manner.
 
 **Usage**:
 
@@ -100,6 +96,16 @@ trimmomatic PE -threads 4 \
 - `SLIDINGWINDOW`: Performs sliding window trimming, trimming when the average quality within the window falls below a threshold.
 - `MINLEN`: Discards reads that are shorter than the specified length.
 
+**Additional Information**:
+
+1. **Trimmomatic GitHub Repository**: For more information on Trimmomatic, refer to its [GitHub repository](https://github.com/usadellab/Trimmomatic).
+
+2. **Adapter Sequences**: The adapter sequences used in the trimming process can be found on the [Trimmomatic GitHub](https://github.com/timflutre/trimmomatic/tree/master/adapters).
+
+3. **Quality Control**: After trimming, it is recommended to perform quality control (QC) on the resulting FASTQ files using software like [FastQC](https://github.com/s-andrews/FastQC).
+
+4. **Alternative Software - fastp**: If you are unsure about which adapter sequences were used, the software [fastp](https://github.com/OpenGene/fastp) may be useful. It includes the `--detect_adapter_for_pe` option, which automatically detects and removes adapter sequences. However, please note that QTL-seq has not been extensively tested with fastp, so its compatibility cannot be guaranteed.
+
 ---
 
 ## Step 3: Reference Genome Indexing
@@ -144,7 +150,9 @@ samtools view -b -f 2 -F 2048 -o output_directory/20_bam/parent.bam
 
 bwa mem -t 4 output_directory/10_ref/qtlseq_ref.fasta \
     output_directory/00_fastq/bulk1_R1_paired.fastq.gz \
-    output_directory/00_fastq/bulk1_R2_paired.fastq.gz | \
+   
+
+ output_directory/00_fastq/bulk1_R2_paired.fastq.gz | \
 samtools fixmate -m - - | \
 samtools sort -m 1G -@ 4 -o output_directory/20_bam/bulk1.unsorted.bam - | \
 samtools markdup -r - - | \
@@ -156,9 +164,7 @@ bwa mem -t 4 output_directory/10_ref/qtlseq_ref.fasta \
 samtools fixmate -m - - | \
 samtools sort -m 1G -@ 4 -o output_directory/20_bam/bulk2.unsorted.bam - | \
 samtools markdup -r - - | \
-samtools view -b -f 2 -F 204
-
-8 -o output_directory/20_bam/bulk2.bam
+samtools view -b -f 2 -F 2048 -o output_directory/20_bam/bulk2.bam
 ```
 
 **Explanation**:
@@ -178,7 +184,7 @@ samtools view -b -f 2 -F 204
 ## Step 5: BAM Sorting and Indexing
 
 **Description**:  
-Sorting and indexing are performed on the **parent**, **bulk1**, and **bulk2** in the same manner. After aligning the reads, **SAMtools** is used to sort and index the resulting BAM files for efficient access and analysis. Sorting ensures that the reads are ordered by their position in the genome, and indexing creates a .bai file that allows for fast retrieval of specific regions during analysis.
+Sorting and indexing are performed on the **parent**, **bulk1**, and **bulk2** in the same manner. After aligning the reads, **SAMtools** is used to sort and index the resulting BAM files for efficient access and analysis. Sorting ensures that the reads are ordered by their position in the genome, and indexing creates a `.bai` or `.csi` file that allows for fast retrieval of specific regions during analysis.
 
 **Usage**:
 
@@ -202,7 +208,7 @@ samtools index output_directory/20_bam/bulk2.bam
 
 ### Note for Large Genomes (e.g., Wheat):
 
-For larger genomes like wheat, using the default `samtools index` may lead to inefficiencies due to the size of the BAM file. In such cases, it is recommended to use the `-c` option:
+For larger genomes like wheat, attempting to create a standard `.bai` index file using `samtools index` without the `-c` option may result in an error due to the file size limitations of `.bai` indexes. In such cases, it is necessary to use the `-c` option, which generates a `.csi` index that supports large reference genomes:
 
 ```bash
 samtools index -c output_directory/20_bam/parent.bam
@@ -210,7 +216,7 @@ samtools index -c output_directory/20_bam/bulk1.bam
 samtools index -c output_directory/20_bam/bulk2.bam
 ```
 
-This creates a CSI index that supports larger reference genomes.
+This `.csi` index is suitable for handling large genomes that exceed the size limitations of `.bai`.
 
 ---
 
@@ -230,7 +236,7 @@ bcftools call -vm -f GQ,GP -O u | \
 bcftools filter -i "INFO/MQ>=40" -O z -o output_directory/30_vcf/qtlseq.vcf.gz
 ```
 
-**Explanation**:
+### Explanation:
 
 - `mpileup`: Generates per-base information for each position in the reference genome.
 - `-a AD,ADF,ADR`: Includes allele depth information in the output. These fields are crucial for QTL-seq analysis.
@@ -239,24 +245,85 @@ bcftools filter -i "INFO/MQ>=40" -O z -o output_directory/30_vcf/qtlseq.vcf.gz
 - `-Q 18`: Filters bases with base quality less than 18.
 - `-C 50`: Adjusts the mapping quality to account for the use of BWA during alignment.
 
-**Note**: When generating the VCF file, the order in which the **parent**, **bulk1**, and **bulk2** BAM files are passed into the `bcftools mpileup` command is important. The **parent** should come first, followed by **bulk1**, and then **bulk2**. This order is critical for downstream analysis, especially when using **QTL-plot**, as the software expects the **parent** data to be the first sample in the VCF file.
+### Important Note:
+When generating the VCF file, the order in which the **parent**, **bulk1**, and **bulk2** BAM files are passed into the `bcftools mpileup` command is important. The **parent** should come first, followed by **bulk1** and **bulk2**. This order is critical for downstream analysis, especially when using **QTLplot**, as the software expects the **parent** data to be the first sample in the VCF file.
+
+### Chromosome-specific processing:  
+The `-r` option in `bcftools mpileup` allows for chromosome-specific processing, which can be used to parallelize the VCF generation for each chromosome individually. This can help speed up the variant calling process for large genomes.
+
+#### Usage for Chromosome-specific processing:
+
+```bash
+bcftools mpileup -r test_chr -a AD,ADF,ADR -B -q 40 -Q 18 -C 50 -O u -f output_directory/10_ref/qtlseq_ref.fasta \
+output_directory/20_bam/parent.bam output_directory/20_bam/bulk1.bam output_directory/20_bam/bulk2.bam | \
+bcftools call -vm -f GQ,GP -O u | \
+bcftools filter -i "INFO/MQ>=40" -O z -o output_directory/30_vcf/qtlseq.test_chr.vcf.gz
+```
+
+### Concatenating VCF Files:  
+If the VCF files are generated separately for each chromosome, you can use `bcftools concat` to concatenate them into a single VCF file for easier analysis.
+
+#### Usage for Concatenating VCF Files:
+
+```bash
+bcftools concat -O z -o output_directory/30_vcf/qtlseq_combined.vcf.gz output_directory/30_vcf/qtlseq.*.vcf.gz
+```
+
+This command will concatenate all chromosome-specific VCF files (`qtlseq.*.vcf.gz`) into a single compressed VCF file (`qtlseq_combined.vcf.gz`).
+
+### Index the VCF file with Tabix:
+
+For more information on **Tabix**, refer to the manual [here](https://www.htslib.org/doc/tabix.html).
+
+```bash
+tabix -f -p vcf output_directory/30_vcf/qtlseq.vcf.gz
+```
+
+### Note for Large Genomes (e.g., Wheat):
+
+For large genomes like wheat, using the default `tabix` indexing without the `-C` option may result in an error due to file size limitations. In such cases, it is necessary to use the `-C` option, which generates a `.csi` index that supports large reference genomes:
+
+```bash
+tabix -C -f -p vcf output_directory/30_vcf/qtlseq.vcf.gz
+```
+
+This `.csi` index is suitable for handling large genomes that exceed the size limitations of standard `.tbi` indexes.
 
 ---
 
-## Step 7: SNP Filtering, SNP Index Calculation, and Visualization with QTL-plot
+## Step 7: SNP Filtering, SNP Index Calculation, and Visualization with QTLplot
 
 **Description**:  
-QTL-plot is used to filter SNPs, calculate SNP indices, and visualize the results. It helps identify significant SNPs and their impact on the genome, producing various files that assist in analyzing and visualizing the data.
+QTLplot is used to filter SNPs, calculate SNP indices, and visualize the results. It helps identify significant SNPs and their impact on the genome, producing various files that assist in analyzing and visualizing the data.
 
 **Usage**:
 
 ```bash
-qtlplot -v output_directory/30_vcf/qtlseq.vcf.gz -n1 100 -n2 100 -o output_directory/40_plot
+qtlplot -v output_directory/30_vcf/qtlseq.vcf.gz -o output_directory/40_plot -n1 20 -n2 20
 ```
 
 **Required Options**:
 
-- `-v`: Specifies the input VCF file generated by the variant calling step.
-- `-n1`: Specifies the number of individuals in bulk1.
-- `-n2`: Specifies the number of individuals in bulk2.
+- `-v`: Specifies the
+
+ input VCF file generated by the variant calling step.
 - `-o`: Specifies the output directory for the visualization results.
+- `-n1`: Specifies the number of individuals in **bulk1**.
+- `-n2`: Specifies the number of individuals in **bulk2**.
+
+---
+
+## Using SnpEff for Variant Annotation
+
+**Optional: Using QTLplot with SnpEff**:  
+QTLplot can be run in combination with **SnpEff** to annotate variants for their potential effects. This allows for a more detailed understanding of how SNPs may impact gene function. For more information on SnpEff, please refer to the [SnpEff Documentation](https://pcingola.github.io/SnpEff/snpeff/introduction/).
+
+**Usage**:
+
+```bash
+qtlplot -v output_directory/30_vcf/qtlseq.vcf.gz -o output_directory/40_plot -n1 20 -n2 20 -e database
+```
+
+**Additional Option**:
+
+- `-e database`: Specifies the SnpEff database to use for annotating variants. Ensure that the correct SnpEff database is installed and available before running this command.
