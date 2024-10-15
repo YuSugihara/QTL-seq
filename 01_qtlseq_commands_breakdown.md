@@ -144,24 +144,24 @@ bwa mem -t 4 output_directory/10_ref/qtlseq_ref.fasta \
     output_directory/00_fastq/parent_R1_paired.fastq.gz \
     output_directory/00_fastq/parent_R2_paired.fastq.gz | \
 samtools view -b \
-              -o output_directory/20_bam/parent.bam
+              -o output_directory/20_bam/parent.unsorted.bam
 
 bwa mem -t 4 output_directory/10_ref/qtlseq_ref.fasta \
     output_directory/00_fastq/bulk1_R1_paired.fastq.gz \
     output_directory/00_fastq/bulk1_R2_paired.fastq.gz | \
 samtools view -b \
-              -o output_directory/20_bam/bulk1.bam
+              -o output_directory/20_bam/bulk1.unsorted.bam
 
 bwa mem -t 4 output_directory/10_ref/qtlseq_ref.fasta \
     output_directory/00_fastq/bulk2_R1_paired.fastq.gz \
     output_directory/00_fastq/bulk2_R2_paired.fastq.gz | \
 samtools view -b \
-              -o output_directory/20_bam/bulk2.bam
+              -o output_directory/20_bam/bulk2.unsorted.bam
 ```
 
+**
 
-
-**Explanation**:
+Explanation**:
 
 - `mem`: The algorithm used by BWA to align paired-end reads.
 - `-t 4`: Specifies the number of threads to use (in this case, 4 threads).
@@ -325,6 +325,6 @@ qtlplot -v output_directory/30_vcf/qtlseq.vcf.gz -o output_directory/40_plot -n1
 
 **Additional Option**:
 
-- `-e database`: Specifies the SnpEff database
+- `-e database`: Specifies the SnpEff database to
 
- to use for annotating variants. Ensure that the correct SnpEff database is installed and available before running this command.
+ use for annotating variants. Ensure that the correct SnpEff database is installed and available before running this command.
