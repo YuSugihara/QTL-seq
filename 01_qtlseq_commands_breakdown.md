@@ -1,6 +1,6 @@
 # QTL-seq Commands Breakdown
 
-This document provides a comprehensive overview of the commands used in the QTL-seq pipeline. By understanding each step's purpose, usage, and the default parameters employed in QTL-seq, users can independently run the bash commands to troubleshoot and resolve issues more effectively. The goal is to help users better understand the internal workings of QTL-seq and ensure efficient execution.
+This document provides a comprehensive overview of the commands used in the QTL-seq pipeline. By understanding each step's purpose, usage, and the default parameters employed in QTL-seq, users may be able to run the bash commands independently to troubleshoot and resolve issues more effectively. The goal is to help users better understand the internal workings of QTL-seq and ensure efficient execution.
 
 ## Table of Contents
 
@@ -45,7 +45,7 @@ mkdir -p output_directory/30_vcf
 ## Step 2: Quality Control and Trimming
 
 **Description**:  
-Trimming is the process of removing low-quality sequences and adapters from raw sequencing data. This step is essential to ensure that the data used for alignment is clean and of high quality. In QTL-seq, trimming is performed using **Trimmomatic** on the **parent** and **bulk1** and **bulk2** in the same manner.
+Trimming is the process of removing low-quality sequences and adapters from raw sequencing data. This step is essential to ensure that the data used for alignment is clean and of high quality. In QTL-seq, trimming is performed using **Trimmomatic** on the **parent**, **bulk1**, and **bulk2** FASTQ files.
 
 **Usage**:
 
@@ -155,13 +155,13 @@ samtools view -b \
 bwa mem -t 4 output_directory/10_ref/qtlseq_ref.fasta \
     output_directory/00_fastq/bulk2_R1_paired.fastq.gz \
     output_directory/00_fastq/bulk2_R2_paired.fastq.gz | \
-samtools view -b \
+samtools view
+
+ -b \
               -o output_directory/20_bam/bulk2.unsorted.bam
 ```
 
-**
-
-Explanation**:
+**Explanation**:
 
 - `mem`: The algorithm used by BWA to align paired-end reads.
 - `-t 4`: Specifies the number of threads to use (in this case, 4 threads).
@@ -196,10 +196,10 @@ samtools view -b -f 2 -F 2048 -o output_directory/20_bam/bulk2.bam
 
 **Explanation**:
 
-- `fixmate -m`: Adjusts mate-pair information and adds `ms` (mate score) tags, used by `markdup` to select the best reads for duplicate removal.
+- `fixmate -m`: Adjusts mate-pair information and adds `ms` (mate score) tags, used by `markdup` to select the best reads for duplicate marking.
 - `sort`: Sorts the BAM file by genomic coordinates.
-- `markdup`: Removes duplicate reads to avoid bias in variant calling.
-- `view -b`: Outputs the sorted and duplicate-free data in BAM format.
+- `markdup`: Marks duplicate reads by setting a DUP flag (without `-r`, duplicate reads are marked but not removed). To remove duplicates, the `-r` option can be added.
+- `view -b`: Outputs the sorted and duplicate-marked data in BAM format.
 
 **Indexing BAM files**:
 
@@ -247,48 +247,7 @@ bcftools filter -i "INFO/MQ>=40" -O z -o output_directory/30_vcf/qtlseq.vcf.gz
 - `-C 50`: Adjusts the mapping quality to account for the use of BWA during alignment.
 
 ### Important Note:
-When generating the VCF file, the order in which the **parent**, **bulk1**, and **bulk2** BAM files are passed into the `bcftools mpileup` command is important. The **parent** should come first, followed by **bulk1** and **bulk2**. This order is critical for downstream analysis, especially when using **QTLplot**, as the software expects the **parent** data to be the first sample in the VCF file.
-
-### Chromosome-specific processing:  
-The `-r` option in `bcftools mpileup` allows for chromosome-specific processing, which can be used to parallelize the VCF generation for each chromosome individually. This can help speed up the variant calling process for large genomes.
-
-#### Usage for Chromosome-specific processing:
-
-```bash
-bcftools mpileup -r test_chr -a AD,ADF,ADR -B -q 40 -Q 18 -C 50 -O u -f output_directory/10_ref/qtlseq_ref.fasta \
-output_directory/20_bam/parent.bam output_directory/20_bam/bulk1.bam output_directory/20_bam/bulk2.bam | \
-bcftools call -vm -f GQ,GP -O u | \
-bcftools filter -i "INFO/MQ>=40" -O z -o output_directory/30_vcf/qtlseq.test_chr.vcf.gz
-```
-
-### Concatenating VCF Files:  
-If the VCF files are generated separately for each chromosome, you can use `bcftools concat` to concatenate them into a single VCF file for easier analysis.
-
-#### Usage for Concatenating VCF Files:
-
-```bash
-bcftools concat -O z -o output_directory/30_vcf/qtlseq_combined.vcf.gz output_directory/30_vcf/qtlseq.*.vcf.gz
-```
-
-This command will concatenate all chromosome-specific VCF files (`qtlseq.*.vcf.gz`) into a single compressed VCF file (`qtlseq_combined.vcf.gz`).
-
-### Index the VCF file with Tabix:
-
-For more information on **Tabix**, refer to the manual [here](https://www.htslib.org/doc/tabix.html).
-
-```bash
-tabix -f -p vcf output_directory/30_vcf/qtlseq.vcf.gz
-```
-
-### Note for Large Genomes (e.g., Wheat):
-
-For large genomes like wheat, using the default `tabix` indexing without the `-C` option may result in an error due to file size limitations. In such cases, it is necessary to use the `-C` option, which generates a `.csi` index that supports large reference genomes:
-
-```bash
-tabix -C -f -p vcf output_directory/30_vcf/qtlseq.vcf.gz
-```
-
-This `.csi` index is suitable for handling large genomes that exceed the size limitations of standard `.tbi` indexes.
+When generating the VCF file, the order in which the **parent**, **bulk1**, and **bulk2** BAM files are passed into the `bcftools mpileup` command is important. The **parent** should come first, followed by **bulk1** and then **bulk2**. This order is critical for downstream analysis.
 
 ---
 
@@ -325,6 +284,4 @@ qtlplot -v output_directory/30_vcf/qtlseq.vcf.gz -o output_directory/40_plot -n1
 
 **Additional Option**:
 
-- `-e database`: Specifies the SnpEff database to
-
- use for annotating variants. Ensure that the correct SnpEff database is installed and available before running this command.
+- `-e database`: Specifies the SnpEff database to use for annotating variants. Ensure that the correct SnpEff database is installed and available before running this command.
