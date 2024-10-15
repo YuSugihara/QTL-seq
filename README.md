@@ -16,8 +16,8 @@
 - [Outputs](#outputs)
 - [Additional Resources](#additional-resources)
   + [QTL-seq commands breakdown](#qtl-seq-commands-breakdown)
+  + [Build a custom SnpEff database](#build-a-custom-snpEff-database)
 - [About multiple testing correction](#about-multiple-testing-correction)
-- [Build and use your own database for snpEff](#build-and-use-your-own-database-for-snpeff)
 
 ## What is QTL-seq?
 <img src="https://github.com/YuSugihara/QTL-seq/blob/master/images/1_logo.png" width=200>
@@ -394,19 +394,10 @@ Inside of `OUT_DIR` is like below.
 
 For a detailed breakdown of the commands used in QTL-seq, including explanations of each step, parameters, and best practices for troubleshooting, please refer to the [QTL-seq Commands Breakdown](docs/01_QTL-seq_Commands_Breakdown.md) document.
 
+### Build a custom SnpEff database
+If you are working with a non-model organism or your own reference genome, you may need to build a custom SnpEff database. For detailed instructions on how to build a custom SnpEff database, please refer to the [Build a Custom SnpEff Database](docs/02_Guide_to_Build_SnpEff_DB.md) document.
+
 ## About multiple testing correction
 This function has been deprecated since v2.2.5.
 We highly recommend running QTL-seq without this function.
 However, if you would like to use this function, you can use it with versions of QTL-seq older than v2.2.5.
-
-## Build and use your own database for snpEff
-If you want to use your own database for snpEff, you need additional steps.
-Here we assume that you installed QTL-seq via anaconda distribution, creating new environment with `conda create`.
-
-1. Find the directory of snpEff that includes snpEff script, configuration file and database. You can find it in `/home/anaconda3/envs/{your_env_name_installed_qtlseq}/share/snpeff-5.0-0/`. `anaconda3` may be `miniconda3`. Also, the version of snpeff may be different.
-
-2. Go to this directory and follow the snpEff manual to build the database.
-Don't forget to add your database info to the snpEff configuration file.
-https://pcingola.github.io/SnpEff/se_buildingdb/#add-a-genome-to-the-configuration-file
-
-3. Run QTL-seq with option `-e {your_database_name}`
