@@ -32,15 +32,23 @@ class Mpileup(object):
                                           >> {0}/log/samtools.log \
                                           2>&1'.format(self.out, label)
 
-            cmd2 = 'samtools sort -m {0} \
-                                  -@ {1} \
-                                  -o {2}/20_bam/{3}.bam \
-                                  {2}/20_bam/{3}.unsorted.bam \
-                                  >> {2}/log/samtools.log \
-                                  2>&1'.format(self.args.mem,
-                                               self.args.threads,
-                                               self.out,
-                                               label)
+            cmd2 = 'samtools fixmate -m \
+                                     {0}/20_bam/{1}.unsorted.bam \
+                                     - | \
+                    samtools sort -m {2} \
+                                  -@ {3} | \
+                    samtools markdup -r \
+                                     - \
+                                     - | \
+                    samtools view -b \
+                                  -f 2 \
+                                  -F 2048 \
+                                  -o {0}/20_bam/{1}.bam \
+                                  >> {0}/log/samtools.log \
+                                  2>&1'.format(self.out,
+                                               label,
+                                               self.args.mem,
+                                               self.args.threads)
 
             cmd3 = 'samtools index {0}/20_bam/{1}.bam \
                                    >> {0}/log/samtools.log \

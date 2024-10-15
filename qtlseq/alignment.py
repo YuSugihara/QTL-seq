@@ -16,28 +16,16 @@ class Alignment(object):
 
         cmd = 'bwa mem -t {0} \
                        {1} {2} {3} | \
-               samtools fixmate -m \
-                                - \
-                                - | \
-               samtools sort -m {4} \
-                             -@ {0} | \
-               samtools markdup -r \
-                                - \
-                                - | \
                samtools view -b \
-                             -f 2 \
-                             -F 2048 \
-                             -o {5}/20_bam/{6}.bam \
-                             >> {5}/log/alignment.log \
+                             -o {4}/20_bam/{5}.bam \
+                             >> {4}/log/alignment.log \
                              2>&1'.format(self.args.threads,
                                           self.args.ref,
                                           fastq1,
                                           fastq2,
-                                          self.args.mem,
                                           self.out,
                                           index)
         
-
         cmd = clean_cmd(cmd)
 
         try:
