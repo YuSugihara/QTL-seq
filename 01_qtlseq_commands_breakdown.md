@@ -155,9 +155,7 @@ samtools view -b \
 bwa mem -t 4 output_directory/10_ref/qtlseq_ref.fasta \
     output_directory/00_fastq/bulk2_R1_paired.fastq.gz \
     output_directory/00_fastq/bulk2_R2_paired.fastq.gz | \
-samtools view
-
- -b \
+samtools view -b \
               -o output_directory/20_bam/bulk2.unsorted.bam
 ```
 
