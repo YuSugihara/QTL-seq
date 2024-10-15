@@ -15,7 +15,8 @@ class Alignment(object):
               flush=True)
 
         cmd = 'bwa mem -t {0} \
-                       {1} {2} {3} | \
+                       {1} {2} {3} \
+                       2>> {4}/log/alignment.log | \
                samtools view -b \
                              -o {4}/20_bam/{5}.bam \
                              >> {4}/log/alignment.log \
