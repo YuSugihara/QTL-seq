@@ -143,8 +143,8 @@ class QTLseq(object):
                        -N {7} \
                        -D {8} \
                        -d {9} \
-                       --dot-colors {10} \
-                       --line-colors {11} \
+                       --dot-colors "{10}" \
+                       --line-colors "{11}" \
                        -o {0}/40_qtlseq'.format(self.out,
                                                 self.args.filial,
                                                 self.args.N_bulk1,
