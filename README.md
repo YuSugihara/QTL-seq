@@ -386,6 +386,12 @@ Inside of `OUT_DIR` is like below.
 
 <img src="https://github.com/YuSugihara/QTL-seq/blob/master/images/2_result.png" width=600>
 
+## Additional Resources
+
+### QTL-seq commands breakdown
+
+For a detailed breakdown of the commands used in QTL-seq, including explanations of each step, parameters, and best practices for troubleshooting, please refer to the [QTL-seq Commands Breakdown](docs/01_qtlseq_commands_breakdown.md) document.
+
 ## About multiple testing correction
 This function has been deprecated since v2.2.5.
 We highly recommend running QTL-seq without this function.
