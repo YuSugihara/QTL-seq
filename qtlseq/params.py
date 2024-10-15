@@ -193,20 +193,20 @@ class Params(object):
 
         parser.add_argument('--line-colors',
                             action='store',
-                            default='#FE5F55,#6FD08C,#E3B505',
+                            default='#C3310F,#009E72,#FDB003',
                             type=str,
                             help=('Colors for threshold lines in plots. Specify a\n'
                                   'comma-separated list in the order of SNP-index,\n'
-                                  'p95, and p99. ["#FE5F55,#6FD08C,#E3B505"]'),
+                                  'p95, and p99. ["#C3310F,#009E72,#FDB003"]'),
                             metavar='')
 
         parser.add_argument('--dot-colors',
                             action='store',
-                            default='#74D3AE,#FFBE0B,#40476D',
+                            default='#74D3AE,#FFBE0B,#B3B8DD',
                             type=str,
                             help=('Colors for dots in plots. Specify a\n'
                                   'comma-separated list in the order of bulk1,\n'
-                                  'bulk2, and delta. ["#74D3AE,#FFBE0B,#40476D"]'),
+                                  'bulk2, and delta. ["#74D3AE,#FFBE0B,#B3B8DD"]'),
                             metavar='')
 
         parser.add_argument('--mem',
@@ -392,20 +392,20 @@ class Params(object):
 
         parser.add_argument('--line-colors',
                             action='store',
-                            default='#FE5F55,#6FD08C,#E3B505',
+                            default='#C3310F,#009E72,#FDB003',
                             type=str,
                             help=('Colors for threshold lines in plots. Specify a\n'
                                   'comma-separated list in the order of SNP-index,\n'
-                                  'p95, and p99. ["#FE5F55,#6FD08C,#E3B505"]'),
+                                  'p95, and p99. ["#C3310F,#009E72,#FDB003"]'),
                             metavar='')
 
         parser.add_argument('--dot-colors',
                             action='store',
-                            default='#74D3AE,#FFBE0B,#40476D',
+                            default='#74D3AE,#FFBE0B,#B3B8DD',
                             type=str,
                             help=('Colors for dots in plots. Specify a\n'
                                   'comma-separated list in the order of bulk1,\n'
-                                  'bulk2, and delta. ["#74D3AE,#FFBE0B,#40476D"]'),
+                                  'bulk2, and delta. ["#74D3AE,#FFBE0B,#B3B8DD"]'),
                             metavar='')
 
         parser.add_argument('--fig-width',
