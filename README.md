@@ -347,12 +347,12 @@ Inside of `OUT_DIR` is like below.
 │  ├── sliding_window.tsv
 │  ├── sliding_window.p95.tsv
 │  ├── sliding_window.p99.tsv
-│  ├── np_index.tsv
+│  ├── snp_index.tsv
 │  ├── snp_index.p95.tsv
 │  └── snp_index.p99.tsv
 └── log
+   ├── alignment.log
    ├── bcftools.log
-   ├── bgzip.log
    ├── bwa.log
    ├── samtools.log
    └── tabix.log
