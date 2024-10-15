@@ -15,7 +15,7 @@
   + [Example 5 : run QTL-plot from VCF](#example-5--run-qtl-plot-from-vcf)
 - [Outputs](#outputs)
 - [Additional Resources](#additional-resources)
-  + [QTL-seq commands breakdown](#qtlseq-commands-breakdown)
+  + [QTL-seq commands breakdown](#qtl-seq-commands-breakdown)
 - [About multiple testing correction](#about-multiple-testing-correction)
 - [Build and use your own database for snpEff](#build-and-use-your-own-database-for-snpeff)
 
