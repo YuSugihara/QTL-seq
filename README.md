@@ -14,6 +14,8 @@
   + [Example 4 : run QTL-seq from multiple FASTQs and BAMs](#example-4--run-qtl-seq-from-multiple-fastqs-and-bams)
   + [Example 5 : run QTL-plot from VCF](#example-5--run-qtl-plot-from-vcf)
 - [Outputs](#outputs)
+- [Additional Resources](#additional-resources)
+  + [QTL-seq commands breakdown](#qtlseq-commands-breakdown)
 - [About multiple testing correction](#about-multiple-testing-correction)
 - [Build and use your own database for snpEff](#build-and-use-your-own-database-for-snpeff)
 
@@ -390,7 +392,7 @@ Inside of `OUT_DIR` is like below.
 
 ### QTL-seq commands breakdown
 
-For a detailed breakdown of the commands used in QTL-seq, including explanations of each step, parameters, and best practices for troubleshooting, please refer to the [QTL-seq Commands Breakdown](docs/01_qtlseq_commands_breakdown.md) document.
+For a detailed breakdown of the commands used in QTL-seq, including explanations of each step, parameters, and best practices for troubleshooting, please refer to the [QTL-seq Commands Breakdown](docs/01_QTL-seq_Commands_Breakdown.md) document.
 
 ## About multiple testing correction
 This function has been deprecated since v2.2.5.
