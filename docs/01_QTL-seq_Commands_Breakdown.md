@@ -283,3 +283,7 @@ qtlplot -v output_directory/30_vcf/qtlseq.vcf.gz -o output_directory/40_plot -n1
 **Additional Option**:
 
 - `-e database`: Specifies the SnpEff database to use for annotating variants. Ensure that the correct SnpEff database is installed and available before running this command.
+
+## Acknowledgement
+
+We would like to thank [Shoya Komura](https://github.com/ShoyaKomura) for his helpful advice regarding the use of the `-c` option in `samtools index` and the `-C` option in `tabix` for handling large genomes.
