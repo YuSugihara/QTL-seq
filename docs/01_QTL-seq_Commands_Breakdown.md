@@ -272,7 +272,7 @@ qtlplot -v output_directory/30_vcf/qtlseq.vcf.gz -o output_directory/40_plot -n1
 ## Using SnpEff for Variant Annotation
 
 **Optional: Using QTLplot with SnpEff**:  
-QTLplot can be run in combination with **SnpEff** to annotate variants for their potential effects. This allows for a more detailed understanding of how SNPs may impact gene function. For more information on SnpEff, please refer to the [SnpEff Documentation](https://pcingola.github.io/SnpEff/snpeff/introduction/).
+QTLplot can be run in combination with **SnpEff** to annotate variants for their potential effects. This allows for a more detailed understanding of how SNPs may impact gene function. If you would like to build your own SnpEff database, or learn more about SnpEff, please refer to the [SnpEff Documentation](https://pcingola.github.io/SnpEff/snpeff/introduction/). Additionally, the following guide may be useful: [Guide to Build SnpEff Database](https://github.com/YuSugihara/QTL-seq/blob/master/docs/02_Guide_to_Build_SnpEff_DB.md).
 
 **Usage**:
 
