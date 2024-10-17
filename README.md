@@ -333,12 +333,12 @@ Inside of `OUT_DIR` is like below.
 │  ├── reference.fasta.pac
 │  └── reference.fasta.sa
 ├── 20_bam
-│  ├── bulk1.filt.bam
-│  ├── bulk1.filt.bam.bai
-│  ├── bulk2.filt.bam
-│  ├── bulk2.filt.bam.bai
-│  ├── parent.filt.bam
-│  └── parent.filt.bam.bai
+│  ├── bulk1.bam
+│  ├── bulk1.bam.bai
+│  ├── bulk2.bam
+│  ├── bulk2.bam.bai
+│  ├── parent.bam
+│  └── parent.bam.bai
 ├── 30_vcf
 │  ├── qtlseq.vcf.gz
 │  └── qtlseq.vcf.gz.tbi
@@ -380,11 +380,15 @@ Inside of `OUT_DIR` is like below.
     - **MEAN SNP-index 1** : mean SNP-index of bulk 1
     - **MEAN SNP-index 2** : mean SNP-index of bulk 2
     - **MEAN DELTA SNP-index** : mean delta SNP-index
-  + `QTL-seq_plot.png` : resulting plot (like below)
+  + `delta_SNPindex.png` : resulting plot (like below)
     - **<span style="color: blue; ">BLUE dot</span>** : variant
     - **<span style="color: red; ">RED line</span>** : mean SNP-index
     - **<span style="color: orange; ">ORANGE line</span>** : mean p99
     - **<span style="color: green; ">GREEN line</span>** : mean p95
+  + If you run MutMap with SnpEff, the following additional outputs will be generated:
+    - **mutmap.snpEff.vcf**: The updated VCF file after annotation by SnpEff, located in the `40_qtlseq` directory.
+    - **snp_index.p95.tsv** and **snp_index.p99.tsv**: These files will contain a new column, **impact**, which includes the mutation impact information predicted by SnpEff.
+    - When plotting the results, variants classified as **MODERATE** by SnpEff are marked with a `+` symbol, while variants classified as **HIGH** are marked with an `x` symbol in the plot.
 
 <img src="https://github.com/YuSugihara/QTL-seq/blob/master/images/2_result.png" width=600>
 

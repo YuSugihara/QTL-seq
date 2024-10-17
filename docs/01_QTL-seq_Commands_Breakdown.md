@@ -274,6 +274,8 @@ qtlplot -v output_directory/30_vcf/qtlseq.vcf.gz -o output_directory/40_plot -n1
 **Optional: Using QTLplot with SnpEff**:  
 QTLplot can be run in combination with **SnpEff** to annotate variants for their potential effects. This allows for a more detailed understanding of how SNPs may impact gene function. If you would like to build your own SnpEff database, or learn more about SnpEff, please refer to the [SnpEff Documentation](https://pcingola.github.io/SnpEff/snpeff/introduction/). Additionally, the following guide may be useful: [Guide to Build SnpEff Database](https://github.com/YuSugihara/QTL-seq/blob/master/docs/02_Guide_to_Build_SnpEff_DB.md).
 
+When plotting the results, variants classified as **MODERATE** by SnpEff are marked with a `+` symbol, while variants classified as **HIGH** are marked with an `x` symbol in the plot.
+
 **Usage**:
 
 ```bash
