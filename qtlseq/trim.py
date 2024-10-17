@@ -31,7 +31,7 @@ class Trim(object):
 
     def run(self, fastq1, fastq2, index):
         print(time_stamp(),
-        'start trimming for {} and {}.'.format(fastq1, fastq2),
+        'Trimming reads for {} and {}.'.format(fastq1, fastq2),
         flush=True)
 
         trim1 = '{}/00_fastq/{}.1.trim.fastq.gz'.format(self.out, index)
@@ -94,7 +94,7 @@ class Trim(object):
             sys.exit(1)
 
         print(time_stamp(),
-              'trimming for {} and {} successfully finished.'.format(fastq1, fastq2),
+              'Trimming of {} and {} completed successfully.'.format(fastq1, fastq2),
               flush=True)
 
         aln = Alignment(self.args)

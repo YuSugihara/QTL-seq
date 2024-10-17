@@ -45,9 +45,9 @@ class QTLplot(object):
                                                     self.vcf)
         cmd = clean_cmd(cmd)
 
-        print(time_stamp(), 'start to run SnpEff.', flush=True)
+        print(time_stamp(), 'Running SnpEff annotation.', flush=True)
         sbp.run(cmd, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-        print(time_stamp(), 'SnpEff completed successfully', flush=True)
+        print(time_stamp(), 'SnpEff annotation completed successfully.', flush=True)
 
         self.args.vcf = '{}/qtlseq.snpEff.vcf'.format(self.out)
 
