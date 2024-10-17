@@ -11,7 +11,7 @@ class RefIndex(object):
 
     def run(self):
         print(time_stamp(),
-              'start to index reference fasta.',
+              'Indexing the reference FASTA.',
               flush=True)
 
         cmd1 = 'bwa index {} \
@@ -46,5 +46,5 @@ class RefIndex(object):
             sys.exit(1)
 
         print(time_stamp(),
-              'indexing of reference successfully finished.',
+              'Reference FASTA indexing completed successfully.',
               flush=True)

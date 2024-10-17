@@ -11,7 +11,7 @@ class Alignment(object):
 
     def run(self, fastq1, fastq2, index):
         print(time_stamp(),
-              'start to align reads of {} by BWA.'.format(index),
+              'Aligning reads for {} using BWA.'.format(index),
               flush=True)
 
         cmd = 'bwa mem -t {0} \
@@ -40,5 +40,5 @@ class Alignment(object):
             sys.exit(1)
 
         print(time_stamp(),
-              'alignment {} successfully finished.'.format(index),
+              'Alignment of {} completed successfully.'.format(index),
               flush=True)

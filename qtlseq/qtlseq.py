@@ -178,9 +178,9 @@ class QTLseq(object):
         self.qtlplot()
 
 def main():
-    print(time_stamp(), 'start to run QTL-seq.', flush=True)
+    print(time_stamp(), 'Starting QTL-seq analysis.', flush=True)
     QTLseq(args).run()
-    print(time_stamp(), 'QTL-seq successfully finished.\n', flush=True)
+    print(time_stamp(), 'QTL-seq analysis completed successfully.\n', flush=True)
 
 if __name__ == '__main__':
     main()

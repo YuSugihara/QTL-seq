@@ -47,7 +47,7 @@ class QTLplot(object):
 
         print(time_stamp(), 'start to run SnpEff.', flush=True)
         sbp.run(cmd, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-        print(time_stamp(), 'SnpEff successfully finished.', flush=True)
+        print(time_stamp(), 'SnpEff completed successfully', flush=True)
 
         self.args.vcf = '{}/qtlseq.snpEff.vcf'.format(self.out)
 
@@ -194,7 +194,7 @@ class QTLplot(object):
         v2i = Vcf2Index(self.args)
         v2i.run()
 
-        print(time_stamp(), 'plotting now...', flush=True)
+        print(time_stamp(), 'Generating plot...', flush=True)
         pt = Plot(self.args)
         pt.run()
 
@@ -205,10 +205,10 @@ class QTLplot(object):
             self.make_igv_file()
 
 def main():
-    print(time_stamp(), 'start to run QTL-plot.', flush=True)
+    print(time_stamp(), 'Starting QTL-plot.', flush=True)
     qp = QTLplot(args)
     qp.run()
-    print(time_stamp(), 'QTL-plot successfully finished.', flush=True)
+    print(time_stamp(), 'QTL-plot completed successfully.', flush=True)
 
 if __name__ == '__main__':
     main()

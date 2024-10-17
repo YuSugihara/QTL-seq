@@ -286,12 +286,12 @@ class Vcf2Index(object):
         self.table_sort()
 
     def run(self):
-        print(time_stamp(), 'start to calculate SNP-index.', flush=True)
+        print(time_stamp(), 'Calculating SNP-index.', flush=True)
         self.field_pos = self.get_field()
         self.calculate_SNPindex()
-        print(time_stamp(), 'SNP-index successfully finished.', flush=True)
+        print(time_stamp(), 'SNP-index calculation completed successfully.', flush=True)
 
-        print(time_stamp(), 'start to smooth SNP-index.', flush=True)
+        print(time_stamp(), 'Smoothing SNP-index.', flush=True)
         sm = Smooth(self.args)
         sm.run()
-        print(time_stamp(), 'smoothing process successfully finished.', flush=True)
+        print(time_stamp(), 'SNP-index smoothing completed successfully.', flush=True)

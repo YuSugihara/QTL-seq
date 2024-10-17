@@ -225,11 +225,11 @@ class Mpileup(object):
                 sys.exit(1)
 
     def run(self):
-        print(time_stamp(), 'start to merge BAMs.', flush=True)
+        print(time_stamp(), 'Sorting BAM files.', flush=True)
         self.merge()
-        print(time_stamp(), 'merging process successfully finished.', flush=True)
+        print(time_stamp(), 'BAM file sorting completed successfully.', flush=True)
 
-        print(time_stamp(), 'start to call variants.', flush=True)
+        print(time_stamp(), 'Calling variants.', flush=True)
         chr_names = self.get_header()
 
         p = Pool(self.args.threads)
@@ -237,8 +237,8 @@ class Mpileup(object):
         p.close()
 
         self.concat()
-        print(time_stamp(), 'variant calling successfully finished.', flush=True)
+        print(time_stamp(), 'Variant calling completed successfully.', flush=True)
 
-        print(time_stamp(), 'start to index VCF.', flush=True)
+        print(time_stamp(), 'Indexing the VCF file.', flush=True)
         self.mkindex()
-        print(time_stamp(), 'indexing VCF successfully finished.', flush=True)
+        print(time_stamp(), 'VCF indexing completed successfully.', flush=True)
