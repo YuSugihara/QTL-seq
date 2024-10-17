@@ -29,13 +29,13 @@ class QTLplot(object):
     def check_outdir(self):
         if os.path.exists(self.out):
             print(time_stamp(),
-                  'output directory already exist.'.format(self.out),
+                  'Output directory already exists.'.format(self.out),
                   flush=True)
         else:
             os.mkdir(self.out)
 
     def run_snpEff(self):
-        cmd = 'snpEff ann -Xmx8g \
+        cmd = 'snpEff ann -Xmx4g \
                           -s {0}/snpEff_summary.html \
                           {1} \
                           {2} \
