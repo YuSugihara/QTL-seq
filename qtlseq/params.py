@@ -492,7 +492,7 @@ class Params(object):
                 if ext != '.bam':
                     sys.stderr.write(('  Error: Please check "{}".\n'
                                       '  The file extension is not "bam".\n'
-                                      '  If you meant to specify FASTQ files, please provide them as paired-end reads separated by a comma. e.g., -p fastq1,fastq2\n\n').format(input_name))
+                                      '  If you intended to specify FASTQ files, please provide them as paired-end reads separated by a comma. e.g., -p fastq1,fastq2\n\n').format(input_name))
                     sys.exit(1)
             elif n_comma == 1:
                 fastqs = input_name.split(',')
@@ -501,7 +501,7 @@ class Params(object):
                     if ext == '.bam':
                         sys.stderr.write(('  Error: Please check "{}".\n'
                                           '  The file extension should not be "bam".\n'
-                                          '  If you meant to specify BAM files, please input them separately. e.g., -p bam1 -p bam2\n\n').format(input_name))
+                                          '  If you intended to specify BAM files, please input them separately. e.g., -p bam1 -p bam2\n\n').format(input_name))
                         sys.exit(1)
                 N_fastq += 1
             else:
@@ -516,7 +516,7 @@ class Params(object):
                 if ext != '.bam':
                     sys.stderr.write(('  Error: Please check "{}".\n'
                                       '  The file extension is not "bam".\n'
-                                      '  If you meant to specify FASTQ files, please provide them as paired-end reads separated by a comma. e.g., -b1 fastq1,fastq2\n\n').format(input_name))
+                                      '  If you intended to specify FASTQ files, please provide them as paired-end reads separated by a comma. e.g., -b1 fastq1,fastq2\n\n').format(input_name))
                     sys.exit(1)
             elif n_comma == 1:
                 fastqs = input_name.split(',')
@@ -525,7 +525,7 @@ class Params(object):
                     if ext == '.bam':
                         sys.stderr.write(('  Error: Please check "{}".\n'
                                           '  The file extension should not be "bam".\n'
-                                          '  If you meant to specify BAM files, please input them separately. e.g., -b1 bam1 -b1 bam2\n\n').format(input_name))
+                                          '  If you intended to specify BAM files, please input them separately. e.g., -b1 bam1 -b1 bam2\n\n').format(input_name))
                         sys.exit(1)
                 N_fastq += 1
             else:
@@ -540,7 +540,7 @@ class Params(object):
                 if ext != '.bam':
                     sys.stderr.write(('  Error: Please check "{}".\n'
                                       '  The file extension is not "bam".\n'
-                                      '  If you meant to specify FASTQ files, please provide them as paired-end reads separated by a comma. e.g., -b2 fastq1,fastq2\n\n').format(input_name))
+                                      '  If you intended to specify FASTQ files, please provide them as paired-end reads separated by a comma. e.g., -b2 fastq1,fastq2\n\n').format(input_name))
                     sys.exit(1)
             elif n_comma == 1:
                 fastqs = input_name.split(',')
@@ -549,7 +549,7 @@ class Params(object):
                     if ext == '.bam':
                         sys.stderr.write(('  Error: Please check "{}".\n'
                                           '  The file extension should not be "bam".\n'
-                                          '  If you meant to specify BAM files, please input them separately. e.g., -b2 bam1 -b2 bam2\n\n').format(input_name))
+                                          '  If you intended to specify BAM files, please input them separately. e.g., -b2 bam1 -b2 bam2\n\n').format(input_name))
                         sys.exit(1)
                 N_fastq += 1
             else:
