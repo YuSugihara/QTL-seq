@@ -12,6 +12,14 @@ import pandas as pd
 import subprocess as sbp
 from multiprocessing import set_start_method
 set_start_method('fork')
+# These environment variables can avoid the potential errors
+# in python and java
+if os.environ.get('OMP_NUM_THREADS') == None:
+    os.environ['OMP_NUM_THREADS'] = str(args.threads)
+if os.environ.get('USE_SIMPLE_THREADED_LEVEL3') == None:
+    os.environ['USE_SIMPLE_THREADED_LEVEL3'] = str(args.threads)
+if os.environ.get('JAVA_TOOL_OPTIONS') == None:
+    os.environ['JAVA_TOOL_OPTIONS'] = '-Xmx4000m'
 from qtlseq.vcf2index import Vcf2Index
 from qtlseq.plot import Plot
 from qtlseq.utils import time_stamp, clean_cmd

@@ -1,5 +1,5 @@
 # QTL-seq User Guide
-#### version 2.2.7
+#### version 2.2.8
 
 ## Table of contents
 - [What is QTL-seq?](#what-is-qtl-seq)
@@ -81,7 +81,7 @@ usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
               [-F <INT>] [-T] [-e <DATABASE>]
 
-QTL-seq version 2.2.7
+QTL-seq version 2.2.8
 
 options:
   -h, --help         show this help message and exit
@@ -257,7 +257,7 @@ usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
                [--igv] [--indel]
 
-QTL-plot version 2.2.7
+QTL-plot version 2.2.8
 
 options:
   -h, --help            show this help message and exit
