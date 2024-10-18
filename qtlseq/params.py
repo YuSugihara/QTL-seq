@@ -450,7 +450,7 @@ class Params(object):
         max_cpu = multi.cpu_count()
         if max_cpu <= args.threads:
             sys.stderr.write(('!!WARNING!! You can use up to {0} threads. '
-                            'The program will now use {0} threads.\n').format(max_cpu))
+                              'The program will now use {0} threads.\n').format(max_cpu))
             sys.stderr.flush()
             args.threads = max_cpu
         elif args.threads < 1:
@@ -459,19 +459,19 @@ class Params(object):
 
     def check_args(self, args):
         if os.path.isdir(args.out):
-            sys.stderr.write(('  Output directory already exists.\n'
-                            '  Please rename the output directory or '
-                            'remove the existing directory.\n\n'))
+            sys.stderr.write(('  Error: Output directory already exists.\n'
+                              '  Please rename the output directory or '
+                              'remove the existing directory.\n\n'))
             sys.exit(1)
 
         if args.filial < 2:
-            sys.stderr.write('  The filial generation must be greater than 1.\n')
+            sys.stderr.write('  Error: The filial generation must be greater than 1.\n')
             sys.exit(1)
 
         if args.adapter is not None:
             if not args.trim:
                 sys.stderr.write(('!!WARNING!! You specified "--adapter", but did not specify "--trim".\n'
-                                '!!WARNING!! "--trim" has been added automatically.\n'))
+                                  '!!WARNING!! "--trim" has been automatically added.\n'))
                 sys.stderr.flush()
 
         if args.trim:
@@ -480,7 +480,7 @@ class Params(object):
         else:
             if args.trim_params is not None:
                 sys.stderr.write(('!!WARNING!! You specified "--trim-params", but did not specify "--trim".\n'
-                                '!!WARNING!! "--trim" has been added automatically.\n'))
+                                  '!!WARNING!! "--trim" has been automatically added.\n'))
                 sys.stderr.flush()
 
         N_fastq = 0
@@ -490,23 +490,23 @@ class Params(object):
             if n_comma == 0:
                 root, ext = os.path.splitext(input_name)
                 if ext != '.bam':
-                    sys.stderr.write(('  Please check "{}".\n'
-                                    '  The file extension is not "bam".\n'
-                                    '  If you meant to specify FASTQ files, please provide them as paired-end reads separated by a comma. e.g., -p fastq1,fastq2\n\n').format(input_name))
+                    sys.stderr.write(('  Error: Please check "{}".\n'
+                                      '  The file extension is not "bam".\n'
+                                      '  If you meant to specify FASTQ files, please provide them as paired-end reads separated by a comma. e.g., -p fastq1,fastq2\n\n').format(input_name))
                     sys.exit(1)
             elif n_comma == 1:
                 fastqs = input_name.split(',')
                 for fastq in fastqs:
                     root, ext = os.path.splitext(fastq)
                     if ext == '.bam':
-                        sys.stderr.write(('  Please check "{}".\n'
-                                        '  The file extension should not be "bam".\n'
-                                        '  If you meant to specify BAM files, please input them separately. e.g., -p bam1 -p bam2\n\n').format(input_name))
+                        sys.stderr.write(('  Error: Please check "{}".\n'
+                                          '  The file extension should not be "bam".\n'
+                                          '  If you meant to specify BAM files, please input them separately. e.g., -p bam1 -p bam2\n\n').format(input_name))
                         sys.exit(1)
                 N_fastq += 1
             else:
-                sys.stderr.write(('  Please check "{}".\n'
-                                '  You have specified too many files, or the file name contains a comma.\n\n').format(input_name))
+                sys.stderr.write(('  Error: Please check "{}".\n'
+                                  '  You have specified too many files, or the file name contains a comma.\n\n').format(input_name))
                 sys.exit(1)
 
         for input_name in args.bulk1:
@@ -514,23 +514,23 @@ class Params(object):
             if n_comma == 0:
                 root, ext = os.path.splitext(input_name)
                 if ext != '.bam':
-                    sys.stderr.write(('  Please check "{}".\n'
-                                    '  The file extension is not "bam".\n'
-                                    '  If you meant to specify FASTQ files, please provide them as paired-end reads separated by a comma. e.g., -b1 fastq1,fastq2\n\n').format(input_name))
+                    sys.stderr.write(('  Error: Please check "{}".\n'
+                                      '  The file extension is not "bam".\n'
+                                      '  If you meant to specify FASTQ files, please provide them as paired-end reads separated by a comma. e.g., -b1 fastq1,fastq2\n\n').format(input_name))
                     sys.exit(1)
             elif n_comma == 1:
                 fastqs = input_name.split(',')
                 for fastq in fastqs:
                     root, ext = os.path.splitext(fastq)
                     if ext == '.bam':
-                        sys.stderr.write(('  Please check "{}".\n'
-                                        '  The file extension should not be "bam".\n'
-                                        '  If you meant to specify BAM files, please input them separately. e.g., -b1 bam1 -b1 bam2\n\n').format(input_name))
+                        sys.stderr.write(('  Error: Please check "{}".\n'
+                                          '  The file extension should not be "bam".\n'
+                                          '  If you meant to specify BAM files, please input them separately. e.g., -b1 bam1 -b1 bam2\n\n').format(input_name))
                         sys.exit(1)
                 N_fastq += 1
             else:
-                sys.stderr.write(('  Please check "{}".\n'
-                                '  You have specified too many files, or the file name contains a comma.\n\n').format(input_name))
+                sys.stderr.write(('  Error: Please check "{}".\n'
+                                  '  You have specified too many files, or the file name contains a comma.\n\n').format(input_name))
                 sys.exit(1)
 
         for input_name in args.bulk2:
@@ -538,27 +538,28 @@ class Params(object):
             if n_comma == 0:
                 root, ext = os.path.splitext(input_name)
                 if ext != '.bam':
-                    sys.stderr.write(('  Please check "{}".\n'
-                                    '  The file extension is not "bam".\n'
-                                    '  If you meant to specify FASTQ files, please provide them as paired-end reads separated by a comma. e.g., -b2 fastq1,fastq2\n\n').format(input_name))
+                    sys.stderr.write(('  Error: Please check "{}".\n'
+                                      '  The file extension is not "bam".\n'
+                                      '  If you meant to specify FASTQ files, please provide them as paired-end reads separated by a comma. e.g., -b2 fastq1,fastq2\n\n').format(input_name))
                     sys.exit(1)
             elif n_comma == 1:
                 fastqs = input_name.split(',')
                 for fastq in fastqs:
                     root, ext = os.path.splitext(fastq)
                     if ext == '.bam':
-                        sys.stderr.write(('  Please check "{}".\n'
-                                        '  The file extension should not be "bam".\n'
-                                        '  If you meant to specify BAM files, please input them separately. e.g., -b2 bam1 -b2 bam2\n\n').format(input_name))
+                        sys.stderr.write(('  Error: Please check "{}".\n'
+                                          '  The file extension should not be "bam".\n'
+                                          '  If you meant to specify BAM files, please input them separately. e.g., -b2 bam1 -b2 bam2\n\n').format(input_name))
                         sys.exit(1)
                 N_fastq += 1
             else:
-                sys.stderr.write(('  Please check "{}".\n'
-                                '  You have specified too many files, or the file name contains a comma.\n\n').format(input_name))
+                sys.stderr.write(('  Error: Please check "{}".\n'
+                                  '  You have specified too many files, or the file name contains a comma.\n\n').format(input_name))
                 sys.exit(1)
 
         if N_fastq == 0 and args.trim:
-            sys.stderr.write(('  "--trim" can only be used when FASTQ files are specified.\n\n'))
+            sys.stderr.write(('  Error: "--trim" can only be used when FASTQ files are specified.\n\n'))
             sys.exit(1)
 
         return N_fastq
+
