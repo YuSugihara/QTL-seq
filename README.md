@@ -404,8 +404,6 @@ For a detailed breakdown of the commands used in QTL-seq, including explanations
 ### Build a custom SnpEff database
 If you are working with a non-model organism or your own reference genome, you may need to build a custom SnpEff database. For detailed instructions on how to build a custom SnpEff database, please refer to the [Build a Custom SnpEff Database](docs/02_Guide_to_Build_SnpEff_DB.md) document.
 
-Here is the full, updated QTL-seq FAQ section with the selected phrasing:
-
 ## Frequently Asked Questions
 
 ### Choosing the reference genome  
@@ -415,7 +413,7 @@ You can use a line that was not involved in the cross as the reference genome. I
 The current setting has been updated to pick the top 50 contigs based on length, so only these contigs will be displayed in the plot. However, the table contains SNP-index information for all contigs, allowing you to confirm significant SNPs even for contigs not shown in the plot. You can also generate plots for these SNPs independently if needed. Since contigs smaller than the sliding window size often produce less reliable results, excluding them from the analysis should not be an issue.
 
 ### How to filter for higher-confidence SNPs  
-If the phenotype is clear and the sequence data is clean, the default settings should already show some results. If you want to focus on higher-confidence SNPs, you can sequence both parents and retain only the SNPs that are clearly 0/0 in one parent and 1/1 in the other in the VCF file, which should produce cleaner results. However, keep in mind that the current version of QTL-seq only allows input for one parent’s sequence. For more detailed guidance on creating VCFs that include both parents and bulks, you might find this [link](https://github.com/YuSugihara/QTL-seq/blob/master/docs/01_QTL-seq_Commands_Breakdown.md) helpful.
+If the phenotype is clear and the sequence data is clean, the default settings should already show some results. If you want to focus on higher-confidence SNPs, you can sequence both parents and retain only the SNPs that are clearly 0/0 in one parent and 1/1 in the other in the VCF file, which should produce cleaner results. However, keep in mind that the current version of QTL-seq only allows input for one parent’s sequence. The linked page explains default QTL-seq commands, which involve only one parent in the workflow, but it may still be helpful as a reference when creating VCFs that include both parents. You might find this [link](https://github.com/YuSugihara/QTL-seq/blob/master/docs/01_QTL-seq_Commands_Breakdown.md) helpful.
 
 ### About multiple testing correction  
 This function has been deprecated since v2.2.5. We highly recommend running QTL-seq without this function. However, if you would like to use this function, you can use it with versions of QTL-seq older than v2.2.5.
