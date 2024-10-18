@@ -252,8 +252,6 @@ QTL-seq automatically merges multiple FASTQ and BAM files. Of course, you can me
 
 ### Example 5 : run QTL-plot from VCF
 ```
-qtlplot -h
-
 usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-F <INT>] [-t <INT>] [-w <INT>] [-s <INT>] [-D <INT>]
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
@@ -270,7 +268,7 @@ options:
   -o , --out            Output directory. The specified directory can already
                         exist.
   -F , --filial         Filial generation. This parameter must be
-                        more than 1. [2]
+                        greater than 1. [2]
   -t , --threads        Number of threads. If a value less than 1 is specified,
                         QTL-seq will use the maximum available threads. [2]
   -w , --window         Window size (kb). [2000]
@@ -291,10 +289,10 @@ options:
   --indel               Plot SNP-index with INDEL.
   --line-colors         Colors for threshold lines in plots. Specify a
                         comma-separated list in the order of SNP-index,
-                        p95, and p99. ["#FE5F55,#6FD08C,#E3B505"]
+                        p95, and p99. ["#C3310F,#009E72,#FDB003"]
   --dot-colors          Colors for dots in plots. Specify a
                         comma-separated list in the order of bulk1,
-                        bulk2, and delta. ["#74D3AE,#FFBE0B,#40476D"]
+                        bulk2, and delta. ["#74D3AE,#FFBE0B,#B3B8DD"]
   --fig-width           Width allocated in chromosome figure. [7.5]
   --fig-height          Height allocated in chromosome figure. [4.0]
   --white-space         White space between figures. (This option
