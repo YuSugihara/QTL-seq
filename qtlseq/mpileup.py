@@ -32,14 +32,21 @@ class Mpileup(object):
                                           >> {0}/log/samtools.log \
                                           2>&1'.format(self.out, label)
 
-            cmd2 = 'samtools fixmate -m \
+            cmd2 = 'samtools collate -O \
+                                     -@ {3} \
                                      {0}/20_bam/{1}.unsorted.bam \
-                                     - | \
+                                     2>> {0}/log/samtools.log | \
+                    samtools fixmate -m \
+                                     - \
+                                     - \
+                                     2>> {0}/log/samtools.log | \
                     samtools sort -m {2} \
-                                  -@ {3} | \
+                                  -@ {3} \
+                                  2>> {0}/log/samtools.log | \
                     samtools markdup -r \
                                      - \
-                                     - | \
+                                     - \
+                                     2>> {0}/log/samtools.log | \
                     samtools view -b \
                                   -f 2 \
                                   -F 2048 \
@@ -133,10 +140,12 @@ class Mpileup(object):
                                 --ignore-RG \
                                 {5}/20_bam/parent.bam \
                                 {5}/20_bam/bulk1.bam \
-                                {5}/20_bam/bulk2.bam | \
+                                {5}/20_bam/bulk2.bam \
+                                2>> {5}/log/bcftools.{3}.log | \
                bcftools call -vm \
                              -f GQ,GP \
-                             -O u | \
+                             -O u \
+                             2>> {5}/log/bcftools.{3}.log | \
                bcftools filter -i "INFO/MQ>={0}" \
                                -O z \
                                -o {5}/30_vcf/qtlseq.{3}.vcf.gz \

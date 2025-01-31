@@ -448,7 +448,7 @@ class Params(object):
 
     def check_max_threads(self, args):
         max_cpu = multi.cpu_count()
-        if max_cpu <= args.threads:
+        if max_cpu < args.threads:
             sys.stderr.write(('!!WARNING!! You can use up to {0} threads. '
                               'The program will now use {0} threads.\n').format(max_cpu))
             sys.stderr.flush()
