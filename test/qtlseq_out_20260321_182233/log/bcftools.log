@@ -1,5 +1,0 @@
-Warning: -f, --format-fields will be deprecated, please use -a, --annotate instead.
-Note: none of --samples-file, --ploidy or --ploidy-file given, assuming all sites are diploid
-[mpileup] 3 samples in 3 input files
-[mpileup] maximum number of reads per input file set to -d 250
-[W::bcf_hdr_check_sanity] MQ should be declared as Type=Float
