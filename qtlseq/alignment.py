@@ -35,8 +35,12 @@ class Alignment(object):
                     stderr=sbp.DEVNULL,
                     shell=True,
                     check=True)
-        except sbp.CalledProcessError:
-            call_log(self.out, 'alignment', cmd)
+        except sbp.CalledProcessError as exc:
+            call_log(self.out,
+                     'alignment',
+                     cmd,
+                     returncode=exc.returncode,
+                     hint='Please confirm BWA/SAMtools are installed and FASTQ files are valid.')
             sys.exit(1)
 
         print(time_stamp(),

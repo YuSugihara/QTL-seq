@@ -124,6 +124,12 @@ class Plot(object):
                 style = (2, int(N_chr/2) + 1)
         return style
 
+    def save_figure(self, fig, name):
+        fig.savefig('{}/{}.{}'.format(self.out, name, self.args.format),
+                    bbox_inches='tight',
+                    pad_inches=0.25)
+        plt.close(fig)
+
     def plot_bulk1_SNPindex(self):
         fig = plt.figure(figsize=(self.fig_width*self.N_col, 
                                   self.fig_height*self.N_raw))
@@ -174,7 +180,7 @@ class Plot(object):
             ax.set_ylim(0, 1.05)
             ax.set_title(chr_name, fontsize=17)
 
-        plt.savefig('{}/bulk1_SNPindex.{}'.format(self.out, self.args.format))
+        self.save_figure(fig, 'bulk1_SNPindex')
 
     def plot_bulk2_SNPindex(self):
         fig = plt.figure(figsize=(self.fig_width*self.N_col, 
@@ -226,7 +232,7 @@ class Plot(object):
             ax.set_ylim(0, 1.05)
             ax.set_title(chr_name, fontsize=17)
 
-        plt.savefig('{}/bulk2_SNPindex.{}'.format(self.out, self.args.format))
+        self.save_figure(fig, 'bulk2_SNPindex')
 
     def plot_delta_SNPindex(self):
         fig = plt.figure(figsize=(self.fig_width*self.N_col, 
@@ -293,12 +299,12 @@ class Plot(object):
 
             ax.hlines([0], 0, self.xmax, linestyles='dashed', color='black')
             ax.set_xlabel('Position (Mbp)')
-            ax.set_ylabel('$\Delta$SNP-index')
+            ax.set_ylabel('$\\Delta$SNP-index')
             ax.set_xlim(0, self.xmax)
             ax.set_ylim(-1.05, 1.05)
             ax.set_title(chr_name, fontsize=17)
 
-        plt.savefig('{}/delta_SNPindex.{}'.format(self.out, self.args.format))
+        self.save_figure(fig, 'delta_SNPindex')
 
 
     def run(self):

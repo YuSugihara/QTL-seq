@@ -1,0 +1,19 @@
+name: qtlseq
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.8
+  - bwa
+  - samtools
+  - bcftools
+  - htslib
+  - snpeff
+  - trimmomatic
+  - matplotlib
+  - numpy
+  - pandas
+  - pip
+  - pip:
+      - -e .

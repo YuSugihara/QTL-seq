@@ -1,5 +1,5 @@
 # QTL-seq User Guide
-#### version 2.2.9
+#### version 2.3.0
 
 ## Table of contents
 - [What is QTL-seq?](#what-is-qtl-seq)
@@ -40,10 +40,11 @@ Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is 
 - [BWA](http://bio-bwa.sourceforge.net/)
 - [SAMtools](http://samtools.sourceforge.net/)
 - [BCFtools](http://samtools.github.io/bcftools/)
+- [Tabix](http://www.htslib.org/doc/tabix.html)
 - [SnpEff](http://snpeff.sourceforge.net/)
 - [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
 
-#### Python (>=3.5) libraries
+#### Python (>=3.8) libraries
 - matplotlib
 - numpy
 - pandas
@@ -56,6 +57,15 @@ conda create -c bioconda -n qtlseq qtlseq
 conda activate qtlseq
 ```
 
+### Installation via environment.yml
+If you install from source and want all dependencies in one environment, you can use:
+```
+git clone https://github.com/YuSugihara/QTL-seq.git
+cd QTL-seq
+conda env create -f environment.yml
+conda activate qtlseq
+```
+
 ### Manual installation
 If you encounter an error during installation, you can install QTL-seq manually.
 ```
@@ -63,13 +73,16 @@ git clone https://github.com/YuSugihara/QTL-seq.git
 cd QTL-seq
 pip install -e .
 ```
-Then you need to install other dependencies yourself. We highly recommend installing SnpEff and Trimmomatic via bioconda.
+Then you need to install command-line dependencies yourself.
 ```
-conda install -c bioconda snpeff
-conda install -c bioconda trimmomatic
+conda install -c bioconda bwa samtools bcftools htslib snpeff trimmomatic
 ```
-After installation, please check whether SnpEff and Trimmomatic are working using the commands below.
+After installation, please check whether dependencies are working using the commands below.
 ```
+bwa 2>&1 | head
+samtools --version
+bcftools --version
+tabix --version
 snpEff --help
 trimmomatic --help
 ```
@@ -85,7 +98,7 @@ usage: qtlseq -r <FASTA> -p <BAM|FASTQ> -b1 <BAM|FASTQ>
               -b2 <BAM|FASTQ> -n1 <INT> -n2 <INT> -o <OUT_DIR>
               [-F <INT>] [-T] [-e <DATABASE>]
 
-QTL-seq version 2.2.9
+QTL-seq version 2.3.0
 
 options:
   -h, --help         show this help message and exit
@@ -130,10 +143,10 @@ options:
                      available databases in SnpEff.
   --line-colors      Colors for threshold lines in plots. Specify a
                      comma-separated list in the order of SNP-index,
-                     p95, and p99. ["#FE5F55,#6FD08C,#E3B505"]
+                     p95, and p99. ["#C3310F,#009E72,#FDB003"]
   --dot-colors       Colors for dots in plots. Specify a
                      comma-separated list in the order of bulk1,
-                     bulk2, and delta. ["#74D3AE,#FFBE0B,#40476D"]
+                     bulk2, and delta. ["#74D3AE,#FFBE0B,#B3B8DD"]
   --mem              Maximum memory per thread when sorting BAM files;
                      suffixes K/M/G are recognized. [1G]
   -q , --min-MQ      Minimum mapping quality for mpileup. [40]
@@ -197,7 +210,7 @@ qtlseq -r reference.fasta \
 
 `-b1` : FASTQs of bulk 1. Please input paired-end reads separated by a comma. FASTQ files can be gzipped.
 
-`-b2` : FASTQs of bulk 1. Please input paired-end reads separated by a comma. FASTQ files can be gzipped.
+`-b2` : FASTQs of bulk 2. Please input paired-end reads separated by a comma. FASTQ files can be gzipped.
 
 `-n1` : number of individuals in bulk 1.
 
@@ -261,7 +274,7 @@ usage: qtlplot -v <VCF> -n1 <INT> -n2 <INT> -o <OUT_DIR>
                [-d <INT>] [-N <INT>] [-m <FLOAT>] [-S <INT>] [-e <DATABASE>]
                [--igv] [--indel]
 
-QTL-plot version 2.2.9
+QTL-plot version 2.3.0
 
 options:
   -h, --help            show this help message and exit
@@ -305,10 +318,10 @@ options:
                         eps/jpeg/jpg/pdf/pgf/png/rgba/svg/svgz/tif/tiff
   --version             show program's version number and exit
 ```
-QTL-plot is included in QTL-seq. QTL-seq run QTL-plot after making VCF. Then, QTL-plot will work with default parameters. If you want to change some parameters, you can use VCF inside of `(OUT_DIR/30_vcf/QTL-seq.vcf.gz)` to retry plotting process like below.
+QTL-plot is included in QTL-seq. QTL-seq run QTL-plot after making VCF. Then, QTL-plot will work with default parameters. If you want to change some parameters, you can use VCF inside of `(OUT_DIR/30_vcf/qtlseq.vcf.gz)` to retry plotting process like below.
 
 ```
-qtlplot -v OUT_DIR/30_vcf/QTL-seq.vcf.gz \
+qtlplot -v OUT_DIR/30_vcf/qtlseq.vcf.gz \
         -o ANOTHER_DIR_NAME \
         -n1 20 \
         -n2 20 \

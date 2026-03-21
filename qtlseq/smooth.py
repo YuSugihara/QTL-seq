@@ -78,36 +78,44 @@ class Smooth(object):
 
     def run(self):
         self.sliding_window = open('{}/sliding_window.tsv'.format(self.out), 'w')
-        if self.snpEff is None:
-            snp_index = pd.read_csv('{}/snp_index.tsv'.format(self.out),
-                                    sep='\t',
-                                    names=['CHROM',
-                                           'POSI',
-                                           'variant',
-                                           'bulk1_depth',
-                                           'bulk2_depth',
-                                           'p99',
-                                           'p95',
-                                           'bulk1_SNPindex',
-                                           'bulk2_SNPindex',
-                                           'delta_SNPindex'])
-        else:
-            snp_index = pd.read_csv('{}/snp_index.tsv'.format(self.out),
-                                    sep='\t',
-                                    names=['CHROM',
-                                           'POSI',
-                                           'variant',
-                                           'impact',
-                                           'bulk1_depth',
-                                           'bulk2_depth',
-                                           'p99',
-                                           'p95',
-                                           'bulk1_SNPindex',
-                                           'bulk2_SNPindex',
-                                           'delta_SNPindex'])
+        try:
+            if self.snpEff is None:
+                snp_index = pd.read_csv('{}/snp_index.tsv'.format(self.out),
+                                        sep='\t',
+                                        names=['CHROM',
+                                               'POSI',
+                                               'variant',
+                                               'bulk1_depth',
+                                               'bulk2_depth',
+                                               'p99',
+                                               'p95',
+                                               'bulk1_SNPindex',
+                                               'bulk2_SNPindex',
+                                               'delta_SNPindex'])
+            else:
+                snp_index = pd.read_csv('{}/snp_index.tsv'.format(self.out),
+                                        sep='\t',
+                                        names=['CHROM',
+                                               'POSI',
+                                               'variant',
+                                               'impact',
+                                               'bulk1_depth',
+                                               'bulk2_depth',
+                                               'p99',
+                                               'p95',
+                                               'bulk1_SNPindex',
+                                               'bulk2_SNPindex',
+                                               'delta_SNPindex'])
+        except pd.errors.EmptyDataError:
+            self.sliding_window.close()
+            return
 
         if self.include_indel:
             snp_index = snp_index[snp_index['variant'] == 'snp']
+
+        if snp_index.empty:
+            self.sliding_window.close()
+            return
 
         snp_index['CHROM'] = snp_index['CHROM'].astype('category')
         grouped = snp_index.groupby('CHROM')

@@ -31,8 +31,12 @@ class RefIndex(object):
                     stderr=sbp.DEVNULL,
                     shell=True,
                     check=True)
-        except sbp.CalledProcessError:
-            call_log(self.out, 'bwa', cmd1)
+        except sbp.CalledProcessError as exc:
+            call_log(self.out,
+                     'bwa',
+                     cmd1,
+                     returncode=exc.returncode,
+                     hint='Install BWA and confirm with: bwa 2>&1 | head')
             sys.exit(1)
 
         try:
@@ -41,8 +45,12 @@ class RefIndex(object):
                     stderr=sbp.DEVNULL,
                     shell=True,
                     check=True)
-        except sbp.CalledProcessError:
-            call_log(self.out, 'samtools', cmd1)
+        except sbp.CalledProcessError as exc:
+            call_log(self.out,
+                     'samtools',
+                     cmd2,
+                     returncode=exc.returncode,
+                     hint='Install samtools and confirm with: samtools --version')
             sys.exit(1)
 
         print(time_stamp(),

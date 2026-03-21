@@ -4,7 +4,6 @@ import os
 import glob
 import subprocess as sbp
 from multiprocessing import Pool
-from qtlseq.vcf2index import Vcf2Index
 from qtlseq.utils import time_stamp, clean_cmd, call_log
 
 
@@ -15,12 +14,23 @@ class Mpileup(object):
         self.args = args
 
     def get_bams(self, label):
-        bams = glob.glob('{}/20_bam/{}*.bam'.format(self.out, label))
+        bams = sorted(glob.glob('{}/20_bam/{}*.bam'.format(self.out, label)))
         return bams
 
     def merge(self):
         for label in ['parent', 'bulk1', 'bulk2']:
             bams = self.get_bams(label)
+            if len(bams) == 0:
+                sys.stderr.write(('{} Error: No BAM files were found for "{}".\n'
+                                  '{} Expected files like "{}/20_bam/{}*.bam".\n'
+                                  '{} Please check your input options and previous alignment/merge steps.\n\n').format(time_stamp(),
+                                                                                                                        label,
+                                                                                                                        time_stamp(),
+                                                                                                                        self.out,
+                                                                                                                        label,
+                                                                                                                        time_stamp()))
+                sys.exit(1)
+
             if len(bams) == 1:
                 path_to_bam = os.path.abspath(bams[0])
                 cmd1 = 'ln -s {} {}/20_bam/{}.unsorted.bam'.format(path_to_bam,
@@ -80,8 +90,8 @@ class Mpileup(object):
                         stderr=sbp.DEVNULL,
                         shell=True,
                         check=True)
-            except sbp.CalledProcessError:
-                call_log(self.out, 'samtools', cmd1)
+            except sbp.CalledProcessError as exc:
+                call_log(self.out, 'samtools', cmd1, returncode=exc.returncode)
                 sys.exit(1)
 
             try:
@@ -90,8 +100,8 @@ class Mpileup(object):
                         stderr=sbp.DEVNULL,
                         shell=True,
                         check=True)
-            except sbp.CalledProcessError:
-                call_log(self.out, 'samtools', cmd2)
+            except sbp.CalledProcessError as exc:
+                call_log(self.out, 'samtools', cmd2, returncode=exc.returncode)
                 sys.exit(1)
 
             try:
@@ -100,15 +110,15 @@ class Mpileup(object):
                         stderr=sbp.DEVNULL,
                         shell=True,
                         check=True)
-            except sbp.CalledProcessError:
+            except sbp.CalledProcessError as exc:
                 try:
                     sbp.run(cmd4,
                             stdout=sbp.DEVNULL,
                             stderr=sbp.DEVNULL,
                             shell=True,
                             check=True)
-                except sbp.CalledProcessError:
-                    call_log(self.out, 'samtools', cmd4)
+                except sbp.CalledProcessError as exc2:
+                    call_log(self.out, 'samtools', cmd4, returncode=exc2.returncode)
                     sys.exit(1)
 
             sbp.run(cmd5,
@@ -126,6 +136,13 @@ class Mpileup(object):
                 line = line.rstrip('\n')
                 chr_name = re.split('[> ]',line)[1]
                 chr_names.append(chr_name)
+        ref.close()
+        if len(chr_names) == 0:
+            sys.stderr.write(('{} Error: No contig headers were found in reference FASTA "{}".\n'
+                              '{} Please verify FASTA format and that each contig starts with ">".\n\n').format(time_stamp(),
+                                                                                                                  self.args.ref,
+                                                                                                                  time_stamp()))
+            sys.exit(1)
         return chr_names
 
     def mpileup(self, chr_name):
@@ -165,9 +182,13 @@ class Mpileup(object):
                     stderr=sbp.DEVNULL,
                     shell=True,
                     check=True)
-        except sbp.CalledProcessError:
-            call_log(self.out, 'bcftools', cmd)
-            sys.exit(1)
+        except sbp.CalledProcessError as exc:
+            call_log(self.out,
+                     'bcftools.{}'.format(chr_name),
+                     cmd,
+                     returncode=exc.returncode,
+                     hint='If exit status is 127, please install bcftools and check PATH.')
+            raise RuntimeError('bcftools mpileup failed for "{}"'.format(chr_name))
 
     def concat(self):
 
@@ -185,19 +206,31 @@ class Mpileup(object):
         cmd3 = clean_cmd(cmd3)
         cmd4 = clean_cmd(cmd4)
 
+        vcf_chunks = sorted(glob.glob('{}/30_vcf/qtlseq.*.vcf.gz'.format(self.out)))
+        if len(vcf_chunks) == 0:
+            sys.stderr.write(('{} Error: No per-contig VCF files were generated.\n'
+                              '{} Please check "{}/log/bcftools.*.log".\n\n').format(time_stamp(),
+                                                                                      time_stamp(),
+                                                                                      self.out))
+            sys.exit(1)
+
         try:
             sbp.run(cmd1,
                     stdout=sbp.DEVNULL,
                     stderr=sbp.DEVNULL,
                     shell=True,
                     check=True)
-        except sbp.CalledProcessError:
-            call_log(self.out, 'bcftools', cmd3)
+        except sbp.CalledProcessError as exc:
+            call_log(self.out, 'bcftools', cmd1, returncode=exc.returncode)
             sys.exit(1)
 
-        sbp.run(cmd2, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-        sbp.run(cmd3, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-        sbp.run(cmd4, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
+        try:
+            sbp.run(cmd2, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
+            sbp.run(cmd3, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
+            sbp.run(cmd4, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
+        except sbp.CalledProcessError as exc:
+            call_log(self.out, 'bcftools', cmd2, returncode=exc.returncode)
+            sys.exit(1)
 
     def mkindex(self):
         cmd1 = 'tabix -f \
@@ -222,15 +255,15 @@ class Mpileup(object):
                     stderr=sbp.DEVNULL, 
                     shell=True, 
                     check=True)
-        except sbp.CalledProcessError:
+        except sbp.CalledProcessError as exc:
             try:
                 sbp.run(cmd2, 
                         stdout=sbp.DEVNULL, 
                         stderr=sbp.DEVNULL, 
                         shell=True, 
                         check=True)
-            except sbp.CalledProcessError:
-                call_log(self.out, 'tabix', cmd2)
+            except sbp.CalledProcessError as exc2:
+                call_log(self.out, 'tabix', cmd2, returncode=exc2.returncode)
                 sys.exit(1)
 
     def run(self):
@@ -241,9 +274,15 @@ class Mpileup(object):
         print(time_stamp(), 'Calling variants.', flush=True)
         chr_names = self.get_header()
 
-        p = Pool(self.args.threads)
-        p.map(self.mpileup, chr_names)
-        p.close()
+        try:
+            with Pool(self.args.threads) as p:
+                p.map(self.mpileup, chr_names)
+        except Exception:
+            sys.stderr.write(('{} Error: Variant calling failed during per-contig mpileup.\n'
+                              '{} Please check "{}/log/bcftools.*.log".\n\n').format(time_stamp(),
+                                                                                      time_stamp(),
+                                                                                      self.out))
+            sys.exit(1)
 
         self.concat()
         print(time_stamp(), 'Variant calling completed successfully.', flush=True)

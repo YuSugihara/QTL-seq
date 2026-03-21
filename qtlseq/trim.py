@@ -13,7 +13,19 @@ class Trim(object):
         self.trim_params = self.params_parser(args.trim_params)
 
     def params_parser(self, trim_params):
+        if trim_params is None:
+            sys.stderr.write(('  Error: "--trim-params" is missing.\n'
+                              '  Please provide 6 comma-separated values in this order:\n'
+                              '  Phred,ILLUMINACLIP,LEADING,TRAILING,SLIDINGWINDOW,MINLEN\n\n'))
+            sys.exit(1)
+
         params_list = trim_params.split(',')
+        if len(params_list) != 6:
+            sys.stderr.write(('  Error: Invalid "--trim-params" value.\n'
+                              '  Please provide 6 comma-separated values in this order:\n'
+                              '  Phred,ILLUMINACLIP,LEADING,TRAILING,SLIDINGWINDOW,MINLEN\n\n'))
+            sys.exit(1)
+
         trim_params = {}
         trim_params['phred'] = params_list[0]
         trim_params['ILLUMINACLIP'] = params_list[1]
@@ -24,6 +36,9 @@ class Trim(object):
 
         if self.args.adapter is not None:
             ILLUMINACLIP = trim_params['ILLUMINACLIP'].split(':')
+            if len(ILLUMINACLIP) == 0:
+                sys.stderr.write(('  Error: Invalid ILLUMINACLIP setting in "--trim-params".\n\n'))
+                sys.exit(1)
             ILLUMINACLIP[0] = self.args.adapter
             trim_params['ILLUMINACLIP'] = ':'.join(ILLUMINACLIP)
             
@@ -89,8 +104,12 @@ class Trim(object):
 
         try:
             sbp.run(cmd, stdout=sbp.DEVNULL, stderr=sbp.DEVNULL, shell=True, check=True)
-        except sbp.CalledProcessError:
-            call_log(self.out, 'trimmomatic', cmd)
+        except sbp.CalledProcessError as exc:
+            call_log(self.out,
+                     'trimmomatic',
+                     cmd,
+                     returncode=exc.returncode,
+                     hint='Please check adapter/trim parameters and confirm Trimmomatic is available in PATH.')
             sys.exit(1)
 
         print(time_stamp(),
