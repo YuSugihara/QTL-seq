@@ -6,7 +6,6 @@
 - [Installation](#installation)
   + [Dependencies](#dependencies)
   + [Installation via bioconda](#installation-via-bioconda)
-  + [Manual installation](#manual-installation)
 - [Usage](#usage)
   + [Example 1 : run QTL-seq from FASTQ without trimming](#example-1--run-qtl-seq-from-fastq-without-trimming)
   + [Example 2 : run QTL-seq from FASTQ with trimming](#example-2--run-qtl-seq-from-fastq-with-trimming)
@@ -64,27 +63,6 @@ git clone https://github.com/YuSugihara/QTL-seq.git
 cd QTL-seq
 conda env create -f environment.yml
 conda activate qtlseq
-```
-
-### Manual installation
-If you encounter an error during installation, you can install QTL-seq manually.
-```
-git clone https://github.com/YuSugihara/QTL-seq.git
-cd QTL-seq
-pip install -e .
-```
-Then you need to install command-line dependencies yourself.
-```
-conda install -c bioconda bwa samtools bcftools htslib snpeff trimmomatic
-```
-After installation, please check whether dependencies are working using the commands below.
-```
-bwa 2>&1 | head
-samtools --version
-bcftools --version
-tabix --version
-snpEff --help
-trimmomatic --help
 ```
 
 ## Usage
