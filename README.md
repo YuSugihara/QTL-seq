@@ -25,7 +25,7 @@
 ## What is QTL-seq?
 <img src="https://github.com/YuSugihara/QTL-seq/blob/master/images/1_logo.png" width=200>
 
-Bulked segregant analysis, as implemented in  QTL-seq (Takagi et al., 2013), is a powerful and efficient method for identifying agronomically important loci in crop plants. QTL-seq has been adapted from MutMap to identify quantitative trait loci. It utilizes sequences pooled from two segregating progeny populations with extreme opposite traits (e.g. resistant vs susceptible) and a single whole-genome resequencing of either of the parental cultivars.
+Bulked segregant analysis, as implemented in QTL-seq ([Takagi et al., 2013](https://doi.org/10.1111/tpj.12105)), is a powerful and efficient method for identifying agronomically important loci in crop plants. QTL-seq has been adapted from MutMap to identify quantitative trait loci. It utilizes sequences pooled from two segregating progeny populations with extreme opposite traits (e.g. resistant vs susceptible) and a single whole-genome resequencing of either of the parental cultivars. The updated pipeline is approximately 5-8 times faster than the previous pipeline, is easier for novice users to use, and can be easily installed through bioconda with all dependencies.
 
 #### Citation
 - Yu Sugihara, Lester Young, Hiroki Yaegashi, Satoshi Natsume, Daniel J. Shea, Hiroki Takagi, Helen Booker, Hideki Innan, Ryohei Terauchi, Akira Abe (2022). [High performance pipeline for MutMap and QTL-seq](https://doi.org/10.7717/peerj.13170). PeerJ, 10:e13170.
